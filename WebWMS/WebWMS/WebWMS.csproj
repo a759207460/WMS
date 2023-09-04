@@ -1,0 +1,124 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Content Remove="wwwroot\css\elements.css" />
+    <Content Remove="wwwroot\css\isotope.css" />
+    <Content Remove="wwwroot\css\premium.css" />
+    <Content Remove="wwwroot\css\site.css" />
+    <Content Remove="wwwroot\css\theme.css" />
+    <Content Remove="wwwroot\font-awesome\css\font-awesome.css" />
+    <Content Remove="wwwroot\font-awesome\css\font-awesome.min.css" />
+    <Content Remove="wwwroot\font-awesome\fonts\fontawesome-webfont.eot" />
+    <Content Remove="wwwroot\font-awesome\fonts\fontawesome-webfont.svg" />
+    <Content Remove="wwwroot\font-awesome\fonts\fontawesome-webfont.ttf" />
+    <Content Remove="wwwroot\font-awesome\fonts\fontawesome-webfont.woff" />
+    <Content Remove="wwwroot\font-awesome\fonts\FontAwesome.otf" />
+    <Content Remove="wwwroot\font-awesome\less\bordered-pulled.less" />
+    <Content Remove="wwwroot\font-awesome\less\core.less" />
+    <Content Remove="wwwroot\font-awesome\less\fixed-width.less" />
+    <Content Remove="wwwroot\font-awesome\less\font-awesome.less" />
+    <Content Remove="wwwroot\font-awesome\less\icons.less" />
+    <Content Remove="wwwroot\font-awesome\less\larger.less" />
+    <Content Remove="wwwroot\font-awesome\less\list.less" />
+    <Content Remove="wwwroot\font-awesome\less\mixins.less" />
+    <Content Remove="wwwroot\font-awesome\less\path.less" />
+    <Content Remove="wwwroot\font-awesome\less\rotated-flipped.less" />
+    <Content Remove="wwwroot\font-awesome\less\spinning.less" />
+    <Content Remove="wwwroot\font-awesome\less\stacked.less" />
+    <Content Remove="wwwroot\font-awesome\less\variables.less" />
+    <Content Remove="wwwroot\font-awesome\scss\font-awesome.scss" />
+    <Content Remove="wwwroot\font-awesome\scss\_bordered-pulled.scss" />
+    <Content Remove="wwwroot\font-awesome\scss\_core.scss" />
+    <Content Remove="wwwroot\font-awesome\scss\_fixed-width.scss" />
+    <Content Remove="wwwroot\font-awesome\scss\_icons.scss" />
+    <Content Remove="wwwroot\font-awesome\scss\_larger.scss" />
+    <Content Remove="wwwroot\font-awesome\scss\_list.scss" />
+    <Content Remove="wwwroot\font-awesome\scss\_mixins.scss" />
+    <Content Remove="wwwroot\font-awesome\scss\_path.scss" />
+    <Content Remove="wwwroot\font-awesome\scss\_rotated-flipped.scss" />
+    <Content Remove="wwwroot\font-awesome\scss\_spinning.scss" />
+    <Content Remove="wwwroot\font-awesome\scss\_stacked.scss" />
+    <Content Remove="wwwroot\font-awesome\scss\_variables.scss" />
+    <Content Remove="wwwroot\lib\bootstrap\css\bootstrap-theme.css.map" />
+    <Content Remove="wwwroot\lib\bootstrap\css\bootstrap-theme.min.css" />
+    <Content Remove="wwwroot\lib\bootstrap\css\bootstrap.css" />
+    <Content Remove="wwwroot\lib\bootstrap\css\bootstrap.css.map" />
+    <Content Remove="wwwroot\lib\bootstrap\css\bootstrap.min.css" />
+    <Content Remove="wwwroot\lib\jquery\jquery-3.5.1.js" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="wwwroot\font-awesome\css\font-awesome.min.css" />
+    <Resource Include="wwwroot\font-awesome\fonts\fontawesome-webfont.eot" />
+    <Resource Include="wwwroot\font-awesome\fonts\fontawesome-webfont.svg" />
+    <Resource Include="wwwroot\font-awesome\fonts\fontawesome-webfont.ttf" />
+    <Resource Include="wwwroot\font-awesome\fonts\fontawesome-webfont.woff" />
+    <Resource Include="wwwroot\font-awesome\fonts\FontAwesome.otf" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.10" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.10">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.10" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="7.0.10">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\CommonLibraries\CommonLibraries.csproj" />
+    <ProjectReference Include="..\WebWMS.Core\WebWMS.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="wwwroot\css\elements.css" />
+    <Resource Include="wwwroot\css\isotope.css" />
+    <Resource Include="wwwroot\css\premium.css" />
+    <Resource Include="wwwroot\css\site.css" />
+    <Resource Include="wwwroot\css\theme.css" />
+    <Resource Include="wwwroot\font-awesome\css\font-awesome.css" />
+    <Resource Include="wwwroot\font-awesome\less\bordered-pulled.less" />
+    <Resource Include="wwwroot\font-awesome\less\core.less" />
+    <Resource Include="wwwroot\font-awesome\less\fixed-width.less" />
+    <Resource Include="wwwroot\font-awesome\less\font-awesome.less" />
+    <Resource Include="wwwroot\font-awesome\less\icons.less" />
+    <Resource Include="wwwroot\font-awesome\less\larger.less" />
+    <Resource Include="wwwroot\font-awesome\less\list.less" />
+    <Resource Include="wwwroot\font-awesome\less\mixins.less" />
+    <Resource Include="wwwroot\font-awesome\less\path.less" />
+    <Resource Include="wwwroot\font-awesome\less\rotated-flipped.less" />
+    <Resource Include="wwwroot\font-awesome\less\spinning.less" />
+    <Resource Include="wwwroot\font-awesome\less\stacked.less" />
+    <Resource Include="wwwroot\font-awesome\less\variables.less" />
+    <Resource Include="wwwroot\font-awesome\scss\font-awesome.scss" />
+    <Resource Include="wwwroot\font-awesome\scss\_bordered-pulled.scss" />
+    <Resource Include="wwwroot\font-awesome\scss\_core.scss" />
+    <Resource Include="wwwroot\font-awesome\scss\_fixed-width.scss" />
+    <Resource Include="wwwroot\font-awesome\scss\_icons.scss" />
+    <Resource Include="wwwroot\font-awesome\scss\_larger.scss" />
+    <Resource Include="wwwroot\font-awesome\scss\_list.scss" />
+    <Resource Include="wwwroot\font-awesome\scss\_mixins.scss" />
+    <Resource Include="wwwroot\font-awesome\scss\_path.scss" />
+    <Resource Include="wwwroot\font-awesome\scss\_rotated-flipped.scss" />
+    <Resource Include="wwwroot\font-awesome\scss\_spinning.scss" />
+    <Resource Include="wwwroot\font-awesome\scss\_stacked.scss" />
+    <Resource Include="wwwroot\font-awesome\scss\_variables.scss" />
+    <Resource Include="wwwroot\lib\bootstrap\css\bootstrap-theme.css.map" />
+    <Resource Include="wwwroot\lib\bootstrap\css\bootstrap-theme.min.css" />
+    <EditorConfigFiles Include="wwwroot\lib\bootstrap\css\bootstrap.css" />
+    <Resource Include="wwwroot\lib\bootstrap\css\bootstrap.css.map" />
+    <Resource Include="wwwroot\lib\bootstrap\css\bootstrap.min.css" />
+    <Resource Include="wwwroot\lib\jquery\jquery-3.5.1.js" />
+  </ItemGroup>
+
+</Project>

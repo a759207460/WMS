@@ -1,0 +1,29 @@
+﻿ @model WebWMS.Models.MenuViewModel;
+<div class="sidebar-nav" style="width:180px;">
+       <ul>
+
+           @foreach(var first in Model.FirstMenu)
+            {
+                @if(first.HasChildren)
+                {
+                 <li><a href="@first.Url"  style="color:#444;" data-target=".@first.Name"  class="@first.HeadStyle" data-toggle="collapse"><i class="@first.Tag"></i> @first.Title<i class="fa fa-collapse"></i></a></li>
+                  <li>
+                      <ul class="@first.Name @first.Style">
+                     @foreach(var child in Model.ChlidrenMenu)
+                        {
+                            if(child.ParentName==first.Name)
+                            {
+                              <li><a asp-controller="@child.NavigateController" asp-route-name="@child.ParentName"><span class="fa fa-caret-right"></span><i class="@child.Tag"></i> @child.Title</a></li>
+                            } 
+                        }
+                        </ul>
+                    </li>
+                }
+                else
+                {
+                    <li><a href="@first.Url"  style="color:#444;" class="@first.HeadStyle" ><i class="@first.Tag"></i> @first.Title</a></li>
+                }
+
+            }
+       </ul>
+   </div>

@@ -1,0 +1,93 @@
+{
+  "Files": [
+    {
+      "Id": "C:\\项目\\C#学习例子\\WMS\\WebWMS\\WebWMS\\obj\\Debug\\net6.0\\scopedcss\\projectbundle\\WebWMS.bundle.scp.css",
+      "PackagePath": "staticwebassets\\WebWMS.bundle.scp.css"
+    },
+    {
+      "Id": "C:\\项目\\C#学习例子\\WMS\\WebWMS\\WebWMS\\wwwroot\\Login.html",
+      "PackagePath": "staticwebassets\\Login.html"
+    },
+    {
+      "Id": "C:\\项目\\C#学习例子\\WMS\\WebWMS\\WebWMS\\wwwroot\\js\\jquery.knob.js",
+      "PackagePath": "staticwebassets\\js\\jquery.knob.js"
+    },
+    {
+      "Id": "C:\\项目\\C#学习例子\\WMS\\WebWMS\\WebWMS\\wwwroot\\js\\site.js",
+      "PackagePath": "staticwebassets\\js\\site.js"
+    },
+    {
+      "Id": "C:\\项目\\C#学习例子\\WMS\\WebWMS\\WebWMS\\wwwroot\\lib\\bootstrap\\css\\bootstrap-icons.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\css\\bootstrap-icons.css"
+    },
+    {
+      "Id": "C:\\项目\\C#学习例子\\WMS\\WebWMS\\WebWMS\\wwwroot\\lib\\bootstrap\\css\\bootstrap-icons.json",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\css\\bootstrap-icons.json"
+    },
+    {
+      "Id": "C:\\项目\\C#学习例子\\WMS\\WebWMS\\WebWMS\\wwwroot\\lib\\bootstrap\\css\\bootstrap-icons.min.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\css\\bootstrap-icons.min.css"
+    },
+    {
+      "Id": "C:\\项目\\C#学习例子\\WMS\\WebWMS\\WebWMS\\wwwroot\\lib\\bootstrap\\css\\bootstrap-icons.scss",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\css\\bootstrap-icons.scss"
+    },
+    {
+      "Id": "C:\\项目\\C#学习例子\\WMS\\WebWMS\\WebWMS\\wwwroot\\lib\\bootstrap\\css\\bootstrap-theme.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\css\\bootstrap-theme.css"
+    },
+    {
+      "Id": "C:\\项目\\C#学习例子\\WMS\\WebWMS\\WebWMS\\wwwroot\\lib\\bootstrap\\css\\fonts\\bootstrap-icons.woff",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\css\\fonts\\bootstrap-icons.woff"
+    },
+    {
+      "Id": "C:\\项目\\C#学习例子\\WMS\\WebWMS\\WebWMS\\wwwroot\\lib\\bootstrap\\css\\fonts\\bootstrap-icons.woff2",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\css\\fonts\\bootstrap-icons.woff2"
+    },
+    {
+      "Id": "C:\\项目\\C#学习例子\\WMS\\WebWMS\\WebWMS\\wwwroot\\lib\\bootstrap\\fonts\\glyphicons-halflings-regular.eot",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\fonts\\glyphicons-halflings-regular.eot"
+    },
+    {
+      "Id": "C:\\项目\\C#学习例子\\WMS\\WebWMS\\WebWMS\\wwwroot\\lib\\bootstrap\\fonts\\glyphicons-halflings-regular.svg",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\fonts\\glyphicons-halflings-regular.svg"
+    },
+    {
+      "Id": "C:\\项目\\C#学习例子\\WMS\\WebWMS\\WebWMS\\wwwroot\\lib\\bootstrap\\fonts\\glyphicons-halflings-regular.ttf",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\fonts\\glyphicons-halflings-regular.ttf"
+    },
+    {
+      "Id": "C:\\项目\\C#学习例子\\WMS\\WebWMS\\WebWMS\\wwwroot\\lib\\bootstrap\\fonts\\glyphicons-halflings-regular.woff",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\fonts\\glyphicons-halflings-regular.woff"
+    },
+    {
+      "Id": "C:\\项目\\C#学习例子\\WMS\\WebWMS\\WebWMS\\wwwroot\\lib\\bootstrap\\js\\bootstrap.js",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\js\\bootstrap.js"
+    },
+    {
+      "Id": "C:\\项目\\C#学习例子\\WMS\\WebWMS\\WebWMS\\wwwroot\\lib\\bootstrap\\js\\bootstrap.min.js",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\js\\bootstrap.min.js"
+    },
+    {
+      "Id": "C:\\项目\\C#学习例子\\WMS\\WebWMS\\WebWMS\\wwwroot\\lib\\jquery\\jquery-3.5.1.min.js",
+      "PackagePath": "staticwebassets\\lib\\jquery\\jquery-3.5.1.min.js"
+    },
+    {
+      "Id": "obj\\Debug\\net6.0\\staticwebassets\\msbuild.WebWMS.Microsoft.AspNetCore.StaticWebAssets.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
+    },
+    {
+      "Id": "obj\\Debug\\net6.0\\staticwebassets\\msbuild.build.WebWMS.props",
+      "PackagePath": "build\\WebWMS.props"
+    },
+    {
+      "Id": "obj\\Debug\\net6.0\\staticwebassets\\msbuild.buildMultiTargeting.WebWMS.props",
+      "PackagePath": "buildMultiTargeting\\WebWMS.props"
+    },
+    {
+      "Id": "obj\\Debug\\net6.0\\staticwebassets\\msbuild.buildTransitive.WebWMS.props",
+      "PackagePath": "buildTransitive\\WebWMS.props"
+    }
+  ],
+  "ElementsToRemove": []
+}

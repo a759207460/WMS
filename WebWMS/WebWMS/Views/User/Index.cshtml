@@ -1,0 +1,191 @@
+﻿<html>
+ <body>
+<style>
+    .form-groupnew {
+         margin-bottom: 5px;
+    }
+    .form-controlnew{
+        width:70%;
+        height: 34px;
+        padding: 6px 12px;
+        font-size: 14px;
+        line-height: 1.42857143;
+        color: #555;
+        background-color: #fff;
+        background-image: none;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+        transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+    }
+</style>
+   <div>
+      <div class="header">
+            <h1 class="page-title">用户信息管理</h1>
+        </div>
+       <div class="btn-toolbar list-toolbar" style="float:right;">
+        <button id="Add" class="btn btn-primary"><i class="fa fa-plus"></i>新增</button>
+        <button class="btn btn-primary"><i class="bi bi-file-arrow-up-fill"></i>导入</button>
+        <button class="btn btn-primary"><i class="bi bi-file-arrow-down-fill"></i>导出</button>
+       @*  <div class="btn-group">
+       </div>*@
+   </div>
+      <table class="table" style="margin-bottom:5px;">
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>First Name</th>
+      <th>Last Name</th>
+      <th>Username</th>
+      <th style="width: 3.5em;"></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>1</td>
+      <td>Mark</td>
+      <td>Tompson</td>
+      <td>the_mark7</td>
+      <td>
+          <a href="user.html"><i class="fa fa-pencil"></i></a>
+          <a href="#myModal" role="button" data-toggle="modal"><i class="fa fa-trash-o"></i></a>
+      </td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>Ashley</td>
+      <td>Jacobs</td>
+      <td>ash11927</td>
+      <td>
+          <a href="user.html"><i class="fa fa-pencil"></i></a>
+          <a href="#myModal" role="button" data-toggle="modal"><i class="fa fa-trash-o"></i></a>
+      </td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>Audrey</td>
+      <td>Ann</td>
+      <td>audann84</td>
+      <td>
+          <a href="user.html"><i class="fa fa-pencil"></i></a>
+          <a href="#myModal" role="button" data-toggle="modal"><i class="fa fa-trash-o"></i></a>
+      </td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>John</td>
+      <td>Robinson</td>
+      <td>jr5527</td>
+      <td>
+          <a href="user.html"><i class="fa fa-pencil"></i></a>
+          <a href="#myModal" role="button" data-toggle="modal"><i class="fa fa-trash-o"></i></a>
+      </td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>Aaron</td>
+      <td>Butler</td>
+      <td>aaron_butler</td>
+      <td>
+          <a href="user.html"><i class="fa fa-pencil"></i></a>
+          <a href="#myModal" role="button" data-toggle="modal"><i class="fa fa-trash-o"></i></a>
+      </td>
+    </tr>
+    <tr>
+      <td>6</td>
+      <td>Chris</td>
+      <td>Albert</td>
+      <td>cab79</td>
+      <td>
+          <a href="user.html"><i class="fa fa-pencil"></i></a>
+          <a href="#myModal" role="button" data-toggle="modal"><i class="fa fa-trash-o"></i></a>
+      </td>
+    </tr>
+  </tbody>
+</table>
+      <ul class="pagination" style="margin-top:0px;">
+  <li><a href="#">&laquo;</a></li>
+  <li><a href="#">1</a></li>
+  <li><a href="#">2</a></li>
+  <li><a href="#">3</a></li>
+  <li><a href="#">4</a></li>
+  <li><a href="#">5</a></li>
+  <li><a href="#">&raquo;</a></li>
+</ul>
+      <div class="modal small fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+       <div class="modal-dialog">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h3 id="myModalLabel">Delete Confirmation</h3>
+        </div>
+        <div class="modal-body">
+            <p class="error-text"><i class="fa fa-warning modal-icon"></i>Are you sure you want to delete the user?<br>This cannot be undone.</p>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-default" data-dismiss="modal" aria-hidden="true">Cancel</button>
+            <button class="btn btn-danger" data-dismiss="modal">Delete</button>
+        </div>
+    </div>
+</div>
+   </div>
+
+   @*新增用户弹窗*@
+  <div class="modal" tabindex="-1" id="UserModal" style="height:400px;">
+  <div class="modal-dialog" style="height:400px;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h7 class="modal-title" style="color:#4d5b76;font-size:1em;font-family:Cambria;font-weight:500;">新增用户</h7>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" style="padding:5px;">
+       <div class="panel panel-default">
+        <div class="panel-body">
+            <form asp-action="Add" asp-controller="User" method="post">
+                <div class="form-groupnew">
+                    账 号
+                    <input type="text" class="form-controlnew span12" aria-required="true" placeholder="账 号"><span style="color:red;">*</span>
+                </div>
+                <div class="form-groupnew">
+                    密 码
+                    <input type="password" class="form-controlnew span12" aria-required="true" placeholder="密 码"><span style="color:red;">*</span>
+                </div>
+                <div class="form-groupnew">
+                   名 称
+                    <input type="text" class="form-controlnew span12" placeholder="名 称">
+                </div>
+                <div class="form-groupnew">
+                   邮 箱
+                    <input type="text" class="form-controlnew span12" aria-required="true" placeholder="邮 箱"><span style="color:red;">*</span>
+                </div>
+                <div class="form-groupnew">
+                    电 话
+                    <input type="text" class="form-controlnew span12" aria-required="true" placeholder="电 话"><span style="color:red;">*</span>
+                </div>
+                <div class="form-groupnew">
+                    地 址
+                    <input type="text" class="form-controlnew span12" placeholder="地 址">
+                </div>
+                 <div style="text-align:right;">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                    <button type="submit"  class="btn btn-primary" >保存</button>
+                  </div>
+            </form>
+        </div>
+    </div> 
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+    $(function(){
+       $("#Add").click(function(){
+          $("#UserModal").modal('show');
+       });
+    });
+</script>
+
+</body>
+</html>
