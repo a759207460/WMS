@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace WebWMS.Core.Migrations
 {
     /// <inheritdoc />
-    public partial class upcustomer : Migration
+    public partial class customer_up1 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -36,8 +36,8 @@ namespace WebWMS.Core.Migrations
                     creator = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     is_valid = table.Column<bool>(type: "bit", nullable: false),
                     tenant_id = table.Column<long>(type: "bigint", nullable: false),
-                    CreateTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdateTime = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    CreateTime = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    UpdateTime = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -55,8 +55,8 @@ namespace WebWMS.Core.Migrations
                     creator = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     is_valid = table.Column<bool>(type: "bit", nullable: false),
                     tenant_id = table.Column<long>(type: "bigint", nullable: false),
-                    CreateTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdateTime = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    CreateTime = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    UpdateTime = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -74,8 +74,8 @@ namespace WebWMS.Core.Migrations
                     creator = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     is_valid = table.Column<bool>(type: "bit", nullable: false),
                     tenant_id = table.Column<long>(type: "bigint", nullable: false),
-                    CreateTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdateTime = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    CreateTime = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    UpdateTime = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -94,8 +94,8 @@ namespace WebWMS.Core.Migrations
                     manager = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     contact_tel = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     tenant_id = table.Column<long>(type: "bigint", nullable: false),
-                    CreateTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdateTime = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    CreateTime = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    UpdateTime = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -117,8 +117,8 @@ namespace WebWMS.Core.Migrations
                     MoblePhone = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Creator = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Delete = table.Column<bool>(type: "bit", nullable: false),
-                    CreateTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdateTime = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    CreateTime = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    UpdateTime = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -158,8 +158,8 @@ namespace WebWMS.Core.Migrations
                     carrier = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     freightfee = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     tenant_id = table.Column<long>(type: "bigint", nullable: false),
-                    CreateTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdateTime = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    CreateTime = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    UpdateTime = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -181,8 +181,8 @@ namespace WebWMS.Core.Migrations
                     creator = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     is_valid = table.Column<bool>(type: "bit", nullable: false),
                     tenant_id = table.Column<long>(type: "bigint", nullable: false),
-                    CreateTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdateTime = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    CreateTime = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    UpdateTime = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -212,8 +212,8 @@ namespace WebWMS.Core.Migrations
                     is_valid = table.Column<bool>(type: "bit", nullable: false),
                     tenant_id = table.Column<long>(type: "bigint", nullable: false),
                     warehouse_area_id = table.Column<int>(type: "int", nullable: false),
-                    CreateTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdateTime = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    CreateTime = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    UpdateTime = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -234,8 +234,8 @@ namespace WebWMS.Core.Migrations
                     creator = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     is_valid = table.Column<bool>(type: "bit", nullable: false),
                     tenant_id = table.Column<long>(type: "bigint", nullable: false),
-                    CreateTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdateTime = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    CreateTime = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    UpdateTime = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -255,8 +255,8 @@ namespace WebWMS.Core.Migrations
                     vue_directory = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     sort = table.Column<int>(type: "int", nullable: false),
                     tenant_id = table.Column<long>(type: "bigint", nullable: false),
-                    CreateTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdateTime = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    CreateTime = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    UpdateTime = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -273,8 +273,8 @@ namespace WebWMS.Core.Migrations
                     menu_id = table.Column<int>(type: "int", nullable: false),
                     authority = table.Column<byte>(type: "tinyint", nullable: false),
                     tenant_id = table.Column<long>(type: "bigint", nullable: false),
-                    CreateTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdateTime = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    CreateTime = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    UpdateTime = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -302,8 +302,8 @@ namespace WebWMS.Core.Migrations
                     creator = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     is_valid = table.Column<bool>(type: "bit", nullable: false),
                     tenant_id = table.Column<long>(type: "bigint", nullable: false),
-                    CreateTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdateTime = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    CreateTime = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    UpdateTime = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -326,8 +326,8 @@ namespace WebWMS.Core.Migrations
                     is_update_stock = table.Column<bool>(type: "bit", nullable: false),
                     job_type = table.Column<byte>(type: "tinyint", nullable: false),
                     source_table_id = table.Column<int>(type: "int", nullable: false),
-                    CreateTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdateTime = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    CreateTime = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    UpdateTime = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -347,8 +347,8 @@ namespace WebWMS.Core.Migrations
                     goods_location_id = table.Column<int>(type: "int", nullable: false),
                     handler = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     tenant_id = table.Column<long>(type: "bigint", nullable: false),
-                    CreateTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdateTime = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    CreateTime = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    UpdateTime = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -372,8 +372,8 @@ namespace WebWMS.Core.Migrations
                     handle_time = table.Column<DateTime>(type: "datetime2", nullable: false),
                     creator = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     tenant_id = table.Column<long>(type: "bigint", nullable: false),
-                    CreateTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdateTime = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    CreateTime = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    UpdateTime = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -393,8 +393,8 @@ namespace WebWMS.Core.Migrations
                     process_time = table.Column<DateTime>(type: "datetime2", nullable: false),
                     creator = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     tenant_id = table.Column<long>(type: "bigint", nullable: false),
-                    CreateTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdateTime = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    CreateTime = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    UpdateTime = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -413,8 +413,8 @@ namespace WebWMS.Core.Migrations
                     goods_owner_id = table.Column<int>(type: "int", nullable: false),
                     is_freeze = table.Column<bool>(type: "bit", nullable: false),
                     tenant_id = table.Column<long>(type: "bigint", nullable: false),
-                    CreateTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdateTime = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    CreateTime = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    UpdateTime = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -439,8 +439,8 @@ namespace WebWMS.Core.Migrations
                     tenant_id = table.Column<long>(type: "bigint", nullable: false),
                     handler = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     handle_time = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CreateTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdateTime = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    CreateTime = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    UpdateTime = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -462,8 +462,8 @@ namespace WebWMS.Core.Migrations
                     creator = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     is_valid = table.Column<bool>(type: "bit", nullable: false),
                     tenant_id = table.Column<long>(type: "bigint", nullable: false),
-                    CreateTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdateTime = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    CreateTime = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    UpdateTime = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -482,8 +482,8 @@ namespace WebWMS.Core.Migrations
                     is_valid = table.Column<bool>(type: "bit", nullable: false),
                     tenant_id = table.Column<long>(type: "bigint", nullable: false),
                     area_property = table.Column<byte>(type: "tinyint", nullable: false),
-                    CreateTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdateTime = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    CreateTime = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    UpdateTime = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -505,8 +505,8 @@ namespace WebWMS.Core.Migrations
                     creator = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     is_valid = table.Column<bool>(type: "bit", nullable: false),
                     tenant_id = table.Column<long>(type: "bigint", nullable: false),
-                    CreateTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdateTime = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    CreateTime = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    UpdateTime = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -525,8 +525,8 @@ namespace WebWMS.Core.Migrations
                     pick_qty = table.Column<int>(type: "int", nullable: false),
                     is_update_stock = table.Column<bool>(type: "bit", nullable: false),
                     dispatchlistId = table.Column<int>(type: "int", nullable: false),
-                    CreateTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdateTime = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    CreateTime = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    UpdateTime = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -556,8 +556,8 @@ namespace WebWMS.Core.Migrations
                     unit = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     cost = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    CreateTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdateTime = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    CreateTime = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    UpdateTime = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -584,8 +584,8 @@ namespace WebWMS.Core.Migrations
                     is_source = table.Column<bool>(type: "bit", nullable: false),
                     is_update_stock = table.Column<bool>(type: "bit", nullable: false),
                     StockprocessId = table.Column<int>(type: "int", nullable: false),
-                    CreateTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdateTime = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    CreateTime = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    UpdateTime = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {

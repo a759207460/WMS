@@ -10,6 +10,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using WebWMS.Core.Repositorys.Collections;
+using WebWMS.Core.DbContexts;
 
 namespace WebWMS.Core.Repositorys
 {
@@ -19,14 +20,14 @@ namespace WebWMS.Core.Repositorys
     /// <typeparam name="TEntity">The type of the entity.</typeparam>
     public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
     {
-        protected readonly DbContext _dbContext;
+        protected readonly WMSDbContext _dbContext;
         protected readonly DbSet<TEntity> _dbSet;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Repository{TEntity}"/> class.
         /// </summary>
         /// <param name="dbContext">The database context.</param>
-        public Repository(DbContext dbContext)
+        public Repository(WMSDbContext dbContext)
         {
             _dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
             _dbSet = _dbContext.Set<TEntity>();
@@ -805,13 +806,21 @@ namespace WebWMS.Core.Repositorys
         /// Inserts a range of entities synchronously.
         /// </summary>
         /// <param name="entities">The entities to insert.</param>
-        public virtual void Insert(params TEntity[] entities) => _dbSet.AddRange(entities);
+        public virtual Task<int> Insert(params TEntity[] entities)
+        {
+             _dbSet.AddRange(entities);
+            return _dbContext.SaveChangesAsync();
+        }
 
         /// <summary>
         /// Inserts a range of entities synchronously.
         /// </summary>
         /// <param name="entities">The entities to insert.</param>
-        public virtual void Insert(IEnumerable<TEntity> entities) => _dbSet.AddRange(entities);
+        public virtual Task<int> Insert(IEnumerable<TEntity> entities)
+        {
+             _dbSet.AddRange(entities);
+            return _dbContext.SaveChangesAsync();
+        }
 
         /// <summary>
         /// Inserts a new entity asynchronously.
@@ -819,9 +828,10 @@ namespace WebWMS.Core.Repositorys
         /// <param name="entity">The entity to insert.</param>
         /// <param name="cancellationToken">A <see cref="CancellationToken"/> to observe while waiting for the task to complete.</param>
         /// <returns>A <see cref="Task"/> that represents the asynchronous insert operation.</returns>
-        public virtual ValueTask<EntityEntry<TEntity>> InsertAsync(TEntity entity, CancellationToken cancellationToken = default(CancellationToken))
+        public virtual Task<int> InsertAsync(TEntity entity, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return _dbSet.AddAsync(entity, cancellationToken);
+            _dbSet.AddAsync(entity, cancellationToken);
+            return _dbContext.SaveChangesAsync();
 
             // Shadow properties?
             //var property = _dbContext.Entry(entity).Property("Created");
@@ -835,7 +845,11 @@ namespace WebWMS.Core.Repositorys
         /// </summary>
         /// <param name="entities">The entities to insert.</param>
         /// <returns>A <see cref="Task" /> that represents the asynchronous insert operation.</returns>
-        public virtual Task InsertAsync(params TEntity[] entities) => _dbSet.AddRangeAsync(entities);
+        public virtual Task<int> InsertAsync(params TEntity[] entities)
+        {
+            _dbSet.AddRangeAsync(entities);
+            return _dbContext.SaveChangesAsync();
+        }
 
         /// <summary>
         /// Inserts a range of entities asynchronously.
@@ -843,82 +857,92 @@ namespace WebWMS.Core.Repositorys
         /// <param name="entities">The entities to insert.</param>
         /// <param name="cancellationToken">A <see cref="CancellationToken"/> to observe while waiting for the task to complete.</param>
         /// <returns>A <see cref="Task"/> that represents the asynchronous insert operation.</returns>
-        public virtual Task InsertAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken = default(CancellationToken)) => _dbSet.AddRangeAsync(entities, cancellationToken);
-
-        /// <summary>
-        /// Updates the specified entity.
-        /// </summary>
-        /// <param name="entity">The entity.</param>
-        public virtual void Update(TEntity entity)
+        public virtual Task<int> InsertAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken = default(CancellationToken))
         {
-            _dbSet.Update(entity);
+           _dbSet.AddRangeAsync(entities, cancellationToken);
+           return _dbContext.SaveChangesAsync();
         }
 
         /// <summary>
         /// Updates the specified entity.
         /// </summary>
         /// <param name="entity">The entity.</param>
-        public virtual void UpdateAsync(TEntity entity)
+        public virtual Task<int> Update(TEntity entity)
         {
             _dbSet.Update(entity);
+            return _dbContext.SaveChangesAsync();
+        }
 
+        /// <summary>
+        /// Updates the specified entity.
+        /// </summary>
+        /// <param name="entity">The entity.</param>
+        public virtual Task<int> UpdateAsync(TEntity entity)
+        {
+            _dbSet.Update(entity);
+            return _dbContext.SaveChangesAsync();
         }
 
         /// <summary>
         /// Updates the specified entities.
         /// </summary>
         /// <param name="entities">The entities.</param>
-        public virtual void Update(params TEntity[] entities) => _dbSet.UpdateRange(entities);
-
+        public virtual Task<int> Update(params TEntity[] entities)
+        {
+            _dbSet.UpdateRange(entities);
+            return _dbContext.SaveChangesAsync();
+        }
         /// <summary>
         /// Updates the specified entities.
         /// </summary>
         /// <param name="entities">The entities.</param>
-        public virtual void Update(IEnumerable<TEntity> entities) => _dbSet.UpdateRange(entities);
+        public virtual Task<int> Update(IEnumerable<TEntity> entities)
+        {
+            _dbSet.UpdateRange(entities);
+            return _dbContext.SaveChangesAsync();
+        }
 
         /// <summary>
         /// Deletes the specified entity.
         /// </summary>
         /// <param name="entity">The entity to delete.</param>
-        public virtual void Delete(TEntity entity) => _dbSet.Remove(entity);
+        public virtual Task<int> Delete(TEntity entity)
+        {
+            _dbSet.Remove(entity);
+           return _dbContext.SaveChangesAsync();
+        } 
 
         /// <summary>
         /// Deletes the entity by the specified primary key.
         /// </summary>
         /// <param name="id">The primary key value.</param>
-        public virtual void Delete(object id)
+        public virtual async Task<int> Delete(int id)
         {
             // using a stub entity to mark for deletion
-            var typeInfo = typeof(TEntity).GetTypeInfo();
-            var key = _dbContext.Model.FindEntityType(typeInfo).FindPrimaryKey().Properties.FirstOrDefault();
-            var property = typeInfo.GetProperty(key?.Name);
-            if (property != null)
-            {
-                var entity = Activator.CreateInstance<TEntity>();
-                property.SetValue(entity, id);
-                _dbContext.Entry(entity).State = EntityState.Deleted;
-            }
-            else
-            {
-                var entity = _dbSet.Find(id);
-                if (entity != null)
-                {
-                    Delete(entity);
-                }
-            }
+           var entity= await _dbSet.FindAsync(id);
+            _dbSet.Remove(entity);
+            return await _dbContext.SaveChangesAsync();
         }
 
         /// <summary>
         /// Deletes the specified entities.
         /// </summary>
         /// <param name="entities">The entities.</param>
-        public virtual void Delete(params TEntity[] entities) => _dbSet.RemoveRange(entities);
+        public virtual Task<int> Delete(params TEntity[] entities)
+        {
+            _dbSet.RemoveRange(entities);
+            return _dbContext.SaveChangesAsync();
+        }
 
         /// <summary>
         /// Deletes the specified entities.
         /// </summary>
         /// <param name="entities">The entities.</param>
-        public virtual void Delete(IEnumerable<TEntity> entities) => _dbSet.RemoveRange(entities);
+        public virtual Task<int> Delete(IEnumerable<TEntity> entities)
+        {
+             _dbSet.RemoveRange(entities);
+            return _dbContext.SaveChangesAsync();
+        }
 
         /// <summary>
         /// Gets all entities. This method is not recommended
@@ -1035,5 +1059,24 @@ namespace WebWMS.Core.Repositorys
         {
             _dbContext.Entry(entity).State = state;
         }
+
+
+        /// <summary>
+        /// Executes the specified raw SQL command.
+        /// </summary>
+        /// <param name="sql">The raw SQL.</param>
+        /// <param name="parameters">The parameters.</param>
+        /// <returns>The number of state entities written to database.</returns>
+        public int ExecuteSqlCommand(string sql, params object[] parameters) => _dbContext.Database.ExecuteSqlRaw(sql, parameters);
+
+        /// <summary>
+        /// Uses raw SQL queries to fetch the specified <typeparamref name="TEntity" /> data.
+        /// </summary>
+        /// <typeparam name="TEntity">The type of the entity.</typeparam>
+        /// <param name="sql">The raw SQL.</param>
+        /// <param name="parameters">The parameters.</param>
+        /// <returns>An <see cref="IQueryable{T}" /> that contains elements that satisfy the condition specified by raw SQL.</returns>
+        public IQueryable<TEntity> FromSql<TEntity>(string sql, params object[] parameters) where TEntity : class => _dbContext.Set<TEntity>().FromSqlRaw(sql, parameters);
+
     }
 }

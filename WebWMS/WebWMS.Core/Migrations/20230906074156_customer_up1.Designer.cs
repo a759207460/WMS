@@ -12,8 +12,8 @@ using WebWMS.Core.DbContexts;
 namespace WebWMS.Core.Migrations
 {
     [DbContext(typeof(WMSDbContext))]
-    [Migration("20230904071603_up-customer")]
-    partial class upcustomer
+    [Migration("20230906074156_customer_up1")]
+    partial class customer_up1
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -33,11 +33,12 @@ namespace WebWMS.Core.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime>("CreateTime")
-                        .HasColumnType("datetime2");
+                    b.Property<string>("CreateTime")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("UpdateTime")
-                        .HasColumnType("datetime2");
+                    b.Property<string>("UpdateTime")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("actual_qty")
                         .HasColumnType("int");
@@ -113,11 +114,12 @@ namespace WebWMS.Core.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime>("CreateTime")
-                        .HasColumnType("datetime2");
+                    b.Property<string>("CreateTime")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("UpdateTime")
-                        .HasColumnType("datetime2");
+                    b.Property<string>("UpdateTime")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("asn_id")
                         .HasColumnType("int");
@@ -148,11 +150,12 @@ namespace WebWMS.Core.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime>("CreateTime")
-                        .HasColumnType("datetime2");
+                    b.Property<string>("CreateTime")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("UpdateTime")
-                        .HasColumnType("datetime2");
+                    b.Property<string>("UpdateTime")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("address")
                         .IsRequired()
@@ -197,8 +200,9 @@ namespace WebWMS.Core.Migrations
                     b.Property<string>("Address")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("CreateTime")
-                        .HasColumnType("datetime2");
+                    b.Property<string>("CreateTime")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Creator")
                         .HasColumnType("nvarchar(max)");
@@ -224,8 +228,8 @@ namespace WebWMS.Core.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("UpdateTime")
-                        .HasColumnType("datetime2");
+                    b.Property<string>("UpdateTime")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -240,11 +244,12 @@ namespace WebWMS.Core.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime>("CreateTime")
-                        .HasColumnType("datetime2");
+                    b.Property<string>("CreateTime")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("UpdateTime")
-                        .HasColumnType("datetime2");
+                    b.Property<string>("UpdateTime")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("actual_qty")
                         .HasColumnType("int");
@@ -349,11 +354,12 @@ namespace WebWMS.Core.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime>("CreateTime")
-                        .HasColumnType("datetime2");
+                    b.Property<string>("CreateTime")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("UpdateTime")
-                        .HasColumnType("datetime2");
+                    b.Property<string>("UpdateTime")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("dispatchlistId")
                         .HasColumnType("int");
@@ -388,11 +394,12 @@ namespace WebWMS.Core.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime>("CreateTime")
-                        .HasColumnType("datetime2");
+                    b.Property<string>("CreateTime")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("UpdateTime")
-                        .HasColumnType("datetime2");
+                    b.Property<string>("UpdateTime")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("arrival_city")
                         .IsRequired()
@@ -438,11 +445,12 @@ namespace WebWMS.Core.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime>("CreateTime")
-                        .HasColumnType("datetime2");
+                    b.Property<string>("CreateTime")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("UpdateTime")
-                        .HasColumnType("datetime2");
+                    b.Property<string>("UpdateTime")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("address")
                         .IsRequired()
@@ -487,11 +495,12 @@ namespace WebWMS.Core.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime>("CreateTime")
-                        .HasColumnType("datetime2");
+                    b.Property<string>("CreateTime")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("UpdateTime")
-                        .HasColumnType("datetime2");
+                    b.Property<string>("UpdateTime")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("is_valid")
                         .HasColumnType("bit");
@@ -564,11 +573,12 @@ namespace WebWMS.Core.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime>("CreateTime")
-                        .HasColumnType("datetime2");
+                    b.Property<string>("CreateTime")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("UpdateTime")
-                        .HasColumnType("datetime2");
+                    b.Property<string>("UpdateTime")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("menu_name")
                         .IsRequired()
@@ -609,11 +619,12 @@ namespace WebWMS.Core.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime>("CreateTime")
-                        .HasColumnType("datetime2");
+                    b.Property<string>("CreateTime")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("UpdateTime")
-                        .HasColumnType("datetime2");
+                    b.Property<string>("UpdateTime")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<byte>("authority")
                         .HasColumnType("tinyint");
@@ -640,11 +651,12 @@ namespace WebWMS.Core.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime>("CreateTime")
-                        .HasColumnType("datetime2");
+                    b.Property<string>("CreateTime")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("UpdateTime")
-                        .HasColumnType("datetime2");
+                    b.Property<string>("UpdateTime")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("category_name")
                         .IsRequired()
@@ -676,14 +688,15 @@ namespace WebWMS.Core.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime>("CreateTime")
-                        .HasColumnType("datetime2");
+                    b.Property<string>("CreateTime")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("SpuId")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("UpdateTime")
-                        .HasColumnType("datetime2");
+                    b.Property<string>("UpdateTime")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("cost")
                         .HasColumnType("decimal(18,2)");
@@ -733,11 +746,12 @@ namespace WebWMS.Core.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime>("CreateTime")
-                        .HasColumnType("datetime2");
+                    b.Property<string>("CreateTime")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("UpdateTime")
-                        .HasColumnType("datetime2");
+                    b.Property<string>("UpdateTime")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("bar_code")
                         .IsRequired()
@@ -805,11 +819,12 @@ namespace WebWMS.Core.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime>("CreateTime")
-                        .HasColumnType("datetime2");
+                    b.Property<string>("CreateTime")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("UpdateTime")
-                        .HasColumnType("datetime2");
+                    b.Property<string>("UpdateTime")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("creator")
                         .IsRequired()
@@ -856,11 +871,12 @@ namespace WebWMS.Core.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime>("CreateTime")
-                        .HasColumnType("datetime2");
+                    b.Property<string>("CreateTime")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("UpdateTime")
-                        .HasColumnType("datetime2");
+                    b.Property<string>("UpdateTime")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("goods_location_id")
                         .HasColumnType("int");
@@ -898,11 +914,12 @@ namespace WebWMS.Core.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime>("CreateTime")
-                        .HasColumnType("datetime2");
+                    b.Property<string>("CreateTime")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("UpdateTime")
-                        .HasColumnType("datetime2");
+                    b.Property<string>("UpdateTime")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("creator")
                         .IsRequired()
@@ -953,11 +970,12 @@ namespace WebWMS.Core.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime>("CreateTime")
-                        .HasColumnType("datetime2");
+                    b.Property<string>("CreateTime")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("UpdateTime")
-                        .HasColumnType("datetime2");
+                    b.Property<string>("UpdateTime")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("creator")
                         .IsRequired()
@@ -996,14 +1014,15 @@ namespace WebWMS.Core.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime>("CreateTime")
-                        .HasColumnType("datetime2");
+                    b.Property<string>("CreateTime")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("StockprocessId")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("UpdateTime")
-                        .HasColumnType("datetime2");
+                    b.Property<string>("UpdateTime")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("goods_location_id")
                         .HasColumnType("int");
@@ -1041,11 +1060,12 @@ namespace WebWMS.Core.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime>("CreateTime")
-                        .HasColumnType("datetime2");
+                    b.Property<string>("CreateTime")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("UpdateTime")
-                        .HasColumnType("datetime2");
+                    b.Property<string>("UpdateTime")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("goods_location_id")
                         .HasColumnType("int");
@@ -1078,11 +1098,12 @@ namespace WebWMS.Core.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime>("CreateTime")
-                        .HasColumnType("datetime2");
+                    b.Property<string>("CreateTime")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("UpdateTime")
-                        .HasColumnType("datetime2");
+                    b.Property<string>("UpdateTime")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("book_qty")
                         .HasColumnType("int");
@@ -1136,11 +1157,12 @@ namespace WebWMS.Core.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime>("CreateTime")
-                        .HasColumnType("datetime2");
+                    b.Property<string>("CreateTime")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("UpdateTime")
-                        .HasColumnType("datetime2");
+                    b.Property<string>("UpdateTime")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("area_name")
                         .IsRequired()
@@ -1174,11 +1196,12 @@ namespace WebWMS.Core.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime>("CreateTime")
-                        .HasColumnType("datetime2");
+                    b.Property<string>("CreateTime")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("UpdateTime")
-                        .HasColumnType("datetime2");
+                    b.Property<string>("UpdateTime")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("address")
                         .IsRequired()
@@ -1227,11 +1250,12 @@ namespace WebWMS.Core.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime>("CreateTime")
-                        .HasColumnType("datetime2");
+                    b.Property<string>("CreateTime")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("UpdateTime")
-                        .HasColumnType("datetime2");
+                    b.Property<string>("UpdateTime")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("address")
                         .IsRequired()

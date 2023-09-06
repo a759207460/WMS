@@ -50,6 +50,7 @@ namespace WebWMS.Core.DTO.Customers
         public string? Creator { get; set; }
 
         public bool Delete { get; set; }
+
         #endregion
     }
 }

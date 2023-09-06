@@ -3,7 +3,10 @@ using Microsoft.EntityFrameworkCore;
 using System.Runtime.CompilerServices;
 using WebWMS.Core.DbContexts;
 using WebWMS.Core.Domain.Asns;
+using WebWMS.Core.Domain.Customers;
 using WebWMS.Core.Repositorys;
+using WebWMS.Core.Repositorys.CustomerRepositors;
+using WebWMS.Core.Services.CustomersService;
 
 namespace WebWMS.Extensions
 {
@@ -12,7 +15,7 @@ namespace WebWMS.Extensions
         public static void InitialDb(this IServiceCollection services,IConfigurationRoot configurationRoot)
         {
             services.AddDbContext<WMSDbContext>(option => option.UseSqlServer(configurationRoot.GetConnectionString("DefaultConnection")));
-            services.AddUnitOfWork<WMSDbContext>();
+            //services.AddUnitOfWork<WMSDbContext>();
         }
 
         /// <summary>
@@ -21,7 +24,9 @@ namespace WebWMS.Extensions
         /// <param name="services"></param>
         public static void RegisterService(this IServiceCollection services)
         {
-
+            services.AddScoped<ICustomerService,CustomerService>();
+            services.AddScoped<IRepository<Customer>, Repository<Customer>>();
         }
+
     }
 }

@@ -10,8 +10,8 @@ namespace WebWMS.Core.DTO
     {
         public int Id { get; set; }
 
-        public DateTime CreateTime { get; set; }
+        public string CreateTime { get; set; }
 
-        public DateTime UpdateTime { get; set; }
+        public string? UpdateTime { get; set; }
     }
 }

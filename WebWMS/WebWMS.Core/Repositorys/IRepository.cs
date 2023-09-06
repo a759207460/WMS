@@ -411,13 +411,13 @@ namespace WebWMS.Core.Repositorys
         /// Inserts a range of entities synchronously.
         /// </summary>
         /// <param name="entities">The entities to insert.</param>
-        void Insert(params TEntity[] entities);
+        Task<int> Insert(params TEntity[] entities);
 
         /// <summary>
         /// Inserts a range of entities synchronously.
         /// </summary>
         /// <param name="entities">The entities to insert.</param>
-        void Insert(IEnumerable<TEntity> entities);
+        Task<int> Insert(IEnumerable<TEntity> entities);
 
         /// <summary>
         /// Inserts a new entity asynchronously.
@@ -425,14 +425,14 @@ namespace WebWMS.Core.Repositorys
         /// <param name="entity">The entity to insert.</param>
         /// <param name="cancellationToken">A <see cref="CancellationToken"/> to observe while waiting for the task to complete.</param>
         /// <returns>A <see cref="Task"/> that represents the asynchronous insert operation.</returns>
-        ValueTask<EntityEntry<TEntity>> InsertAsync(TEntity entity, CancellationToken cancellationToken = default(CancellationToken));
+        Task<int> InsertAsync(TEntity entity, CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
         /// Inserts a range of entities asynchronously.
         /// </summary>
         /// <param name="entities">The entities to insert.</param>
         /// <returns>A <see cref="Task"/> that represents the asynchronous insert operation.</returns>
-        Task InsertAsync(params TEntity[] entities);
+        Task<int> InsertAsync(params TEntity[] entities);
 
         /// <summary>
         /// Inserts a range of entities asynchronously.
@@ -440,49 +440,49 @@ namespace WebWMS.Core.Repositorys
         /// <param name="entities">The entities to insert.</param>
         /// <param name="cancellationToken">A <see cref="CancellationToken"/> to observe while waiting for the task to complete.</param>
         /// <returns>A <see cref="Task"/> that represents the asynchronous insert operation.</returns>
-        Task InsertAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken = default(CancellationToken));
+        Task<int> InsertAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
         /// Updates the specified entity.
         /// </summary>
         /// <param name="entity">The entity.</param>
-        void Update(TEntity entity);
+        Task<int> Update(TEntity entity);
 
         /// <summary>
         /// Updates the specified entities.
         /// </summary>
         /// <param name="entities">The entities.</param>
-        void Update(params TEntity[] entities);
+        Task<int> Update(params TEntity[] entities);
 
         /// <summary>
         /// Updates the specified entities.
         /// </summary>
         /// <param name="entities">The entities.</param>
-        void Update(IEnumerable<TEntity> entities);
+        Task<int> Update(IEnumerable<TEntity> entities);
 
         /// <summary>
         /// Deletes the entity by the specified primary key.
         /// </summary>
         /// <param name="id">The primary key value.</param>
-        void Delete(object id);
+        Task<int> Delete(int id);
 
         /// <summary>
         /// Deletes the specified entity.
         /// </summary>
         /// <param name="entity">The entity to delete.</param>
-        void Delete(TEntity entity);
+        Task<int> Delete(TEntity entity);
 
         /// <summary>
         /// Deletes the specified entities.
         /// </summary>
         /// <param name="entities">The entities.</param>
-        void Delete(params TEntity[] entities);
+        Task<int> Delete(params TEntity[] entities);
 
         /// <summary>
         /// Deletes the specified entities.
         /// </summary>
         /// <param name="entities">The entities.</param>
-        void Delete(IEnumerable<TEntity> entities);
+        Task<int> Delete(IEnumerable<TEntity> entities);
 
         /// <summary>
         /// Change entity state for patch method on web api.

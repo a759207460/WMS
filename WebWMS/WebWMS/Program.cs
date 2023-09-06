@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using WebWMS.AutoMapper;
 using WebWMS.Core.DbContexts;
 using WebWMS.Extensions;
 
@@ -15,6 +16,7 @@ namespace WebWMS
             builder.Services.AddControllersWithViews();
             builder.Services.InitialDb(configurationRoot);//注册数据库上下文对象服务
             builder.Services.RegisterService();//注册各类服务
+            builder.Services.AddAutoMapper(c => c.AddProfile(new AutoMapperProFile()));
             var app = builder.Build();
 
             //设置登录页面

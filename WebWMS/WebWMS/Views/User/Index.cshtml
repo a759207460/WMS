@@ -1,11 +1,12 @@
-﻿<html>
+﻿@model WebWMS.Models.UserViewModel
+<html>
  <body>
 <style>
     .form-groupnew {
          margin-bottom: 5px;
     }
     .form-controlnew{
-        width:70%;
+        width:50%;
         height: 34px;
         padding: 6px 12px;
         font-size: 14px;
@@ -30,79 +31,53 @@
        @*  <div class="btn-group">
        </div>*@
    </div>
-      <table class="table" style="margin-bottom:5px;">
-  <thead>
-    <tr>
-      <th>#</th>
-      <th>First Name</th>
-      <th>Last Name</th>
-      <th>Username</th>
-      <th style="width: 3.5em;"></th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>1</td>
-      <td>Mark</td>
-      <td>Tompson</td>
-      <td>the_mark7</td>
-      <td>
-          <a href="user.html"><i class="fa fa-pencil"></i></a>
-          <a href="#myModal" role="button" data-toggle="modal"><i class="fa fa-trash-o"></i></a>
-      </td>
-    </tr>
-    <tr>
-      <td>2</td>
-      <td>Ashley</td>
-      <td>Jacobs</td>
-      <td>ash11927</td>
-      <td>
-          <a href="user.html"><i class="fa fa-pencil"></i></a>
-          <a href="#myModal" role="button" data-toggle="modal"><i class="fa fa-trash-o"></i></a>
-      </td>
-    </tr>
-    <tr>
-      <td>3</td>
-      <td>Audrey</td>
-      <td>Ann</td>
-      <td>audann84</td>
-      <td>
-          <a href="user.html"><i class="fa fa-pencil"></i></a>
-          <a href="#myModal" role="button" data-toggle="modal"><i class="fa fa-trash-o"></i></a>
-      </td>
-    </tr>
-    <tr>
-      <td>4</td>
-      <td>John</td>
-      <td>Robinson</td>
-      <td>jr5527</td>
-      <td>
-          <a href="user.html"><i class="fa fa-pencil"></i></a>
-          <a href="#myModal" role="button" data-toggle="modal"><i class="fa fa-trash-o"></i></a>
-      </td>
-    </tr>
-    <tr>
-      <td>5</td>
-      <td>Aaron</td>
-      <td>Butler</td>
-      <td>aaron_butler</td>
-      <td>
-          <a href="user.html"><i class="fa fa-pencil"></i></a>
-          <a href="#myModal" role="button" data-toggle="modal"><i class="fa fa-trash-o"></i></a>
-      </td>
-    </tr>
-    <tr>
-      <td>6</td>
-      <td>Chris</td>
-      <td>Albert</td>
-      <td>cab79</td>
-      <td>
-          <a href="user.html"><i class="fa fa-pencil"></i></a>
-          <a href="#myModal" role="button" data-toggle="modal"><i class="fa fa-trash-o"></i></a>
-      </td>
-    </tr>
-  </tbody>
-</table>
+      <table class="table" style="margin-bottom:5px;text-align:center;">
+            <thead>
+            <tr>
+              <th>编号</th>
+              <th>账号</th>
+              <th>名称</th>
+              <th>邮箱</th>
+              <th>手机</th>
+              <th>地址</th>
+              <th>是否启用</th>
+              <th>是否删除</th>
+              <th style="width: 3.5em;">操作</th>
+            </tr>
+            </thead>
+            <tbody>
+                @if(Model.PagedList !=null&&Model.PagedList.Items.Count()>0)
+                {
+                      @foreach(var user in Model.PagedList.Items)
+                        {
+                           <tr>
+                              <td>@user.Id</td>
+                              <td>@user.Account</td>
+                              <td>@user.Name</td>
+                              <td>@user.Email</td>
+                              <td>@user.MoblePhone</td>
+                              <td>@user.Address</td>
+                            @if(user.IsEnabled == true){
+                                <td>启用</td>
+                            }else
+                            {
+                                <td>禁用</td>
+                            }
+                            @if(user.Delete == true)
+                            { <td>是</td>
+                            }else
+                            {
+                                  <td>否</td>     
+                            }
+                            <td>
+                                  <a href="#" onclick="Edit('@user.Id','@user.Account','@user.PassWord','@user.Name','@user.Email','@user.MoblePhone','@user.Address')"><i class="fa fa-pencil"></i></a>
+                                  <a href="#" id="Delete" onclick="Delete('@user.Id','@user.Account')" role="button" ><i class="fa fa-trash-o"></i></a>
+                              </td>
+                           </tr>
+                        }
+                }
+          </tbody>
+      </table>
       <ul class="pagination" style="margin-top:0px;">
   <li><a href="#">&laquo;</a></li>
   <li><a href="#">1</a></li>
@@ -112,25 +87,12 @@
   <li><a href="#">5</a></li>
   <li><a href="#">&raquo;</a></li>
 </ul>
-      <div class="modal small fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-       <div class="modal-dialog">
-        <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-            <h3 id="myModalLabel">Delete Confirmation</h3>
-        </div>
-        <div class="modal-body">
-            <p class="error-text"><i class="fa fa-warning modal-icon"></i>Are you sure you want to delete the user?<br>This cannot be undone.</p>
-        </div>
-        <div class="modal-footer">
-            <button class="btn btn-default" data-dismiss="modal" aria-hidden="true">Cancel</button>
-            <button class="btn btn-danger" data-dismiss="modal">Delete</button>
-        </div>
-    </div>
-</div>
    </div>
-
+   
    @*新增用户弹窗*@
-  <div class="modal" tabindex="-1" id="UserModal" style="height:400px;">
+  <div class="modal " tabindex="-1"  id="UserModal" style="height:420px;margin-top:50px;overflow-y:hidden;" >
+      <input type="hidden" id="operatetype" />
+       <input type="hidden" id="editId" />
   <div class="modal-dialog" style="height:400px;">
     <div class="modal-content">
       <div class="modal-header">
@@ -142,35 +104,41 @@
       <div class="modal-body" style="padding:5px;">
        <div class="panel panel-default">
         <div class="panel-body">
-            <form asp-action="Add" asp-controller="User" method="post">
+            <form>
+
                 <div class="form-groupnew">
-                    账 号
-                    <input type="text" class="form-controlnew span12" aria-required="true" placeholder="账 号"><span style="color:red;">*</span>
+                    账&emsp;&emsp;号
+                    <input type="text" class="form-controlnew span12"  id="account" placeholder="账 号" autocomplete="off"><span style="color:red;" id="saccount">*</span>
                 </div>
                 <div class="form-groupnew">
-                    密 码
-                    <input type="password" class="form-controlnew span12" aria-required="true" placeholder="密 码"><span style="color:red;">*</span>
+                    密&emsp;&emsp;码
+                    <input type="password" class="form-controlnew span12" id="password"   placeholder="密 码" autocomplete="off" ><span style="color:red;" id="spassword">*</span>
+                </div>
+                 <div class="form-groupnew">
+                    密码确认
+                    <input type="password" class="form-controlnew span12" id="password1"   placeholder="密 码" autocomplete="off" ><span style="color:red;" id="spassword1">*</span>
                 </div>
                 <div class="form-groupnew">
-                   名 称
-                    <input type="text" class="form-controlnew span12" placeholder="名 称">
+                   名&emsp;&emsp;称
+                    <input type="text" class="form-controlnew span12" id="name" placeholder="名 称"   autocomplete="off">
                 </div>
                 <div class="form-groupnew">
-                   邮 箱
-                    <input type="text" class="form-controlnew span12" aria-required="true" placeholder="邮 箱"><span style="color:red;">*</span>
+                   邮&emsp;&emsp;箱
+                    <input type="text" class="form-controlnew span12" id="email"  placeholder="邮 箱"  autocomplete="off"><span style="color:red;" id="semail">*</span>
                 </div>
                 <div class="form-groupnew">
-                    电 话
-                    <input type="text" class="form-controlnew span12" aria-required="true" placeholder="电 话"><span style="color:red;">*</span>
+                    手&emsp;&emsp;机
+                    <input type="text" class="form-controlnew span12" id="phone"  placeholder="手 机"   autocomplete="off"><span style="color:red;" id="sphone">*</span>
                 </div>
                 <div class="form-groupnew">
-                    地 址
-                    <input type="text" class="form-controlnew span12" placeholder="地 址">
+                    地&emsp;&emsp;址
+                    <input type="text" class="form-controlnew span12" id="address" placeholder="地 址"  autocomplete="off">
                 </div>
                  <div style="text-align:right;">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
-                    <button type="submit"  class="btn btn-primary" >保存</button>
+                    <button type="button"  class="btn btn-primary" id="Save">保存</button>
                   </div>
+                  
             </form>
         </div>
     </div> 
@@ -179,12 +147,220 @@
   </div>
 </div>
 
+@*提示框*@
+  <div class="modal" tabindex="-1" id="MessageModel" style="height:210px;margin-top:50px;overflow-y:hidden;width:210px;margin-left:46%;" >
+   <input type="hidden" id="userId" />
+      <div class="modal-dialog" style="height:200px;width:200px;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h7 class="modal-title" style="color:#4d5b76;font-size:1em;font-family:Cambria;font-weight:500;">提示!</h7>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" style="padding:5px;">
+       <div class="panel panel-default">
+        <div class="panel-body" style="text-align:center;">
+            <span id="msg"></span>
+        </div>
+    </div> 
+     <div style="text-align:right;">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+               <button type="button"  class="btn btn-primary" id="MSave">保存</button>
+         </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
 <script>
     $(function(){
+
+        //新增
        $("#Add").click(function(){
           $("#UserModal").modal('show');
+          $("#operatetype").val("add");
+       });
+
+       //保存
+       $("#Save").click(function(){
+           var account=$("#account").val();
+           var password=$("#password").val();
+            var password1=$("#password1").val();
+           var name=$("#name").val();
+           var phone=$("#phone").val();
+           var email=$("#email").val();
+           var address=$("#address").val();
+           var operatetype=$("#operatetype").val();
+           if(account==""||account==null)
+           {
+               $("#saccount").append("账号不能为空!");
+               return;
+           }else
+           {
+               $("#saccount").text("*")
+           }
+           if(password==""||password==null)
+           {
+                $("#spassword").append("密码不能为空!");
+                return;
+           }
+           else{
+               $("#spassword").text("*")
+           }
+
+           if(password1==""||password1==null)
+           {
+                $("#spassword1").append("密码确认不能为空!");
+                return;
+           }
+           else{
+
+               $("#spassword1").text("*")
+               if(password!=password1)
+               {
+                     $("#spassword1").append("两次密码不相等!");
+                     return;
+               }
+           }
+
+            
+           if(email==""||email==null)
+           {
+                $("#semail").append("邮箱不能为空!");
+                return;
+           }else{
+                 var reg = /^([a-zA-Z0-9_-])+@@([a-zA-Z0-9_-])+((\.[a-zA-Z0-9_-]{2,3}){1,2})$/;
+                 $("#semail").text("*")
+                   if (!reg.test(email)) {
+                         $("#semail").append("邮箱格式不正确，请重新填写!");
+                        return false;
+                     } 
+           }
+
+           if(phone==""||phone==null)
+           {
+               $("#sphone").append("手机不能为空!");
+               return;
+           }else{
+               $("#sphone").text("*")
+               var t=validatorTel(phone);
+               if(t==false) 
+               {
+                 $("#sphone").append("手机格式不正确!");
+                 return;
+               } 
+           }
+
+           if(operatetype=="add")
+           {
+               $.post("/User/Add",
+           {"Account":account,"PassWord":password,"Name":name,"Email":email,"MoblePhone":phone,"Address":address},
+           function(data){
+              var result=eval('('+data+')');
+            if(result.Status==200)
+            {
+                alert(result.Message);
+                $("#account").val("");
+                $("#password").val("");
+                $("#password1").val("");
+                $("#name").val("");
+                $("#phone").val("");
+                $("#email").val("");
+                $("#address").val("");
+                $("#UserModal").modal('hide');
+                location.reload(true);
+            }
+            else
+            {
+                alert(result.Message);
+            }});
+           }else if(operatetype=="edit")
+           {
+               var id= $("#editId").val();
+               $.post("/User/Update",
+                       {"Id":id,"Account":account,"PassWord":password,"Name":name,"Email":email,"MoblePhone":phone,"Address":address},
+                       function(data){
+                          var result=eval('('+data+')');
+                        if(result.Status==200)
+                        {
+                            alert(result.Message);
+                            $("#account").val("");
+                            $("#password").val("");
+                            $("#password1").val("");
+                            $("#name").val("");
+                            $("#phone").val("");
+                            $("#email").val("");
+                            $("#address").val("");
+                            $("#UserModal").modal('hide');
+                            location.reload(true);
+                        }
+                        else
+                        {
+                            alert(result.Message);
+                        }});
+           }
+           
+       });
+
+
+
+       //删除确认
+       $("#MSave").click(function(){
+           var id=$("#duserId").val();
+            $("#MessageModel").modal('hide');
+           $.post("/User/Delete",
+           {"id":id},
+           function(data){
+              var result=eval('('+data+')');
+            if(result.Status==200)
+            { 
+                 alert(result.Message);
+                location.reload(true);
+            }
+            else
+            {
+                 $("#MessageModel").modal('hide');
+                alert(result.Message);
+            }});
        });
     });
+
+    //手机号验证
+    function validatorTel(content){
+        // 正则验证格式
+        eval("var reg = /^1[34578]\\d{9}$/;");
+        return RegExp(reg).test(content);
+    };
+
+        //编辑
+     function Edit(id,account,pwd,name,emai,phone,address)
+        {
+               $("#operatetype").val("edit");
+               $("#account").val(account);
+                $("#password").val(pwd);
+                $("#password1").val(pwd);
+                $("#name").val(name);
+                $("#phone").val(phone);
+               $("#email").val(emai);
+               $("#address").val(address);
+               $("#editId").val(id);
+               var accountnew=$("#account").val();
+               var passwordnew=$("#password").val();
+               var namenew=$("#name").val();
+               var phonenew=$("#phone").val();
+               var emailnew=$("#email").val();
+               var addressnew=$("#address").val();
+              $("#UserModal").modal('show');
+         };
+
+      //删除
+    function Delete(id,account)
+        {
+             $("#msg").text("确认删除用户:"+account+"!");
+             $("#userId").val(id);
+             $("#MessageModel").modal('show');
+        };
 </script>
 
 </body>
