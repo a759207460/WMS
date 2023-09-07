@@ -4,7 +4,7 @@ namespace WebWMS.Controllers
 {
     public class LoginController : Controller
     {
-        public IActionResult Index()
+        public IActionResult Login()
         {
             return View();
         }

@@ -9,7 +9,6 @@ namespace WebWMS.Models
         public IPagedList<CustomerDto>? PagedList { get; set; }
 
         public int Id { get; set; }
-
         public string Account { get; set; }
         public string PassWord { get; set; }
         public string? Name { get; set; }
