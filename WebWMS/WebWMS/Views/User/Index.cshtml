@@ -70,7 +70,7 @@
                                   <td>否</td>     
                             }
                             <td>
-                                  <a href="#" onclick="Edit('@user.Id','@user.Account','@user.PassWord','@user.Name','@user.Email','@user.MoblePhone','@user.Address')"><i class="fa fa-pencil"></i></a>
+                                  <a href="#" onclick="Edit('@user.Id','@user.Account','@user.PassWord','@user.Name','@user.Email','@user.MoblePhone','@user.Address','@user.IsEnabled','@user.Delete')"><i class="fa fa-pencil"></i></a>
                                   <a href="#" id="Delete" onclick="Delete('@user.Id','@user.Account')" role="button" ><i class="fa fa-trash-o"></i></a>
                               </td>
                            </tr>
@@ -79,14 +79,13 @@
           </tbody>
       </table>
       <ul class="pagination" style="margin-top:0px;">
-  <li><a href="#">&laquo;</a></li>
-  <li><a href="#">1</a></li>
-  <li><a href="#">2</a></li>
-  <li><a href="#">3</a></li>
-  <li><a href="#">4</a></li>
-  <li><a href="#">5</a></li>
-  <li><a href="#">&raquo;</a></li>
-</ul>
+           <li><a href="#">&laquo;</a></li>
+          @for(int i=1; i<=Model.PagedList.TotalPages;i++)
+            {
+                <li><a href="/User/Index?pageIndex=@i&pageSize=10">@i</a></li>
+            }
+           <li><a href="#">&raquo;</a></li>
+      </ul>
    </div>
    
    @*新增用户弹窗*@
@@ -96,7 +95,7 @@
   <div class="modal-dialog" style="height:430px;">
     <div class="modal-content">
       <div class="modal-header">
-        <h7 class="modal-title" style="color:#4d5b76;font-size:1em;font-family:Cambria;font-weight:500;">新增用户</h7>
+        <h7 class="modal-title" id="mTitle" style="color:#4d5b76;font-size:1em;font-family:Cambria;font-weight:500;">新增用户</h7>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -110,11 +109,11 @@
                     账&emsp;&emsp;号
                     <input type="text" class="form-controlnew span12"  id="account" placeholder="账 号" autocomplete="off"><span style="color:red;" id="saccount">*</span>
                 </div>
-                <div class="form-groupnew">
+                <div class="form-groupnew" id="mpassword">
                     密&emsp;&emsp;码
                     <input type="password" class="form-controlnew span12" id="password"   placeholder="密 码" autocomplete="off" ><span style="color:red;" id="spassword">*</span>
                 </div>
-                 <div class="form-groupnew">
+                 <div class="form-groupnew" id="mpassword1">
                     密码确认
                     <input type="password" class="form-controlnew span12" id="password1"   placeholder="密 码" autocomplete="off" ><span style="color:red;" id="spassword1">*</span>
                 </div>
@@ -196,6 +195,10 @@
            var email=$("#email").val();
            var address=$("#address").val();
            var operatetype=$("#operatetype").val();
+           var isEnabled=$("#IsEnabled").prop("checked");
+           var del=$("#Delete").prop("checked");
+
+          
            if(account==""||account==null)
            {
                $("#saccount").append("账号不能为空!");
@@ -259,7 +262,7 @@
            if(operatetype=="add")
            {
                $.post("/User/Add",
-           {"Account":account,"PassWord":password,"Name":name,"Email":email,"MoblePhone":phone,"Address":address},
+           {"Account":account,"PassWord":password,"Name":name,"Email":email,"MoblePhone":phone,"Address":address,"IsEnabled":isEnabled,"Delete":del},
            function(data){
               var result=eval('('+data+')');
             if(result.Status==200)
@@ -272,6 +275,8 @@
                 $("#phone").val("");
                 $("#email").val("");
                 $("#address").val("");
+                $("#IsEnabled").prop("checked","");
+                $("#Delete").prop("checked","");
                 $("#UserModal").modal('hide');
                 location.reload(true);
             }
@@ -283,7 +288,7 @@
            {
                var id= $("#editId").val();
                $.post("/User/Update",
-                       {"Id":id,"Account":account,"PassWord":password,"Name":name,"Email":email,"MoblePhone":phone,"Address":address},
+                       {"Id":id,"Account":account,"PassWord":password,"Name":name,"Email":email,"MoblePhone":phone,"Address":address,"IsEnabled":isEnabled,"Delete":del},
                        function(data){
                           var result=eval('('+data+')');
                         if(result.Status==200)
@@ -338,8 +343,12 @@
     };
 
         //编辑
-     function Edit(id,account,pwd,name,emai,phone,address)
+     function Edit(id,account,pwd,name,emai,phone,address,isEnabled,d)
         {
+
+              $("#mTitle").text("编辑用户");
+               $("#mpassword").hide();
+                $("#mpassword1").hide();
                $("#operatetype").val("edit");
                $("#account").val(account);
                 $("#password").val(pwd);
@@ -349,12 +358,16 @@
                $("#email").val(emai);
                $("#address").val(address);
                $("#editId").val(id);
-               var accountnew=$("#account").val();
-               var passwordnew=$("#password").val();
-               var namenew=$("#name").val();
-               var phonenew=$("#phone").val();
-               var emailnew=$("#email").val();
-               var addressnew=$("#address").val();
+               if(isEnabled=='True')
+               {
+                   $("#IsEnabled").attr("checked","checked");
+               }  
+               if(d=='True')
+               {
+                   $("#Delete").attr("checked","checked");
+               }
+               
+              
               $("#UserModal").modal('show');
          };
 

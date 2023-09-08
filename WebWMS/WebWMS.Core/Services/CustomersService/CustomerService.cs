@@ -28,14 +28,14 @@ namespace WebWMS.Core.Services.CustomersService
         /// </summary>
         /// <returns></returns>
         /// <exception cref="NotImplementedException"></exception>
-        public  IPagedList<CustomerDto> GetAll(int pageIndex, int pageSize)
+        public IPagedList<CustomerDto> GetAll(int pageIndex, int pageSize)
         {
             PagedList<CustomerDto> pagedList = null;
-            var cuList = repository.GetPagedList(pageIndex:pageIndex,pageSize:pageSize);
-            if(cuList!=null)
+            var cuList = repository.GetPagedList(pageIndex: pageIndex, pageSize: pageSize);
+            if (cuList != null)
             {
                 var list = mapper.Map<PagedList<CustomerDto>>(cuList);
-                pagedList =list;
+                pagedList = list;
             }
             return pagedList;
         }
@@ -47,7 +47,7 @@ namespace WebWMS.Core.Services.CustomersService
         public async Task<CustomerDto> GetCustomerByIdAsync(int id)
         {
             var cu = await repository.FindAsync(id);
-            var cuto=mapper.Map<CustomerDto>(cu);
+            var cuto = mapper.Map<CustomerDto>(cu);
             return cuto;
         }
 
@@ -80,9 +80,24 @@ namespace WebWMS.Core.Services.CustomersService
         /// <param name="customerDto"></param>
         public async Task<int> UpdateCustomerAsync(CustomerDto customerDto)
         {
-            var cu = mapper.Map<Customer>(customerDto);
-            return await repository.Update(cu);
-         }
+            var cu = await repository.FindAsync(customerDto.Id);
+            if (cu != null)
+            {
+                cu.Address = customerDto.Address;
+                cu.Email = customerDto.Email;
+                cu.Delete = customerDto.Delete;
+                cu.IsEnabled = customerDto.IsEnabled;
+                cu.MoblePhone = customerDto.MoblePhone;
+                cu.Name = customerDto.Name;
+                cu.UpdateTime = customerDto.UpdateTime;
+                return await repository.Update(cu);
+            }
+            else
+            {
+                return -1;
+            }
+
+        }
 
         /// <summary>
         /// 删除用户
@@ -102,10 +117,10 @@ namespace WebWMS.Core.Services.CustomersService
         /// <param name="account"></param>
         /// <param name="pwd"></param>
         /// <returns></returns>
-        public async Task<bool> GetCustomerAsync(string account,string pwd)
+        public async Task<bool> GetCustomerAsync(string account, string pwd)
         {
-            var cu = await repository.GetFirstOrDefaultAsync<bool>(c => c.Account == account && c.PassWord == pwd);
-            return cu;
+            var cu = await repository.GetFirstOrDefaultAsync<int>(c=>c.Id,predicate: c => c.Account == account && c.PassWord == pwd);
+            return cu>0;
         }
     }
 }

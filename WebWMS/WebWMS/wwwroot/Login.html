@@ -35,7 +35,7 @@
     </div>
 
     <!--加载遮罩层-->
-    <div class="modal" tabindex="-1" id="Loading" style="height: 200px;border-top:none; background-color:#0000; opacity:1; height: 150px;margin-top:200px; overflow-y: hidden; width: 100px; margin-left: 46%;">
+    <div class="modal loading-modal" tabindex="-1" id="Loading">
         <input type="hidden" id="userId" />
         <div class="modal-dialog" style="height: 180px; width: 90px; border: none; background-color: #0000; opacity: 1; ">
             <div class="loading"></div>
@@ -79,13 +79,22 @@
                 $("#valiCode").attr("src", "/Login/GetValidateCode?t=" + myDate);
             });
 
+            $.post("/Login/GetRemember",
+                function (data) {
+                    var result = eval('(' + data + ')');
+                    if (result.Status == 200) {
+                        $("#Account").val(result.Source.Account);
+                        $("#Pwd").val(result.Source.Password);
+                        $("#Remember").prop("checked","checked");
+                    }
+                });
+
             //用户登录
             $("#Login").click(function () {
                 var Account = $("#Account").val();
                 var Pwd = $("#Pwd").val();
                 var validateCode = $("#validateCode").val();
-                var Remember = $("#Remember").val();
-
+                var Remember = $("#Remember").prop("checked");
                 if (Account == "" || Account == null) {
                     $("#saccount").text("");
                     $("#saccount").append("账号不能为空!");

@@ -185,3 +185,4 @@ C:\项目\C#学习例子\WMS\WebWMS\WebWMS\bin\Debug\net6.0\Newtonsoft.Json.dll
 C:\项目\C#学习例子\WMS\WebWMS\WebWMS\bin\Debug\net6.0\Synercoding.FormsAuthentication.dll
 C:\项目\C#学习例子\WMS\WebWMS\WebWMS\bin\Debug\net6.0\runtimes\win\lib\net6.0\Microsoft.Win32.SystemEvents.dll
 C:\项目\C#学习例子\WMS\WebWMS\WebWMS\bin\Debug\net6.0\runtimes\win\lib\net6.0\System.Drawing.Common.dll
+C:\项目\C#学习例子\WMS\WebWMS\WebWMS\bin\Debug\net6.0\FileHelpers.dll

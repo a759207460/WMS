@@ -21,12 +21,10 @@ namespace WebWMS.Controllers
             this.mapper = mapper;
         }
 
-        public IActionResult Index()
+        public IActionResult Index(int pageIndex=1,int pageSize=10)
         {
             UserViewModel viewModel = new UserViewModel();
-            int pageIndex = 0;
-            int pageSize = 10;
-            viewModel.PagedList = customerService.GetAll(pageIndex, pageSize);
+            viewModel.PagedList = customerService.GetAll(pageIndex-1, pageSize);
             return View(viewModel);
         }
 
@@ -45,6 +43,7 @@ namespace WebWMS.Controllers
                 cuto.IsEnabled = true;
                 cuto.PassWord = HelpCrypto.DESEncrypt(cuto.PassWord);
                 cuto.CreateTime = DateTime.Now.ToString();
+                cuto.Creator = User.Identity?.Name;
                 if (await customerService.GetCustomerByAccountAsync(cuto.Account))
                 {
                     result.Message = "账号已存在不能重复添加!";
@@ -86,6 +85,7 @@ namespace WebWMS.Controllers
                 cu.MoblePhone=model.MoblePhone;
                 cu.IsEnabled = model.IsEnabled;
                 cu.Delete= model.Delete;
+                cu.UpdateTime = DateTime.Now.ToString();
                 var cuto = mapper.Map<CustomerDto>(cu);
                 int num = await customerService.UpdateCustomerAsync(cuto);
                 if (num > 0)

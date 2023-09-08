@@ -33,8 +33,11 @@ namespace WebWMS.Controllers
             ResultMessage result = new ResultMessage();
             try
             {
-                string code = cache.Get<string>("code").ToLower();
-                if (code != model.ValidateCode)
+                //var dic = HelpFile.ReadFile<FileAccountModel>("C:\\Users\\75920\\test.txt");
+
+                //var ac = dic.FirstOrDefault(f => f.Account == "admin"); 
+                string code = cache.Get<string>("code")?.ToLower();
+                if (code != model.ValidateCode.ToLower())
                 {
                     result.Status = -1;
                     result.Message = "验证码错误!";
@@ -52,6 +55,13 @@ namespace WebWMS.Controllers
                     await HttpContext.SignInAsync(new ClaimsPrincipal(claimnsIdentity), new AuthenticationProperties { IsPersistent = true });
                     result.Status = 200;
                     result.Message = "OK";
+                    if (model.Remember)
+                    {
+                        IEnumerable<FileAccountModel> fileAccounts = new List<FileAccountModel>() {
+                         new FileAccountModel { Account=model.Account,Password=model.PassWord,CreatTime=DateTime.Now }
+                        };
+                        HelpFile.WriteFile("C:\\Users\\75920\\test.txt", fileAccounts);
+                    }
                 }
                 else
                 {
@@ -69,15 +79,37 @@ namespace WebWMS.Controllers
         }
 
         /// <summary>
+        /// 获取上次登录用户密码信息
+        /// </summary>
+        /// <returns></returns>
+        public string GetRemember()
+        {
+            ResultMessage<FileAccountModel> result = new ResultMessage<FileAccountModel>();
+            try
+            {
+                var dic = HelpFile.ReadFile<FileAccountModel>("C:\\Users\\75920\\test.txt");
+                var ac = dic.OrderByDescending(f => f.CreatTime).FirstOrDefault();
+                result.Status = 200;
+                result.Source = ac;
+            }
+            catch (Exception ex)
+            {
+                result.Status = -1;
+                result.Message = ex.Message;
+            }
+            return JsonConvert.SerializeObject(result);
+        }
+
+        /// <summary>
         /// 退出账号
         /// </summary>
         /// <returns></returns>
-        public async Task LogOut()
+        public async Task<IActionResult> LogOut()
         {
             var claimnsIdentity = new ClaimsIdentity(HttpContext.User.Claims, CookieAuthenticationDefaults.AuthenticationScheme);
             var claimsPrinciple = new ClaimsPrincipal(claimnsIdentity);
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, claimsPrinciple);
-            Redirect("/Login.html");
+            return Redirect("/");
         }
 
         /// <summary>

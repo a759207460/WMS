@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "5tZVKedP5TXB35qrQYPTZVKJD27PG21otJ2AWAwmmYKbJaRAVnK0XsZu6Z7goZCiEQshO+cjCLXl06BL+msxZA==",
+  "dgSpecHash": "batjxrQrvjXjAudfqX52rkIJFWE+q1kScU2Q6Mvx43zz+Awo2CmE9QRSePjE2SlBThCOjUgJnKegWK1xISAS6Q==",
   "success": true,
   "projectFilePath": "C:\\项目\\C#学习例子\\WMS\\WebWMS\\WebWMS\\WebWMS.csproj",
   "expectedPackageFiles": [
@@ -8,6 +8,7 @@
     "C:\\Users\\75920\\.nuget\\packages\\automapper.extensions.microsoft.dependencyinjection\\12.0.1\\automapper.extensions.microsoft.dependencyinjection.12.0.1.nupkg.sha512",
     "C:\\Users\\75920\\.nuget\\packages\\azure.core\\1.24.0\\azure.core.1.24.0.nupkg.sha512",
     "C:\\Users\\75920\\.nuget\\packages\\azure.identity\\1.6.0\\azure.identity.1.6.0.nupkg.sha512",
+    "C:\\Users\\75920\\.nuget\\packages\\filehelpers\\3.5.2\\filehelpers.3.5.2.nupkg.sha512",
     "C:\\Users\\75920\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
     "C:\\Users\\75920\\.nuget\\packages\\microsoft.aspnetcore.authentication\\2.0.0\\microsoft.aspnetcore.authentication.2.0.0.nupkg.sha512",
     "C:\\Users\\75920\\.nuget\\packages\\microsoft.aspnetcore.authentication.abstractions\\2.0.0\\microsoft.aspnetcore.authentication.abstractions.2.0.0.nupkg.sha512",
