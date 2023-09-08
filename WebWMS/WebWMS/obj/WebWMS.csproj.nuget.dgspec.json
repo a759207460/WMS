@@ -244,6 +244,10 @@
             "Synercoding.FormsAuthentication": {
               "target": "Package",
               "version": "[2.1.0, )"
+            },
+            "System.Drawing.Common": {
+              "target": "Package",
+              "version": "[7.0.0, )"
             }
           },
           "imports": [

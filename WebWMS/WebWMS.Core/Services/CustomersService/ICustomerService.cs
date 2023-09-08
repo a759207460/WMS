@@ -15,7 +15,10 @@ namespace WebWMS.Core.Services.CustomersService
         public Task<CustomerDto> GetCustomerByIdAsync(int id);
 
         public Task<bool> GetCustomerByAccountAsync(string account);
+
         public  IPagedList<CustomerDto> GetAll(int pageIndex, int pageSize);
+
+        Task<bool> GetCustomerAsync(string account, string pwd);
 
         public Task<int> InsertCustomerAsync(CustomerDto customerDto);
 

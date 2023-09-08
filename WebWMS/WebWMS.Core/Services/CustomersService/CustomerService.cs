@@ -94,5 +94,18 @@ namespace WebWMS.Core.Services.CustomersService
         {
             return await repository.Delete(id);
         }
+
+
+        /// <summary>
+        /// 获取用户信息
+        /// </summary>
+        /// <param name="account"></param>
+        /// <param name="pwd"></param>
+        /// <returns></returns>
+        public async Task<bool> GetCustomerAsync(string account,string pwd)
+        {
+            var cu = await repository.GetFirstOrDefaultAsync<bool>(c => c.Account == account && c.PassWord == pwd);
+            return cu;
+        }
     }
 }

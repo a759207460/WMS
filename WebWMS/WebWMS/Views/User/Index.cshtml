@@ -90,10 +90,10 @@
    </div>
    
    @*新增用户弹窗*@
-  <div class="modal " tabindex="-1"  id="UserModal" style="height:420px;margin-top:50px;overflow-y:hidden;" >
+  <div class="modal " tabindex="-1"  id="UserModal" style="height:450px;margin-top:50px;overflow-y:hidden;" >
       <input type="hidden" id="operatetype" />
        <input type="hidden" id="editId" />
-  <div class="modal-dialog" style="height:400px;">
+  <div class="modal-dialog" style="height:430px;">
     <div class="modal-content">
       <div class="modal-header">
         <h7 class="modal-title" style="color:#4d5b76;font-size:1em;font-family:Cambria;font-weight:500;">新增用户</h7>
@@ -131,6 +131,11 @@
                     <input type="text" class="form-controlnew span12" id="phone"  placeholder="手 机"   autocomplete="off"><span style="color:red;" id="sphone">*</span>
                 </div>
                 <div class="form-groupnew">
+                       状&emsp;&emsp;态
+                    <label class="remember-me"><input type="checkbox" id="IsEnabled"> 是否启用</label>
+                    <label class="remember-me"><input type="checkbox" id="Delete"> 是否删除</label>
+                </div>
+                <div class="form-groupnew">
                     地&emsp;&emsp;址
                     <input type="text" class="form-controlnew span12" id="address" placeholder="地 址"  autocomplete="off">
                 </div>
@@ -138,7 +143,6 @@
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
                     <button type="button"  class="btn btn-primary" id="Save">保存</button>
                   </div>
-                  
             </form>
         </div>
     </div> 

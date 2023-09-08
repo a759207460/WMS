@@ -80,7 +80,13 @@ namespace WebWMS.Controllers
             ResultMessage result = new ResultMessage();
             try
             {
-                var cuto = mapper.Map<CustomerDto>(model);
+                var cu = await customerService.GetCustomerByIdAsync(model.Id);
+                cu.Address= model.Address;
+                cu.Email = model.Email;
+                cu.MoblePhone=model.MoblePhone;
+                cu.IsEnabled = model.IsEnabled;
+                cu.Delete= model.Delete;
+                var cuto = mapper.Map<CustomerDto>(cu);
                 int num = await customerService.UpdateCustomerAsync(cuto);
                 if (num > 0)
                 {
