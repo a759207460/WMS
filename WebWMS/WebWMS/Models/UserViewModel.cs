@@ -16,7 +16,7 @@ namespace WebWMS.Models
         public string MoblePhone { get; set; }
         public string? Address { get; set; }
         public bool IsEnabled { get; set; }
-        public bool Delete { get; set; }
+        public bool IsRemove { get; set; }
 
     }
 }

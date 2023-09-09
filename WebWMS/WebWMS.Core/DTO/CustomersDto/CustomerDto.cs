@@ -40,6 +40,11 @@ namespace WebWMS.Core.DTO.Customers
         public bool IsEnabled { get; set; }
 
         /// <summary>
+        /// 是否删除
+        /// </summary>
+        public bool IsRemove { get; set; }
+
+        /// <summary>
         /// contact tel
         /// </summary>
         public string MoblePhone { get; set; }
@@ -48,8 +53,6 @@ namespace WebWMS.Core.DTO.Customers
         /// creator
         /// </summary>
         public string? Creator { get; set; }
-
-        public bool Delete { get; set; }
 
         #endregion
     }

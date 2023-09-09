@@ -6,6 +6,9 @@ using WebWMS.Core.DTO.Customers;
 using WebWMS.Core.Services.CustomersService;
 using WebWMS.Models;
 using Newtonsoft.Json;
+using WebWMS.Core.Repositorys.Collections;
+using System.Drawing.Printing;
+
 namespace WebWMS.Controllers
 {
     public class UserController : Controller
@@ -21,11 +24,26 @@ namespace WebWMS.Controllers
             this.mapper = mapper;
         }
 
-        public IActionResult Index(int pageIndex=1,int pageSize=10)
+        public IActionResult Index()
         {
-            UserViewModel viewModel = new UserViewModel();
-            viewModel.PagedList = customerService.GetAll(pageIndex-1, pageSize);
-            return View(viewModel);
+            return View();
+        }
+
+        public async Task<string> GetCustomerList(int pageIndex = 1, int pageSize = 10)
+        {
+            ResultMessage<IPagedList<CustomerDto>> result = new ResultMessage<IPagedList<CustomerDto>>();
+            try
+            {
+                result.Status = 200;
+                result.Source = await customerService.GetAllAsync(pageIndex - 1, pageSize);
+            }
+            catch (Exception ex)
+            {
+                result.Status = -1;
+                result.Message = ex.Message;
+            }
+            string js = JsonConvert.SerializeObject(result);
+            return js;
         }
 
         /// <summary>
@@ -37,10 +55,10 @@ namespace WebWMS.Controllers
         {
             ResultMessage result = new ResultMessage();
             try
-            { 
+            {
                 var cuto = mapper.Map<CustomerDto>(model);
-                cuto.Delete = false;
-                cuto.IsEnabled = true;
+                cuto.IsRemove = model.IsRemove;
+                cuto.IsEnabled = model.IsEnabled;
                 cuto.PassWord = HelpCrypto.DESEncrypt(cuto.PassWord);
                 cuto.CreateTime = DateTime.Now.ToString();
                 cuto.Creator = User.Identity?.Name;
@@ -80,11 +98,11 @@ namespace WebWMS.Controllers
             try
             {
                 var cu = await customerService.GetCustomerByIdAsync(model.Id);
-                cu.Address= model.Address;
+                cu.Address = model.Address;
                 cu.Email = model.Email;
-                cu.MoblePhone=model.MoblePhone;
+                cu.MoblePhone = model.MoblePhone;
                 cu.IsEnabled = model.IsEnabled;
-                cu.Delete= model.Delete;
+                cu.IsRemove = model.IsRemove;
                 cu.UpdateTime = DateTime.Now.ToString();
                 var cuto = mapper.Map<CustomerDto>(cu);
                 int num = await customerService.UpdateCustomerAsync(cuto);

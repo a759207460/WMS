@@ -127,4 +127,8 @@
     <Resource Include="wwwroot\lib\jquery\jquery-3.5.1.js" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\lib\DataTable\" />
+  </ItemGroup>
+
 </Project>

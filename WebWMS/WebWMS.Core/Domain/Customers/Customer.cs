@@ -48,7 +48,7 @@ namespace WebWMS.Core.Domain.Customers
         /// </summary>
         public string? Creator { get; set; }
 
-        public bool Delete { get; set; }
+        public bool IsRemove { get; set; }
 
         #endregion
     }

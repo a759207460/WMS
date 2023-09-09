@@ -21,73 +21,20 @@
     }
 </style>
    <div>
-      <div class="header">
-            <h1 class="page-title">用户信息管理</h1>
-        </div>
-       <div class="btn-toolbar list-toolbar" style="float:right;">
-        <button id="Add" class="btn btn-primary"><i class="fa fa-plus"></i>新增</button>
-        <button class="btn btn-primary"><i class="bi bi-file-arrow-up-fill"></i>导入</button>
-        <button class="btn btn-primary"><i class="bi bi-file-arrow-down-fill"></i>导出</button>
-       @*  <div class="btn-group">
-       </div>*@
+       <h3 class="page-title" style="color:#6583ad;margin-top:3px;">用户信息管理</h3>
+       <div class="btn-toolbar list-toolbar" style="height:25px;">
+          <div style="float:left;margin-top:10px;">
+               账号
+              <input type="text" class="form-controlnew span12" id="waccount" style="width:220px;" />
+              <button type="button" class="btn btn-primary"><i class="bi bi-search"></i>查询</button>
+          </div>
+         <button id="Add" class="btn btn-primary" style="float:right;"><i class="fa fa-plus"></i>新增</button>
+        <button class="btn btn-primary" style="float:right;"><i class="bi bi-file-arrow-up-fill"></i>导入</button>
+        <button class="btn btn-primary" style="float:right;"><i class="bi bi-file-arrow-down-fill"></i>导出</button>
+        
    </div>
-      <table class="table" style="margin-bottom:5px;text-align:center;">
-            <thead>
-            <tr>
-              <th>编号</th>
-              <th>账号</th>
-              <th>名称</th>
-              <th>邮箱</th>
-              <th>手机</th>
-              <th>地址</th>
-              <th>是否启用</th>
-              <th>是否删除</th>
-              <th style="width: 3.5em;">操作</th>
-            </tr>
-            </thead>
-            <tbody>
-                @if(Model.PagedList !=null&&Model.PagedList.Items.Count()>0)
-                {
-                      @foreach(var user in Model.PagedList.Items)
-                        {
-                           <tr>
-                              <td>@user.Id</td>
-                              <td>@user.Account</td>
-                              <td>@user.Name</td>
-                              <td>@user.Email</td>
-                              <td>@user.MoblePhone</td>
-                              <td>@user.Address</td>
-                            @if(user.IsEnabled == true){
-                                <td>启用</td>
-                            }else
-                            {
-                                <td>禁用</td>
-                            }
-                            @if(user.Delete == true)
-                            { <td>是</td>
-                            }else
-                            {
-                                  <td>否</td>     
-                            }
-                            <td>
-                                  <a href="#" onclick="Edit('@user.Id','@user.Account','@user.PassWord','@user.Name','@user.Email','@user.MoblePhone','@user.Address','@user.IsEnabled','@user.Delete')"><i class="fa fa-pencil"></i></a>
-                                  <a href="#" id="Delete" onclick="Delete('@user.Id','@user.Account')" role="button" ><i class="fa fa-trash-o"></i></a>
-                              </td>
-                           </tr>
-                        }
-                }
-          </tbody>
-      </table>
-      <ul class="pagination" style="margin-top:0px;">
-           <li><a href="#">&laquo;</a></li>
-          @for(int i=1; i<=Model.PagedList.TotalPages;i++)
-            {
-                <li><a href="/User/Index?pageIndex=@i&pageSize=10">@i</a></li>
-            }
-           <li><a href="#">&raquo;</a></li>
-      </ul>
+     <div id="jsGrid" style="margin-top:2px;"></div>
    </div>
-   
    @*新增用户弹窗*@
   <div class="modal " tabindex="-1"  id="UserModal" style="height:450px;margin-top:50px;overflow-y:hidden;" >
       <input type="hidden" id="operatetype" />
@@ -178,6 +125,21 @@
     
 <script>
     $(function(){
+
+        //列表数据绑定
+         $.post("/User/GetCustomerList",{"pageIndex":1,"pageSize":10},
+         function(data){
+             var result=eval('('+data+')');
+             if(result.Status==200)
+             {
+                  GridBind(result.Source.Items);
+             }
+             else
+             {
+                  alert(result.Message);
+             }
+            
+         });
 
         //新增
        $("#Add").click(function(){
@@ -311,9 +273,7 @@
            }
            
        });
-
-
-
+        
        //删除确认
        $("#MSave").click(function(){
            var id=$("#duserId").val();
@@ -372,12 +332,55 @@
          };
 
       //删除
-    function Delete(id,account)
+     function Delete(id,account)
         {
              $("#msg").text("确认删除用户:"+account+"!");
              $("#userId").val(id);
              $("#MessageModel").modal('show');
         };
+
+     function GridBind(data)
+     {
+         $("#jsGrid").jsGrid({
+                width: "100%",
+                height: "400px",
+                editing: false,
+                sorting: true,
+                paging: true,
+                pageSize: 1,
+                pageButtonCount: 3,
+                pagerFormat: "当前页: {pageIndex} &nbsp;&nbsp; {first} {prev} {pages} {next} {last} &nbsp;&nbsp; 页数: {pageCount} 总数: {itemCount}",
+                pagePrevText: "<",
+                pageNextText: ">",
+                pageFirstText: "<<",
+                pageLastText: ">>",
+                fields: [
+                     {
+                        headerTemplate: function() {
+                            return $("<input>").attr("type", "checkbox").text("全选")
+                                    .on("click", function () {
+                                        $("<input>").attr("type","checkbox").prop("checked","checked")
+                                    });
+                        },
+                        itemTemplate: function() {
+                            return $("<input>").attr("type", "checkbox")
+                        },
+                        align: "center",
+                        width: 50,
+                        sorting: false
+                    },
+                    { name: "Id", type: "number", width: 60,title:"序号",align: "center"},
+                    { name: "Account", type: "text", width: 100,title:"账号",align: "center" },
+                    { name: "Name", type: "text", width: 80 ,title:"名称",align: "center"},
+                    { name: "MoblePhone", type: "text", width:80,title:"手机",align: "center"},
+                    { name: "Email", type: "text", width: 150,title:"邮箱",align: "center"},
+                    { name: "IsRemove", type: "checkbox" , width:60,title:"是否删除",align: "center"},
+                    { name: "IsEnabled", type: "checkbox" , width:60,title:"是否启用",align: "center"},
+                    { type: "control", modeSwitchButton: true, editButton: true }
+                ],
+                 data: data
+               });
+     }
 </script>
 
 </body>

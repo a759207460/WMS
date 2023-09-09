@@ -13,8 +13,56 @@
       "PackagePath": "staticwebassets\\css\\Load.css"
     },
     {
+      "Id": "C:\\项目\\C#学习例子\\WMS\\WebWMS\\WebWMS\\wwwroot\\css\\jsgrid-theme.css",
+      "PackagePath": "staticwebassets\\css\\jsgrid-theme.css"
+    },
+    {
+      "Id": "C:\\项目\\C#学习例子\\WMS\\WebWMS\\WebWMS\\wwwroot\\css\\jsgrid-theme.min.css",
+      "PackagePath": "staticwebassets\\css\\jsgrid-theme.min.css"
+    },
+    {
+      "Id": "C:\\项目\\C#学习例子\\WMS\\WebWMS\\WebWMS\\wwwroot\\css\\jsgrid.css",
+      "PackagePath": "staticwebassets\\css\\jsgrid.css"
+    },
+    {
+      "Id": "C:\\项目\\C#学习例子\\WMS\\WebWMS\\WebWMS\\wwwroot\\css\\jsgrid.min.css",
+      "PackagePath": "staticwebassets\\css\\jsgrid.min.css"
+    },
+    {
       "Id": "C:\\项目\\C#学习例子\\WMS\\WebWMS\\WebWMS\\wwwroot\\js\\jquery.knob.js",
       "PackagePath": "staticwebassets\\js\\jquery.knob.js"
+    },
+    {
+      "Id": "C:\\项目\\C#学习例子\\WMS\\WebWMS\\WebWMS\\wwwroot\\js\\jsgrid.field.checkbox.js",
+      "PackagePath": "staticwebassets\\js\\jsgrid.field.checkbox.js"
+    },
+    {
+      "Id": "C:\\项目\\C#学习例子\\WMS\\WebWMS\\WebWMS\\wwwroot\\js\\jsgrid.field.control.js",
+      "PackagePath": "staticwebassets\\js\\jsgrid.field.control.js"
+    },
+    {
+      "Id": "C:\\项目\\C#学习例子\\WMS\\WebWMS\\WebWMS\\wwwroot\\js\\jsgrid.field.number.js",
+      "PackagePath": "staticwebassets\\js\\jsgrid.field.number.js"
+    },
+    {
+      "Id": "C:\\项目\\C#学习例子\\WMS\\WebWMS\\WebWMS\\wwwroot\\js\\jsgrid.field.select.js",
+      "PackagePath": "staticwebassets\\js\\jsgrid.field.select.js"
+    },
+    {
+      "Id": "C:\\项目\\C#学习例子\\WMS\\WebWMS\\WebWMS\\wwwroot\\js\\jsgrid.field.text.js",
+      "PackagePath": "staticwebassets\\js\\jsgrid.field.text.js"
+    },
+    {
+      "Id": "C:\\项目\\C#学习例子\\WMS\\WebWMS\\WebWMS\\wwwroot\\js\\jsgrid.field.textarea.js",
+      "PackagePath": "staticwebassets\\js\\jsgrid.field.textarea.js"
+    },
+    {
+      "Id": "C:\\项目\\C#学习例子\\WMS\\WebWMS\\WebWMS\\wwwroot\\js\\jsgrid.js",
+      "PackagePath": "staticwebassets\\js\\jsgrid.js"
+    },
+    {
+      "Id": "C:\\项目\\C#学习例子\\WMS\\WebWMS\\WebWMS\\wwwroot\\js\\jsgrid.min.js",
+      "PackagePath": "staticwebassets\\js\\jsgrid.min.js"
     },
     {
       "Id": "C:\\项目\\C#学习例子\\WMS\\WebWMS\\WebWMS\\wwwroot\\js\\site.js",

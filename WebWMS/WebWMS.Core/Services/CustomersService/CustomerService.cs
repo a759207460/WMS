@@ -28,10 +28,10 @@ namespace WebWMS.Core.Services.CustomersService
         /// </summary>
         /// <returns></returns>
         /// <exception cref="NotImplementedException"></exception>
-        public IPagedList<CustomerDto> GetAll(int pageIndex, int pageSize)
+        public async Task<IPagedList<CustomerDto>> GetAllAsync(int pageIndex, int pageSize)
         {
             PagedList<CustomerDto> pagedList = null;
-            var cuList = repository.GetPagedList(pageIndex: pageIndex, pageSize: pageSize);
+            var cuList =await repository.GetPagedListAsync(pageIndex: pageIndex, pageSize: pageSize);
             if (cuList != null)
             {
                 var list = mapper.Map<PagedList<CustomerDto>>(cuList);
@@ -85,7 +85,7 @@ namespace WebWMS.Core.Services.CustomersService
             {
                 cu.Address = customerDto.Address;
                 cu.Email = customerDto.Email;
-                cu.Delete = customerDto.Delete;
+                cu.IsRemove = customerDto.IsRemove;
                 cu.IsEnabled = customerDto.IsEnabled;
                 cu.MoblePhone = customerDto.MoblePhone;
                 cu.Name = customerDto.Name;
