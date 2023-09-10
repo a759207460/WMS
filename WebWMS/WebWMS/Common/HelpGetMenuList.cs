@@ -12,7 +12,7 @@ namespace WebWMS.Common
     {
 
         private static List<MenuModel> MenuList { get; set; } = new List<MenuModel>() {
-                 new MenuModel() {Title="首页",HasChildren=false, Url="/Home/Index?name=''",Tag="bi bi-house",ParentName="Root",Name="" ,Style="nav nav-list collapse",HeadStyle="nav-header collapsed"},
+                 new MenuModel() {Title="首页",HasChildren=false, Url="/Home/Index?name=''",Tag="bi bi-house-door-fill",ParentName="Root",Name="" ,Style="nav nav-list collapse",HeadStyle="nav-header collapsed"},
                  new MenuModel(){Title="基础信息",HasChildren=true, Url="#",Tag="bi bi-file-spreadsheet-fill",ParentName="Root",Name="user-menu",Style="nav nav-list collapse",HeadStyle="nav-header collapsed"},
                  new MenuModel(){Title="设置信息",HasChildren=true,Url="#",Tag="bi bi-gear-fill",ParentName="Root",Name="setting-menu", Style = "nav nav-list collapse", HeadStyle = "nav-header collapsed"},
                  new MenuModel(){Title="收货管理",HasChildren=false,Url="/Home/Index?name=''",Tag="bi bi-house-door-fill",ParentName="Root",Name="", Style = "nav nav-list collapse", HeadStyle = "nav-header collapsed"},

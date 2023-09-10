@@ -29,13 +29,13 @@ namespace WebWMS.Controllers
             return View();
         }
 
-        public async Task<string> GetCustomerList(int pageIndex = 1, int pageSize = 10)
+        public async Task<string> GetCustomerList(RequestModel model)
         {
             ResultMessage<IPagedList<CustomerDto>> result = new ResultMessage<IPagedList<CustomerDto>>();
             try
             {
                 result.Status = 200;
-                result.Source = await customerService.GetAllAsync(pageIndex - 1, pageSize);
+                result.Source = await customerService.GetAllAsync(model.pageIndex - 1, model.pageSize,model.Where);
             }
             catch (Exception ex)
             {

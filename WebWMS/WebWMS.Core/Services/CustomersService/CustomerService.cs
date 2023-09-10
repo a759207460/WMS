@@ -28,13 +28,17 @@ namespace WebWMS.Core.Services.CustomersService
         /// </summary>
         /// <returns></returns>
         /// <exception cref="NotImplementedException"></exception>
-        public async Task<IPagedList<CustomerDto>> GetAllAsync(int pageIndex, int pageSize)
+        public async Task<IPagedList<CustomerDto>> GetAllAsync(int pageIndex, int pageSize, string where)
         {
             PagedList<CustomerDto> pagedList = null;
-            var cuList =await repository.GetPagedListAsync(pageIndex: pageIndex, pageSize: pageSize);
-            if (cuList != null)
+            IPagedList<Customer> plist = null;
+            if (!string.IsNullOrWhiteSpace(where))
+                plist = await repository.GetPagedListAsync(pageIndex: pageIndex, pageSize: pageSize, predicate: c => c.Account == where);
+            else
+                plist = await repository.GetPagedListAsync(pageIndex: pageIndex, pageSize: pageSize);
+            if (plist != null)
             {
-                var list = mapper.Map<PagedList<CustomerDto>>(cuList);
+                var list = mapper.Map<PagedList<CustomerDto>>(plist);
                 pagedList = list;
             }
             return pagedList;
@@ -119,8 +123,8 @@ namespace WebWMS.Core.Services.CustomersService
         /// <returns></returns>
         public async Task<bool> GetCustomerAsync(string account, string pwd)
         {
-            var cu = await repository.GetFirstOrDefaultAsync<int>(c=>c.Id,predicate: c => c.Account == account && c.PassWord == pwd);
-            return cu>0;
+            var cu = await repository.GetFirstOrDefaultAsync<int>(c => c.Id, predicate: c => c.Account == account && c.PassWord == pwd);
+            return cu > 0;
         }
     }
 }

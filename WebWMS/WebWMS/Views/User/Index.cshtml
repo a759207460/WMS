@@ -26,11 +26,12 @@
           <div style="float:left;margin-top:10px;">
                账号
               <input type="text" class="form-controlnew span12" id="waccount" style="width:220px;" />
-              <button type="button" class="btn btn-primary"><i class="bi bi-search"></i>查询</button>
+              <button type="button" id="search" class="btn btn-primary"><i class="bi bi-search"></i> 查询</button>
+                <button type="button" id="sclear" class="btn btn-primary"><i class="bi bi-x-circle-fill"></i> 清空</button>
           </div>
-         <button id="Add" class="btn btn-primary" style="float:right;"><i class="fa fa-plus"></i>新增</button>
         <button class="btn btn-primary" style="float:right;"><i class="bi bi-file-arrow-up-fill"></i>导入</button>
         <button class="btn btn-primary" style="float:right;"><i class="bi bi-file-arrow-down-fill"></i>导出</button>
+        <button id="Add" class="btn btn-primary" style="float:right;"><i class="fa fa-plus"></i>新增</button>
         
    </div>
      <div id="jsGrid" style="margin-top:2px;"></div>
@@ -124,23 +125,24 @@
 </div>
     
 <script>
-    $(function(){
 
-        //列表数据绑定
-         $.post("/User/GetCustomerList",{"pageIndex":1,"pageSize":10},
-         function(data){
-             var result=eval('('+data+')');
-             if(result.Status==200)
-             {
-                  GridBind(result.Source.Items);
-             }
-             else
-             {
-                  alert(result.Message);
-             }
-            
+     $(function(){
+
+        
+        //数据加载
+        Loading("");
+
+        //查询
+         $("#search").click(function(){
+             var w=$("#waccount").val();
+            Loading(w);
          });
 
+        //清除
+        $("#sclear").click(function(){
+           var w=$("#waccount").val("");
+            Loading("");
+        });
         //新增
        $("#Add").click(function(){
           $("#UserModal").modal('show');
@@ -295,14 +297,33 @@
        });
     });
 
-    //手机号验证
-    function validatorTel(content){
+     //手机号验证
+     function validatorTel(content){
         // 正则验证格式
         eval("var reg = /^1[34578]\\d{9}$/;");
         return RegExp(reg).test(content);
     };
 
-        //编辑
+      //数据加载
+     function Loading(where)
+        {
+            //列表数据绑定
+         $.post("/User/GetCustomerList",{"pageIndex":1,"pageSize":10,"Where":where},
+         function(data){
+             var result=eval('('+data+')');
+             if(result.Status==200)
+             {
+                  GridBind(result.Source.Items);
+             }
+             else
+             {
+                  alert(result.Message);
+             }
+            
+         });
+        }
+
+     //编辑
      function Edit(id,account,pwd,name,emai,phone,address,isEnabled,d)
         {
 
@@ -338,15 +359,18 @@
              $("#userId").val(id);
              $("#MessageModel").modal('show');
         };
-
+     
+     //列表数据绑定
      function GridBind(data)
      {
          $("#jsGrid").jsGrid({
                 width: "100%",
                 height: "400px",
-                editing: false,
                 sorting: true,
+                editing: true,
+                filtering: false,
                 paging: true,
+                autoload: true,
                 pageSize: 1,
                 pageButtonCount: 3,
                 pagerFormat: "当前页: {pageIndex} &nbsp;&nbsp; {first} {prev} {pages} {next} {last} &nbsp;&nbsp; 页数: {pageCount} 总数: {itemCount}",
@@ -354,25 +378,93 @@
                 pageNextText: ">",
                 pageFirstText: "<<",
                 pageLastText: ">>",
-                fields: [
-                     {
-                        headerTemplate: function() {
-                            return $("<input>").attr("type", "checkbox").text("全选")
-                                    .on("click", function () {
-                                        $("<input>").attr("type","checkbox").prop("checked","checked")
-                                    });
-                        },
-                        itemTemplate: function() {
-                            return $("<input>").attr("type", "checkbox")
-                        },
-                        align: "center",
-                        width: 50,
-                        sorting: false
+                deleteConfirm: "确定删除该数据?",
+                onItemDeleting: function(args) {
+                                        if(args.item.protected) {
+                                            args.cancel = true;
+                                        }
+                                    },
+                rowClick: function(args) { args.cancel=true },
+                controller: {
+                  deleteItem: function(item) {
+                      return  $.post("/User/Delete",
+                           {"id":item.Id},
+                           function(data){
+                              var result=eval('('+data+')');
+                            if(result.Status==200)
+                            { 
+                                 alert(result.Message);
+                                 $("#jsGrid").jsGrid("refresh");
+                            }
+                            else
+                            {
+                                alert(result.Message);
+                            }});
                     },
-                    { name: "Id", type: "number", width: 60,title:"序号",align: "center"},
-                    { name: "Account", type: "text", width: 100,title:"账号",align: "center" },
+                  updateItem: function(item) {
+
+                                 if(item.Account==""||item.Account==null)
+                                   {
+                                       alert("账号不能为空!");
+                                       return;
+                                   }
+                                     if(item.Email==""||item.Email==null)
+                                   {
+                                       alert("邮箱不能为空!");
+                                       return;
+                                   }else{
+                                         var reg = /^([a-zA-Z0-9_-])+@@([a-zA-Z0-9_-])+((\.[a-zA-Z0-9_-]{2,3}){1,2})$/;
+                                           if (!reg.test(item.Email)) {
+                                                 alert("邮箱格式不正确，请重新填写!");
+                                                 return;
+                                             } 
+                                   }
+                                   if(item.MoblePhone==""||item.MoblePhone==null)
+                                   {
+                                       alert("手机不能为空!");
+                                       return;
+                                   }else{
+                                       var t=validatorTel(item.MoblePhone);
+                                       if(t==false) 
+                                       {
+                                         alert("手机格式不正确!");
+                                         return;
+                                       } 
+                                   }      
+                                return $.post("/User/Update",
+                       {"Id":item.Id,"Account":item.Account,"Name":item.Name,"Email":item.Email,"MoblePhone":item.MoblePhone,"Address":item.Address,"IsEnabled":item.IsEnabled,"IsRemove":item.IsRemove},
+                       function(data){
+                          var result=eval('('+data+')');
+                        if(result.Status==200)
+                        {
+                            alert(result.Message);
+                             location.reload(true);
+                        }
+                        else
+                        {
+                            alert(result.Message);
+                        }});
+                   }
+                },
+                fields: [
+                    // {
+                    //    headerTemplate: function() {
+                    //        return $("<input>").attr("type", "checkbox").text("全选")
+                    //                .on("click", function () {
+                    //                    $("<input>").attr("type","checkbox").prop("checked","checked")
+                    //                });
+                    //    },
+                    //    itemTemplate: function() {
+                    //        return $("<input>").attr("type", "checkbox")
+                    //    },
+                    //    align: "center",
+                    //    width: 50,
+                    //    sorting: false
+                    //},
+                    { name: "Id", type: "number", width: 60,title:"序号",align: "center", readOnly: true },
+                    { name: "Account", type: "text", width: 100,title:"账号",align: "center" , readOnly: true},
                     { name: "Name", type: "text", width: 80 ,title:"名称",align: "center"},
-                    { name: "MoblePhone", type: "text", width:80,title:"手机",align: "center"},
+                    { name: "MoblePhone", type: "text", width:120,title:"手机",align: "center"},
                     { name: "Email", type: "text", width: 150,title:"邮箱",align: "center"},
                     { name: "IsRemove", type: "checkbox" , width:60,title:"是否删除",align: "center"},
                     { name: "IsEnabled", type: "checkbox" , width:60,title:"是否启用",align: "center"},
