@@ -204,14 +204,14 @@ namespace WebWMS.Core.Migrations
                     b.Property<string>("Creator")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("Delete")
-                        .HasColumnType("bit");
-
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsEnabled")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsRemove")
                         .HasColumnType("bit");
 
                     b.Property<string>("MoblePhone")
@@ -574,33 +574,45 @@ namespace WebWMS.Core.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("HasChildren")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("HeadStyle")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("NavigateActioin")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("NavigateController")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ParentName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Style")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Tag")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("UpdateTime")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("menu_name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("module")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("sort")
-                        .HasColumnType("int");
-
-                    b.Property<long>("tenant_id")
-                        .HasColumnType("bigint");
-
-                    b.Property<string>("vue_directory")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("vue_path")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("vue_path_detail")
-                        .IsRequired()
+                    b.Property<string>("Url")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");

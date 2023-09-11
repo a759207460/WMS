@@ -28,7 +28,7 @@ namespace WebWMS.Common
                  new MenuModel(){Title="供应商信息",ParentName="user-menu",NavigateController="User",Tag="bi bi-person-square",Url="/User/Index?name='user-menu'"},
                  //设置信息
                  new MenuModel(){Title="角色设置",ParentName="setting-menu",NavigateController="User",Tag="bi bi-person-gear" , Url = "/User/Index?name='setting-menu'"},
-                 new MenuModel(){Title="菜单设置",ParentName="setting-menu",NavigateController="User",Tag="bi bi-menu-up" , Url = "/User/Index?name='setting-menu'"},
+                 new MenuModel(){Title="菜单设置",ParentName="setting-menu",NavigateController="Menu",Tag="bi bi-menu-up" , Url = "/Menu/Index"},
                  new MenuModel(){Title="仓库设置",ParentName="setting-menu",NavigateController="User",Tag="bi bi-house-gear-fill", Url = "/User/Index?name='setting-menu'"},
                  new MenuModel(){Title="运费设置",ParentName="setting-menu",NavigateController="User",Tag="bi bi-cash", Url = "/User/Index?name='setting-menu'"},
                  new MenuModel(){Title="商品列表设置",ParentName="setting-menu",NavigateController="User",Tag="bi bi-list-ul", Url = "/User/Index?name='setting-menu'"},

@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace WebWMS.Core.Migrations
 {
     /// <inheritdoc />
-    public partial class customer_up1 : Migration
+    public partial class @new : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -116,7 +116,7 @@ namespace WebWMS.Core.Migrations
                     IsEnabled = table.Column<bool>(type: "bit", nullable: false),
                     MoblePhone = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Creator = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Delete = table.Column<bool>(type: "bit", nullable: false),
+                    IsRemove = table.Column<bool>(type: "bit", nullable: false),
                     CreateTime = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     UpdateTime = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
@@ -248,13 +248,16 @@ namespace WebWMS.Core.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    menu_name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    module = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    vue_path = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    vue_path_detail = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    vue_directory = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    sort = table.Column<int>(type: "int", nullable: false),
-                    tenant_id = table.Column<long>(type: "bigint", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    NavigateController = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    NavigateActioin = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ParentName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Url = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Tag = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    HasChildren = table.Column<bool>(type: "bit", nullable: false),
+                    Style = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    HeadStyle = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CreateTime = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     UpdateTime = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },

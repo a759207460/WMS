@@ -9,43 +9,56 @@ namespace WebWMS.Core.Domain.Rolemenus
     public class Menu:BaseModel
     {
         #region Property
+         
+        /// <summary>
+        /// 菜单名称
+        /// </summary>
+        public string Name { get; set; }
+         
+        /// <summary>
+        /// 菜单标题
+        /// </summary>
+        public string Title { get; set; }
+         
+        /// <summary>
+        /// 导航控制器名称
+        /// </summary>
+        public string NavigateController { get; set; }
+         
+        /// <summary>
+        /// 导航方法名称
+        /// </summary>
+        public string NavigateActioin { get; set; }
+         
+        /// <summary>
+        /// 父类菜单名称
+        /// </summary>
+        public string ParentName { get; set; }
+         
+        /// <summary>
+        /// 导航Url地址
+        /// </summary>
+        public string? Url { get; set; }
+        
+        /// <summary>
+        /// 图标
+        /// </summary>
+        public string Tag { get; set; }
 
         /// <summary>
-        /// menu_name
+        /// 是否有子菜单
         /// </summary>
-        public string menu_name { get; set; }
+        public bool HasChildren { get; set; }
 
         /// <summary>
-        /// module
+        /// 子标签样式
         /// </summary>
-        public string module { get; set; }
+        public string Style { get; set; }
 
         /// <summary>
-        /// vue_path
+        /// 父标签样式
         /// </summary>
-        public string vue_path { get; set; }
-
-        /// <summary>
-        /// vue_path_detail
-        /// </summary>
-        public string vue_path_detail { get; set; }
-
-        /// <summary>
-        /// vue_directory
-        /// </summary>
-        public string vue_directory { get; set; }
-
-        /// <summary>
-        /// sort
-        /// </summary>
-        public int sort { get; set; }
-
-        /// <summary>
-        /// tenant_id
-        /// </summary>
-        public long tenant_id { get; set; }
-
-
+        public string HeadStyle { get; set; }
         #endregion
     }
 }

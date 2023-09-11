@@ -11,41 +11,54 @@ namespace WebWMS.Core.DTO.Rolemenus
         #region Property
 
         /// <summary>
-        /// menu_name
+        /// 菜单名称
         /// </summary>
-        public string menu_name { get; set; } = string.Empty;
+        public string Name { get; set; }
 
         /// <summary>
-        /// module
+        /// 菜单标题
         /// </summary>
-        public string module { get; set; } = string.Empty;
+        public string Title { get; set; }
 
         /// <summary>
-        /// vue_path
+        /// 导航控制器名称
         /// </summary>
-        public string vue_path { get; set; } = string.Empty;
+        public string NavigateController { get; set; }
 
         /// <summary>
-        /// vue_path_detail
+        /// 导航方法名称
         /// </summary>
-        public string vue_path_detail { get; set; } = string.Empty;
+        public string NavigateActioin { get; set; }
 
         /// <summary>
-        /// vue_directory
+        /// 父类菜单名称
         /// </summary>
-        public string vue_directory { get; set; } = string.Empty;
+        public string ParentName { get; set; }
 
         /// <summary>
-        /// sort
+        /// 导航Url地址
         /// </summary>
-        public int sort { get; set; } = 0;
+        public string? Url { get; set; }
 
         /// <summary>
-        /// tenant_id
+        /// 图标
         /// </summary>
-        public long tenant_id { get; set; } = 1;
+        public string Tag { get; set; }
 
+        /// <summary>
+        /// 是否有子菜单
+        /// </summary>
+        public bool HasChildren { get; set; }
 
+        /// <summary>
+        /// 子标签样式
+        /// </summary>
+        public string Style { get; set; }
+
+        /// <summary>
+        /// 父标签样式
+        /// </summary>
+        public string HeadStyle { get; set; }
         #endregion
     }
 }

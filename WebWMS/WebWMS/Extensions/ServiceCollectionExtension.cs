@@ -4,9 +4,11 @@ using System.Runtime.CompilerServices;
 using WebWMS.Core.DbContexts;
 using WebWMS.Core.Domain.Asns;
 using WebWMS.Core.Domain.Customers;
+using WebWMS.Core.Domain.Rolemenus;
 using WebWMS.Core.Repositorys;
 using WebWMS.Core.Repositorys.CustomerRepositors;
 using WebWMS.Core.Services.CustomersService;
+using WebWMS.Core.Services.RolemenusService;
 
 namespace WebWMS.Extensions
 {
@@ -26,6 +28,8 @@ namespace WebWMS.Extensions
         {
             services.AddScoped<ICustomerService,CustomerService>();
             services.AddScoped<IRepository<Customer>, Repository<Customer>>();
+            services.AddScoped<IMenuService, MenuService>();
+            services.AddScoped<IRepository<Menu>, Repository<Menu>>();
         }
 
     }

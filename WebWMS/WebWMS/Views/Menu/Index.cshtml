@@ -1,1 +1,489 @@
-﻿
+﻿<html>
+ <body>
+<style>
+    .form-groupnew {
+         margin-bottom: 5px;
+    }
+    .form-controlnew{
+        width:50%;
+        height: 34px;
+        padding: 6px 12px;
+        font-size: 14px;
+        line-height: 1.42857143;
+        color: #555;
+        background-color: #fff;
+        background-image: none;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+        transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+    }
+</style>
+   <div>
+       <h3 class="page-title" style="color:#6583ad;margin-top:3px;">菜单信息管理</h3>
+       <div class="btn-toolbar list-toolbar" style="height:25px;">
+          <div style="float:left;margin-top:10px;">
+               菜单名称
+              <input type="text" class="form-controlnew span12" id="wname" style="width:220px;" />
+              <button type="button" id="search" class="btn btn-primary"><i class="bi bi-search"></i> 查询</button>
+                <button type="button" id="sclear" class="btn btn-primary"><i class="bi bi-x-circle-fill"></i> 清空</button>
+          </div>
+        @*<button class="btn btn-primary" style="float:right;"><i class="bi bi-file-arrow-up-fill"></i>导入</button>
+        <button class="btn btn-primary" style="float:right;"><i class="bi bi-file-arrow-down-fill"></i>导出</button>*@
+        <button id="Add" class="btn btn-primary" style="float:right;"><i class="fa fa-plus"></i>新增</button>
+        
+   </div>
+     <div id="jsGrid" style="margin-top:2px;"></div>
+   </div>
+   @*新增用户弹窗*@
+  <div class="modal " tabindex="-1"  id="UserModal" style="height:550px;margin-top:50px;overflow-y:hidden;" >
+      <input type="hidden" id="operatetype" />
+       <input type="hidden" id="editId" />
+  <div class="modal-dialog" style="height:530px;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h7 class="modal-title" id="mTitle" style="color:#4d5b76;font-size:1em;font-family:Cambria;font-weight:500;">新增用户</h7>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" style="padding:5px;">
+       <div class="panel panel-default">
+        <div class="panel-body">
+            <form>
+
+                <div class="form-groupnew">
+                    名&emsp;&emsp;&emsp;&emsp;&emsp;称
+                    <input type="text" class="form-controlnew span12"  id="account" placeholder="名 称" autocomplete="off"><span style="color:red;" id="saccount">*</span>
+                </div>
+                <div class="form-groupnew" id="mpassword">
+                    标&emsp;&emsp;&emsp;&emsp;&emsp;题
+                    <input type="password" class="form-controlnew span12" id="password"   placeholder="标 题" autocomplete="off" ><span style="color:red;" id="spassword">*</span>
+                </div>
+                 <div class="form-groupnew" id="mpassword1">
+                    导航控制器
+                    <input type="password" class="form-controlnew span12" id="password1"   placeholder="导航控制器" autocomplete="off" ><span style="color:red;" id="spassword1">*</span>
+                </div>
+                <div class="form-groupnew">
+                  导航方法名
+                    <input type="text" class="form-controlnew span12" id="name" placeholder=" 导航方法名"   autocomplete="off">
+                </div>
+                <div class="form-groupnew">
+                  父类菜单名
+                    <input type="text" class="form-controlnew span12" id="email"  placeholder="父类菜单名"  autocomplete="off"><span style="color:red;" id="semail">*</span>
+                </div>
+                <div class="form-groupnew">
+                   导航Url
+                    <input type="text" class="form-controlnew span12" id="phone"  placeholder="导航Url"   autocomplete="off"><span style="color:red;" id="sphone">*</span>
+                </div>
+                <div class="form-groupnew">
+                       图&emsp;&emsp;&emsp;&emsp;&emsp;标
+                    <input type="text" class="form-controlnew span12" id="phone"  placeholder="图标"   autocomplete="off"><span style="color:red;" id="sphone">*</span>
+                </div>
+                <div class="form-groupnew">
+                    是否有子菜单
+                    <input type="checkbox" class="form-controlnew span12" id="address">
+                </div>
+                  <div class="form-groupnew">
+                   子标签样式
+                    <input type="text" class="form-controlnew span12" id="address" placeholder="子标签样式"  autocomplete="off">
+                </div>
+                  <div class="form-groupnew">
+                   父标签样式
+                    <input type="text" class="form-controlnew span12" id="address" placeholder="父标签样式"  autocomplete="off">
+                </div>
+                 <div style="text-align:right;">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                    <button type="button"  class="btn btn-primary" id="Save">保存</button>
+                  </div>
+            </form>
+        </div>
+    </div> 
+      </div>
+    </div>
+  </div>
+</div>
+
+@*提示框*@
+  <div class="modal" tabindex="-1" id="MessageModel" style="height:210px;margin-top:50px;overflow-y:hidden;width:210px;margin-left:46%;" >
+   <input type="hidden" id="userId" />
+      <div class="modal-dialog" style="height:200px;width:200px;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h7 class="modal-title" style="color:#4d5b76;font-size:1em;font-family:Cambria;font-weight:500;">提示!</h7>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" style="padding:5px;">
+       <div class="panel panel-default">
+        <div class="panel-body" style="text-align:center;">
+            <span id="msg"></span>
+        </div>
+    </div> 
+     <div style="text-align:right;">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+               <button type="button"  class="btn btn-primary" id="MSave">保存</button>
+         </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+<script>
+
+     $(function(){
+
+        
+        //数据加载
+        Loading("");
+
+        //查询
+         $("#search").click(function(){
+             var w=$("#waccount").val();
+            Loading(w);
+         });
+
+        //清除
+        $("#sclear").click(function(){
+           var w=$("#waccount").val("");
+            Loading("");
+        });
+        //新增
+       $("#Add").click(function(){
+          $("#UserModal").modal('show');
+          $("#operatetype").val("add");
+       });
+
+       //保存
+       $("#Save").click(function(){
+           var account=$("#account").val();
+           var password=$("#password").val();
+            var password1=$("#password1").val();
+           var name=$("#name").val();
+           var phone=$("#phone").val();
+           var email=$("#email").val();
+           var address=$("#address").val();
+           var operatetype=$("#operatetype").val();
+           var isEnabled=$("#IsEnabled").prop("checked");
+           var del=$("#Delete").prop("checked");
+
+          
+           if(account==""||account==null)
+           {
+               $("#saccount").append("账号不能为空!");
+               return;
+           }else
+           {
+               $("#saccount").text("*")
+           }
+           if(password==""||password==null)
+           {
+                $("#spassword").append("密码不能为空!");
+                return;
+           }
+           else{
+               $("#spassword").text("*")
+           }
+
+           if(password1==""||password1==null)
+           {
+                $("#spassword1").append("密码确认不能为空!");
+                return;
+           }
+           else{
+
+               $("#spassword1").text("*")
+               if(password!=password1)
+               {
+                     $("#spassword1").append("两次密码不相等!");
+                     return;
+               }
+           }
+
+            
+           if(email==""||email==null)
+           {
+                $("#semail").append("邮箱不能为空!");
+                return;
+           }else{
+                 var reg = /^([a-zA-Z0-9_-])+@@([a-zA-Z0-9_-])+((\.[a-zA-Z0-9_-]{2,3}){1,2})$/;
+                 $("#semail").text("*")
+                   if (!reg.test(email)) {
+                         $("#semail").append("邮箱格式不正确，请重新填写!");
+                        return false;
+                     } 
+           }
+
+           if(phone==""||phone==null)
+           {
+               $("#sphone").append("手机不能为空!");
+               return;
+           }else{
+               $("#sphone").text("*")
+               var t=validatorTel(phone);
+               if(t==false) 
+               {
+                 $("#sphone").append("手机格式不正确!");
+                 return;
+               } 
+           }
+
+           if(operatetype=="add")
+           {
+               $.post("/User/Add",
+           {"Account":account,"PassWord":password,"Name":name,"Email":email,"MoblePhone":phone,"Address":address,"IsEnabled":isEnabled,"Delete":del},
+           function(data){
+              var result=eval('('+data+')');
+            if(result.Status==200)
+            {
+                alert(result.Message);
+                $("#account").val("");
+                $("#password").val("");
+                $("#password1").val("");
+                $("#name").val("");
+                $("#phone").val("");
+                $("#email").val("");
+                $("#address").val("");
+                $("#IsEnabled").prop("checked","");
+                $("#Delete").prop("checked","");
+                $("#UserModal").modal('hide');
+                location.reload(true);
+            }
+            else
+            {
+                alert(result.Message);
+            }});
+           }else if(operatetype=="edit")
+           {
+               var id= $("#editId").val();
+               $.post("/User/Update",
+                       {"Id":id,"Account":account,"PassWord":password,"Name":name,"Email":email,"MoblePhone":phone,"Address":address,"IsEnabled":isEnabled,"Delete":del},
+                       function(data){
+                          var result=eval('('+data+')');
+                        if(result.Status==200)
+                        {
+                            alert(result.Message);
+                            $("#account").val("");
+                            $("#password").val("");
+                            $("#password1").val("");
+                            $("#name").val("");
+                            $("#phone").val("");
+                            $("#email").val("");
+                            $("#address").val("");
+                            $("#UserModal").modal('hide');
+                            location.reload(true);
+                        }
+                        else
+                        {
+                            alert(result.Message);
+                        }});
+           }
+           
+       });
+        
+       //删除确认
+       $("#MSave").click(function(){
+           var id=$("#duserId").val();
+            $("#MessageModel").modal('hide');
+           $.post("/User/Delete",
+           {"id":id},
+           function(data){
+              var result=eval('('+data+')');
+            if(result.Status==200)
+            { 
+                 alert(result.Message);
+                location.reload(true);
+            }
+            else
+            {
+                 $("#MessageModel").modal('hide');
+                alert(result.Message);
+            }});
+       });
+    });
+
+     //手机号验证
+     function validatorTel(content){
+        // 正则验证格式
+        eval("var reg = /^1[34578]\\d{9}$/;");
+        return RegExp(reg).test(content);
+    };
+
+      //数据加载
+     function Loading(where)
+        {
+            //列表数据绑定
+         $.post("/Menu/GetMenuList",{"pageIndex":1,"pageSize":10,"Where":where},
+         function(data){
+             var result=eval('('+data+')');
+             if(result.Status==200)
+             {
+                  GridBind(result.Source.Items);
+             }
+             else
+             {
+                  alert(result.Message);
+             }
+            
+         });
+        }
+
+     //编辑
+     function Edit(id,account,pwd,name,emai,phone,address,isEnabled,d)
+        {
+
+              $("#mTitle").text("编辑用户");
+               $("#mpassword").hide();
+                $("#mpassword1").hide();
+               $("#operatetype").val("edit");
+               $("#account").val(account);
+                $("#password").val(pwd);
+                $("#password1").val(pwd);
+                $("#name").val(name);
+                $("#phone").val(phone);
+               $("#email").val(emai);
+               $("#address").val(address);
+               $("#editId").val(id);
+               if(isEnabled=='True')
+               {
+                   $("#IsEnabled").attr("checked","checked");
+               }  
+               if(d=='True')
+               {
+                   $("#Delete").attr("checked","checked");
+               }
+               
+              
+              $("#UserModal").modal('show');
+         };
+
+      //删除
+     function Delete(id,account)
+        {
+             $("#msg").text("确认删除用户:"+account+"!");
+             $("#userId").val(id);
+             $("#MessageModel").modal('show');
+        };
+     
+     //列表数据绑定
+     function GridBind(data)
+     {
+         $("#jsGrid").jsGrid({
+                width: "100%",
+                height: "400px",
+                sorting: true,
+                editing: true,
+                filtering: false,
+                paging: true,
+                autoload: true,
+                pageSize: 1,
+                pageButtonCount: 3,
+                pagerFormat: "当前页: {pageIndex} &nbsp;&nbsp; {first} {prev} {pages} {next} {last} &nbsp;&nbsp; 页数: {pageCount} 总数: {itemCount}",
+                pagePrevText: "<",
+                pageNextText: ">",
+                pageFirstText: "<<",
+                pageLastText: ">>",
+                deleteConfirm: "确定删除该数据?",
+                onItemDeleting: function(args) {
+                                        if(args.item.protected) {
+                                            args.cancel = true;
+                                        }
+                                    },
+                rowClick: function(args) { args.cancel=true },
+                controller: {
+                  deleteItem: function(item) {
+                      return  $.post("/User/Delete",
+                           {"id":item.Id},
+                           function(data){
+                              var result=eval('('+data+')');
+                            if(result.Status==200)
+                            { 
+                                 alert(result.Message);
+                                 $("#jsGrid").jsGrid("refresh");
+                            }
+                            else
+                            {
+                                alert(result.Message);
+                            }});
+                    },
+                  updateItem: function(item) {
+
+                                 if(item.Account==""||item.Account==null)
+                                   {
+                                       alert("账号不能为空!");
+                                       return;
+                                   }
+                                     if(item.Email==""||item.Email==null)
+                                   {
+                                       alert("邮箱不能为空!");
+                                       return;
+                                   }else{
+                                         var reg = /^([a-zA-Z0-9_-])+@@([a-zA-Z0-9_-])+((\.[a-zA-Z0-9_-]{2,3}){1,2})$/;
+                                           if (!reg.test(item.Email)) {
+                                                 alert("邮箱格式不正确，请重新填写!");
+                                                 return;
+                                             } 
+                                   }
+                                   if(item.MoblePhone==""||item.MoblePhone==null)
+                                   {
+                                       alert("手机不能为空!");
+                                       return;
+                                   }else{
+                                       var t=validatorTel(item.MoblePhone);
+                                       if(t==false) 
+                                       {
+                                         alert("手机格式不正确!");
+                                         return;
+                                       } 
+                                   }      
+                                return $.post("/User/Update",
+                       {"Id":item.Id,"Account":item.Account,"Name":item.Name,"Email":item.Email,"MoblePhone":item.MoblePhone,"Address":item.Address,"IsEnabled":item.IsEnabled,"IsRemove":item.IsRemove},
+                       function(data){
+                          var result=eval('('+data+')');
+                        if(result.Status==200)
+                        {
+                            alert(result.Message);
+                             location.reload(true);
+                        }
+                        else
+                        {
+                            alert(result.Message);
+                        }});
+                   }
+                },
+                fields: [
+                    // {
+                    //    headerTemplate: function() {
+                    //        return $("<input>").attr("type", "checkbox").text("全选")
+                    //                .on("click", function () {
+                    //                    $("<input>").attr("type","checkbox").prop("checked","checked")
+                    //                });
+                    //    },
+                    //    itemTemplate: function() {
+                    //        return $("<input>").attr("type", "checkbox")
+                    //    },
+                    //    align: "center",
+                    //    width: 50,
+                    //    sorting: false
+                    //},
+                    { name: "Id", type: "number", width: 60,title:"序号",align: "center", readOnly: true },
+                    { name: "Name", type: "text", width: 100,title:"名称",align: "center" , readOnly: true},
+                    { name: "Title", type: "text", width: 80 ,title:"标题",align: "center"},
+                    { name: "NavigateController", type: "text", width:120,title:"导航控制器名",align: "center"},
+                    { name: "NavigateActioin", type: "text", width: 150,title:"导航方法名",align: "center"},
+                    { name: "ParentName", type: "text" , width:60,title:"父菜单名",align: "center"},
+                    { name: "Url", type: "text" , width:60,title:"导航Url",align: "center"},
+                    { name: "Tag", type: "text", width: 150,title:"图标",align: "center"},
+                    { name: "HasChildren", type: "checkbox" , width:60,title:"是否有子菜单",align: "center"},
+                    { name: "HeadStyle", type: "text" , width:60,title:"父标签样式",align: "center"},
+                    { name: "Style", type: "text" , width:60,title:"子标签样式",align: "center"},
+                    { type: "control", modeSwitchButton: true, editButton: true }
+                ],
+                 data: data
+               });
+     }
+</script>
+
+</body>
+</html>
