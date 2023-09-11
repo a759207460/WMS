@@ -29,6 +29,15 @@ namespace WebWMS.Controllers
             return View();
         }
 
+
+        public IActionResult Register()
+        {
+
+            return View();
+        }
+
+
+
         public async Task<string> GetCustomerList(RequestModel model)
         {
             ResultMessage<IPagedList<CustomerDto>> result = new ResultMessage<IPagedList<CustomerDto>>();
