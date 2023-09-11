@@ -43,7 +43,7 @@ namespace WebWMS.Core.DTO.Rolemenus
         /// <summary>
         /// 图标
         /// </summary>
-        public string Tag { get; set; }
+        public string? Tag { get; set; }
 
         /// <summary>
         /// 是否有子菜单

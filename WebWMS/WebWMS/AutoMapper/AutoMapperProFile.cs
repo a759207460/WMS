@@ -21,6 +21,7 @@ namespace WebWMS.AutoMapper
             CreateMap<UserViewModel, CustomerDto>().ReverseMap();
             CreateMap <PagedList<CustomerDto>, PagedList<Customer>>().ReverseMap();
             CreateMap<Menu, MenuDto>().ReverseMap();
+            CreateMap<MenuModel, MenuDto>().ReverseMap();
             CreateMap<PagedList<MenuDto>, PagedList<Menu>>().ReverseMap();
         }
     }

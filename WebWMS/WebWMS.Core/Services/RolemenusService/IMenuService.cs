@@ -13,7 +13,7 @@ namespace WebWMS.Core.Services.RolemenusService
     {
         public Task<MenuDto> GetMenuByIdAsync(int id);
 
-        public Task<bool> GetMenuByNameAsync(string name);
+        public Task<bool> GetMenuByNameAsync(string name, string title);
 
         public Task<IPagedList<MenuDto>> GetAllAsync(int pageIndex, int pageSize, string where);
 
