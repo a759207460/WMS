@@ -10,15 +10,17 @@
 
     public class MenuModel
     {
+        public int Id { get; set; }
+
         public string Name { get; set; }
 
         public string Title { get; set; }
 
-        public string NavigateController { get; set; }
+        public string NavigateController { get; set; } = "Home";
 
         public string NavigateActioin { get; set; } = "Index";
 
-        public string ParentName { get; set; }
+        public string ParentName { get; set; } = "Root";
 
         public string? Url { get; set; }
 
@@ -26,8 +28,8 @@
 
         public bool HasChildren { get; set; }
 
-        public string Style { get; set; }
+        public string Style { get; set; } = "nav nav-list collapse";
 
-        public string HeadStyle { get; set; }
+        public string HeadStyle { get; set; } = "nav-header collapsed";
     }
 }

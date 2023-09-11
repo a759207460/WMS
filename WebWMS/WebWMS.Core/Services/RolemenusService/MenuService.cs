@@ -64,9 +64,9 @@ namespace WebWMS.Core.Services.RolemenusService
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
-        public async Task<bool> GetMenuByNameAsync(string name)
+        public async Task<bool> GetMenuByNameAsync(string name,string title)
         {
-            if (string.IsNullOrEmpty(name))
+            if (string.IsNullOrEmpty(name)|| string.IsNullOrEmpty(title))
                 return false;
             return await repository.GetFirstOrDefaultAsync<bool>(r => r.Name == name);
         }

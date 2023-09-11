@@ -3,20 +3,34 @@
 <style>
     .form-groupnew {
          margin-bottom: 5px;
+         text-align:right;
+    }
+    .col1{
+        width:120px;
+        text-align:right;
+        margin-top:5px;
+    }
+    .col2{
+         width:230px;
+        text-align:left;
+        margin-top:5px;
+    }
+     .col3{
+         width:20px;
+        text-align:left;
+        margin-top:5px;
     }
     .form-controlnew{
-        width:50%;
-        height: 34px;
-        padding: 6px 12px;
-        font-size: 14px;
+        width:220px;
+        height: 30px;
+        padding: 5px 8px;
+        font-size: 12px;
         line-height: 1.42857143;
         color: #555;
         background-color: #fff;
         background-image: none;
         border: 1px solid #ccc;
         border-radius: 4px;
-        box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
-        transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
     }
 </style>
    <div>
@@ -36,66 +50,79 @@
      <div id="jsGrid" style="margin-top:2px;"></div>
    </div>
    @*新增用户弹窗*@
-  <div class="modal " tabindex="-1"  id="UserModal" style="height:550px;margin-top:50px;overflow-y:hidden;" >
-      <input type="hidden" id="operatetype" />
-       <input type="hidden" id="editId" />
-  <div class="modal-dialog" style="height:530px;">
+  <div class="modal " tabindex="-1"  id="UserModal" style="height:530px;margin-top:5px;overflow-y:hidden;overflow-x:hidden;" >
+  <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h7 class="modal-title" id="mTitle" style="color:#4d5b76;font-size:1em;font-family:Cambria;font-weight:500;">新增用户</h7>
+        <h7 class="modal-title" id="mTitle" style="color:#4d5b76;font-size:1em;font-family:Cambria;font-weight:500;">新增菜单</h7>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body" style="padding:5px;">
        <div class="panel panel-default">
-        <div class="panel-body">
+        <div class="panel-body" style="height:450px;">
             <form>
-
-                <div class="form-groupnew">
-                    名&emsp;&emsp;&emsp;&emsp;&emsp;称
-                    <input type="text" class="form-controlnew span12"  id="account" placeholder="名 称" autocomplete="off"><span style="color:red;" id="saccount">*</span>
+              <div class="container">
+                <div class="row">
+                   <div class="col-md-1 col1">名称</div> 
+                   <div class="col-md-2 col2"><input type="text" class="form-controlnew"  id="txtName" placeholder="名 称" autocomplete="off"> </div>
+                   <div class="col-md-3"><span style="color:red;" id="sName">*</span></div>
                 </div>
-                <div class="form-groupnew" id="mpassword">
-                    标&emsp;&emsp;&emsp;&emsp;&emsp;题
-                    <input type="password" class="form-controlnew span12" id="password"   placeholder="标 题" autocomplete="off" ><span style="color:red;" id="spassword">*</span>
+                <div class="row" id="mpassword">
+                    <div class="col-md-1 col1">标题</div>
+                    <div class="col-md-2 col2"><input type="text" class="form-controlnew" id="txtTitle"   placeholder="标 题" autocomplete="off" ></div>
+                    <div class="col-md-3 col3"><span style="color:red;" id="sTitle">*</span></div>
                 </div>
-                 <div class="form-groupnew" id="mpassword1">
-                    导航控制器
-                    <input type="password" class="form-controlnew span12" id="password1"   placeholder="导航控制器" autocomplete="off" ><span style="color:red;" id="spassword1">*</span>
+                 <div class="row" id="mpassword1">
+                    <div class="col-md-1 col1">导航控制器</div>
+                    <div class="col-md-2 col2"><input type="text" class="form-controlnew" id="txtNavigateController"   placeholder="导航控制器" autocomplete="off" ></div>
+                    <div class="col-md-3 col3"><span style="color:red;" id="sNavigateController">*</span></div>
                 </div>
-                <div class="form-groupnew">
-                  导航方法名
-                    <input type="text" class="form-controlnew span12" id="name" placeholder=" 导航方法名"   autocomplete="off">
+                <div class="row">
+                  <div class="col-md-1 col1">导航方法名</div>
+                   <div class="col-md-2 col2"><input type="text" class="form-controlnew" id="txtNavigateActioin" placeholder=" 导航方法名"  autocomplete="off"></div>
+                  <div class="col-md-3 col3"><span style="color:red;" id="sNavigateActioin">*</span></div>
                 </div>
-                <div class="form-groupnew">
-                  父类菜单名
-                    <input type="text" class="form-controlnew span12" id="email"  placeholder="父类菜单名"  autocomplete="off"><span style="color:red;" id="semail">*</span>
+                <div class="row">
+                  <div class="col-md-1 col1">父类菜单名</div>
+                  <div class="col-md-2 col2"> <input type="text" class="form-controlnew " id="txtParentName"  placeholder="父类菜单名"  autocomplete="off"></div>
+                  <div class="col-md-3 col3"><span style="color:red;" id="sParentName">*</span></div>
                 </div>
-                <div class="form-groupnew">
-                   导航Url
-                    <input type="text" class="form-controlnew span12" id="phone"  placeholder="导航Url"   autocomplete="off"><span style="color:red;" id="sphone">*</span>
+                <div class="row">
+                   <div class="col-md-1 col1">导航Url</div>
+                   <div class="col-md-2 col2"><input type="text" class="form-controlnew" id="txtUrl"  placeholder="导航Url"   autocomplete="off"></div>
+                   <div class="col-md-3 col3"> <span style="color:red;" id="sUrl">*</span></div>
                 </div>
-                <div class="form-groupnew">
-                       图&emsp;&emsp;&emsp;&emsp;&emsp;标
-                    <input type="text" class="form-controlnew span12" id="phone"  placeholder="图标"   autocomplete="off"><span style="color:red;" id="sphone">*</span>
+                <div class="row">
+                    <div class="col-md-1 col1">图标</div>
+                    <div class="col-md-2 col2"><input type="text" class="form-controlnew span12" id="txtTag"  placeholder="图标"   autocomplete="off"></div>
+                    <div class="col-md-3 col3"><span style="color:red;" id="sTag">*</span></div>
                 </div>
-                <div class="form-groupnew">
-                    是否有子菜单
-                    <input type="checkbox" class="form-controlnew span12" id="address">
+                <div class="row">
+                    <div class="col-md-2 col1">是否有子菜单</div>
+                    <div class="col-md-1 col2"><input type="checkbox" id="txtHasChildren" style="margin-top:5px;"></div>
                 </div>
-                  <div class="form-groupnew">
-                   子标签样式
-                    <input type="text" class="form-controlnew span12" id="address" placeholder="子标签样式"  autocomplete="off">
+                <div class="row">
+                   <div class="col-md-1 col1">子标签样式</div>
+                   <div class="col-md-2 col2"><input type="text" class="form-controlnew" id="txtStyle" placeholder="子标签样式" disabled="disabled" autocomplete="off"></div>
+                   <div class="col-md-3 col3"><span style="color:red;" id="sStyle">*</span></div> 
                 </div>
-                  <div class="form-groupnew">
-                   父标签样式
-                    <input type="text" class="form-controlnew span12" id="address" placeholder="父标签样式"  autocomplete="off">
+                <div class="row">
+                   <div class="col-md-1 col1">父标签样式</div>
+                   <div class="col-md-2 col2"><input type="text" class="form-controlnew" id="txtHeadStyle" placeholder="父标签样式" disabled="disabled"  autocomplete="off"></div>
+                   
                 </div>
-                 <div style="text-align:right;">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
-                    <button type="button"  class="btn btn-primary" id="Save">保存</button>
+                <div style="color:red;font-size:10px;">
+                    <span>说明:一级菜单的父菜单的名称为 Root</span>
+                </div>
+                <div class="row" style="margin-top:10px;">
+                     <div class="col-md-3" style="text-align:right;">
+                          <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                           <button type="button"  class="btn btn-primary" id="Save">保存</button>
+                     </div>
                   </div>
+              </div>
             </form>
         </div>
     </div> 
@@ -106,7 +133,6 @@
 
 @*提示框*@
   <div class="modal" tabindex="-1" id="MessageModel" style="height:210px;margin-top:50px;overflow-y:hidden;width:210px;margin-left:46%;" >
-   <input type="hidden" id="userId" />
       <div class="modal-dialog" style="height:200px;width:200px;">
     <div class="modal-content">
       <div class="modal-header">
@@ -134,7 +160,6 @@
 
      $(function(){
 
-        
         //数据加载
         Loading("");
 
@@ -151,102 +176,111 @@
         });
         //新增
        $("#Add").click(function(){
-          $("#UserModal").modal('show');
-          $("#operatetype").val("add");
+          $("#txtStyle").val("nav nav-list collapse");
+          $("#txtHeadStyle").val("nav-header collapsed");
+          $("#UserModal").modal('show'); 
        });
 
        //保存
        $("#Save").click(function(){
-           var account=$("#account").val();
-           var password=$("#password").val();
-            var password1=$("#password1").val();
-           var name=$("#name").val();
-           var phone=$("#phone").val();
-           var email=$("#email").val();
-           var address=$("#address").val();
-           var operatetype=$("#operatetype").val();
-           var isEnabled=$("#IsEnabled").prop("checked");
-           var del=$("#Delete").prop("checked");
+           var txtName=$("#txtName").val();
+           var txtTitle=$("#txtTitle").val();
+            var txtNavigateController=$("#txtNavigateController").val();
+           var txtNavigateActioin=$("#txtNavigateActioin").val();
+           var txtParentName=$("#txtParentName").val();
+           var txtUrl=$("#txtUrl").val();
+           var txtTag=$("#txtTag").val();
+           var txtStyle=$("#txtStyle").val();
+           var txtHasChildren=$("#txtHasChildren").prop("checked");
+           var txtHeadStyle=$("#txtHeadStyle").val();
 
           
-           if(account==""||account==null)
+           if(txtName==""||txtName==null)
            {
-               $("#saccount").append("账号不能为空!");
+               $("#stName").append("名称不能为空!");
                return;
            }else
            {
-               $("#saccount").text("*")
+               $("#stName").text("*")
            }
-           if(password==""||password==null)
+           if(txtTitle==""||txtTitle==null)
            {
-                $("#spassword").append("密码不能为空!");
+                $("#sTitle").append("标题不能为空!");
                 return;
            }
            else{
-               $("#spassword").text("*")
+               $("#sTitle").text("*")
            }
 
-           if(password1==""||password1==null)
+           if(txtNavigateController==""||txtNavigateController==null)
            {
-                $("#spassword1").append("密码确认不能为空!");
+                $("#sNavigateController").append("导航控制器确认不能为空!");
                 return;
            }
            else{
 
-               $("#spassword1").text("*")
-               if(password!=password1)
-               {
-                     $("#spassword1").append("两次密码不相等!");
-                     return;
-               }
+               $("#sNavigateController").text("*")
            }
 
             
-           if(email==""||email==null)
+           if(txtNavigateActioin==""||txtNavigateActioin==null)
            {
-                $("#semail").append("邮箱不能为空!");
+                $("#sNavigateActioin").append("导航方法不能为空!");
                 return;
            }else{
-                 var reg = /^([a-zA-Z0-9_-])+@@([a-zA-Z0-9_-])+((\.[a-zA-Z0-9_-]{2,3}){1,2})$/;
-                 $("#semail").text("*")
-                   if (!reg.test(email)) {
-                         $("#semail").append("邮箱格式不正确，请重新填写!");
-                        return false;
-                     } 
+                 $("#sNavigateActioin").text("*")
            }
 
-           if(phone==""||phone==null)
+           if(txtParentName==""||txtParentName==null)
            {
-               $("#sphone").append("手机不能为空!");
+               $("#sParentName").append("父菜单名不能为空!");
                return;
            }else{
-               $("#sphone").text("*")
-               var t=validatorTel(phone);
-               if(t==false) 
-               {
-                 $("#sphone").append("手机格式不正确!");
-                 return;
-               } 
+               $("#sParentName").text("*");
            }
 
-           if(operatetype=="add")
+            if(txtUrl==""||txtUrl==null)
            {
-               $.post("/User/Add",
-           {"Account":account,"PassWord":password,"Name":name,"Email":email,"MoblePhone":phone,"Address":address,"IsEnabled":isEnabled,"Delete":del},
+               $("#sUrl").append("导航Url不能为空!");
+               return;
+           }else{
+               $("#sUrl").text("*");
+           }
+
+            if(txtStyle==""||txtStyle==null)
+           {
+               $("#sStyle").append("子菜单样式不能为空!");
+               return;
+           }else{
+               $("#sStyle").text("*");
+           }
+
+            if(txtHeadStyle==""||txtHeadStyle==null)
+           {
+               $("#sHeadStyle").append("父菜单样式不能为空!");
+               return;
+           }else{
+               $("#sHeadStyle").text("*");
+           }
+
+
+               $.post("/Menu/Add",
+           {"Name":txtName,"Title":txtTitle,"NavigateController":txtNavigateController,"NavigateActioin":txtNavigateActioin,"ParentName":txtParentName,"Url":txtUrl,"Tag":txtTag,"Style":txtStyle,"HasChildren":txtHasChildren,"HeadStyle":txtHeadStyle},
            function(data){
               var result=eval('('+data+')');
             if(result.Status==200)
             {
                 alert(result.Message);
-                $("#account").val("");
-                $("#password").val("");
-                $("#password1").val("");
-                $("#name").val("");
-                $("#phone").val("");
-                $("#email").val("");
-                $("#address").val("");
-                $("#IsEnabled").prop("checked","");
-                $("#Delete").prop("checked","");
+                $("#txtName").val("");
+                $("#txtTitle").val("");
+                $("#txtNavigateController").val("");
+                $("#txtNavigateActioin").val("");
+                $("#txtParentName").val("");
+                $("#txtUrl").val("");
+                $("#txtTag").val("");
+                $("#txtStyle").val("");
+                $("#txtHeadStyle").val("");
+                $("#txtHasChildren").prop("checked","");
                 $("#UserModal").modal('hide');
                 location.reload(true);
             }
@@ -254,53 +288,8 @@
             {
                 alert(result.Message);
             }});
-           }else if(operatetype=="edit")
-           {
-               var id= $("#editId").val();
-               $.post("/User/Update",
-                       {"Id":id,"Account":account,"PassWord":password,"Name":name,"Email":email,"MoblePhone":phone,"Address":address,"IsEnabled":isEnabled,"Delete":del},
-                       function(data){
-                          var result=eval('('+data+')');
-                        if(result.Status==200)
-                        {
-                            alert(result.Message);
-                            $("#account").val("");
-                            $("#password").val("");
-                            $("#password1").val("");
-                            $("#name").val("");
-                            $("#phone").val("");
-                            $("#email").val("");
-                            $("#address").val("");
-                            $("#UserModal").modal('hide');
-                            location.reload(true);
-                        }
-                        else
-                        {
-                            alert(result.Message);
-                        }});
-           }
-           
        });
         
-       //删除确认
-       $("#MSave").click(function(){
-           var id=$("#duserId").val();
-            $("#MessageModel").modal('hide');
-           $.post("/User/Delete",
-           {"id":id},
-           function(data){
-              var result=eval('('+data+')');
-            if(result.Status==200)
-            { 
-                 alert(result.Message);
-                location.reload(true);
-            }
-            else
-            {
-                 $("#MessageModel").modal('hide');
-                alert(result.Message);
-            }});
-       });
     });
 
      //手机号验证
@@ -357,14 +346,6 @@
               
               $("#UserModal").modal('show');
          };
-
-      //删除
-     function Delete(id,account)
-        {
-             $("#msg").text("确认删除用户:"+account+"!");
-             $("#userId").val(id);
-             $("#MessageModel").modal('show');
-        };
      
      //列表数据绑定
      function GridBind(data)
@@ -393,7 +374,7 @@
                 rowClick: function(args) { args.cancel=true },
                 controller: {
                   deleteItem: function(item) {
-                      return  $.post("/User/Delete",
+                      return  $.post("/Menu/Delete",
                            {"id":item.Id},
                            function(data){
                               var result=eval('('+data+')');
@@ -408,48 +389,59 @@
                             }});
                     },
                   updateItem: function(item) {
-
-                                 if(item.Account==""||item.Account==null)
-                                   {
-                                       alert("账号不能为空!");
-                                       return;
-                                   }
-                                     if(item.Email==""||item.Email==null)
-                                   {
-                                       alert("邮箱不能为空!");
-                                       return;
-                                   }else{
-                                         var reg = /^([a-zA-Z0-9_-])+@@([a-zA-Z0-9_-])+((\.[a-zA-Z0-9_-]{2,3}){1,2})$/;
-                                           if (!reg.test(item.Email)) {
-                                                 alert("邮箱格式不正确，请重新填写!");
-                                                 return;
-                                             } 
-                                   }
-                                   if(item.MoblePhone==""||item.MoblePhone==null)
-                                   {
-                                       alert("手机不能为空!");
-                                       return;
-                                   }else{
-                                       var t=validatorTel(item.MoblePhone);
-                                       if(t==false) 
+                      
+                                    if(item.Title==""||item.Title==null)
                                        {
-                                         alert("手机格式不正确!");
-                                         return;
+                                            alert("标题不能为空!");
+                                            return;
+                                       }
+                                    if(item.NavigateController==""||item.NavigateController==null)
+                                       {
+                                            alert("导航控制器确认不能为空!");
+                                            return;
+                                       }
+                                    if(item.NavigateActioin==""||item.NavigateActioin==null)
+                                       {
+                                            alert("导航方法不能为空!");
+                                            return;
+                                       }
+
+                                    if(item.ParentName==""||item.ParentName==null)
+                                       {
+                                           alert("父菜单名不能为空!");
+                                           return;
+                                       }
+
+                                    if(item.Url==""||item.Url==null)
+                                       {
+                                           alert("导航Url不能为空!");
+                                           return;
+                                       }
+                                    if(item.Style==""||item.Style==null)
+                                       {
+                                           alert("子菜单样式不能为空!");
+                                           return;
+                                       }
+                                    if(item.HeadStyle==""||item.HeadStyle==null)
+                                       {
+                                           alert("父菜单样式不能为空!");
+                                           return;
                                        } 
-                                   }      
-                                return $.post("/User/Update",
-                       {"Id":item.Id,"Account":item.Account,"Name":item.Name,"Email":item.Email,"MoblePhone":item.MoblePhone,"Address":item.Address,"IsEnabled":item.IsEnabled,"IsRemove":item.IsRemove},
-                       function(data){
-                          var result=eval('('+data+')');
-                        if(result.Status==200)
-                        {
-                            alert(result.Message);
-                             location.reload(true);
-                        }
-                        else
-                        {
-                            alert(result.Message);
-                        }});
+
+                                       alert(item.Title);
+                       //         return $.post("/Menu/Update",
+                       //{"Id":item.Id,"Name":item.Name,"Title":item.Title,"NavigateController":item.NavigateController,"NavigateActioin":item.NavigateActioin,"ParentName":item.ParentName,"Url":item.Url,"Tag":item.Tag,"Style":txtStyle,"HasChildren":item.HasChildren,"HeadStyle":item.HeadStyle},
+                       //function(data){
+                       //   var result=eval('('+data+')');
+                       // if(result.Status==200)
+                       // {
+                       //     alert(result.Message);
+                       //      location.reload(true);
+                       // }
+                       // else
+                       // {
+                       //     alert(result.Message);
+                       // }});
                    }
                 },
                 fields: [
@@ -468,17 +460,17 @@
                     //    sorting: false
                     //},
                     { name: "Id", type: "number", width: 60,title:"序号",align: "center", readOnly: true },
-                    { name: "Name", type: "text", width: 100,title:"名称",align: "center" , readOnly: true},
-                    { name: "Title", type: "text", width: 80 ,title:"标题",align: "center"},
-                    { name: "NavigateController", type: "text", width:120,title:"导航控制器名",align: "center"},
-                    { name: "NavigateActioin", type: "text", width: 150,title:"导航方法名",align: "center"},
-                    { name: "ParentName", type: "text" , width:60,title:"父菜单名",align: "center"},
-                    { name: "Url", type: "text" , width:60,title:"导航Url",align: "center"},
-                    { name: "Tag", type: "text", width: 150,title:"图标",align: "center"},
+                    { name: "Name", type: "text", width: 100,title:"名称",align: "center",readOnly: true },
+                    { name: "Title", type: "text", width: 120 ,title:"标题",align: "center"},
+                    { name: "NavigateController", type: "text", width:80,title:"导航控制器名",align: "center"},
+                    { name: "NavigateActioin", type: "text", width: 80,title:"导航方法名",align: "center"},
+                    { name: "ParentName", type: "text" , width:80,title:"父菜单名",align: "center"},
+                    { name: "Url", type: "text" , width:150,title:"导航Url",align: "center"},
+                    { name: "Tag", type: "text", width: 180,title:"图标",align: "center"},
                     { name: "HasChildren", type: "checkbox" , width:60,title:"是否有子菜单",align: "center"},
-                    { name: "HeadStyle", type: "text" , width:60,title:"父标签样式",align: "center"},
-                    { name: "Style", type: "text" , width:60,title:"子标签样式",align: "center"},
-                    { type: "control", modeSwitchButton: true, editButton: true }
+                    { name: "HeadStyle", type: "text" , width:120,title:"父标签样式",align: "center"},
+                    { name: "Style", type: "text" , width:120,title:"子标签样式",align: "center"},
+                    { type: "control", modeSwitchButton: true, editButton: true , width:80}
                 ],
                  data: data
                });
