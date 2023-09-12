@@ -17,7 +17,7 @@ namespace WebWMS
             {
                 option.LoginPath = "/Login.html";
                 option.LogoutPath = "/";
-                option.ExpireTimeSpan = TimeSpan.FromMinutes(15);
+                option.ExpireTimeSpan = TimeSpan.FromMinutes(120);
             });
             // Add services to the container.
             builder.Services.AddControllersWithViews();

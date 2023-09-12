@@ -574,11 +574,13 @@ namespace WebWMS.Core.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Creator")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<bool>("HasChildren")
                         .HasColumnType("bit");
 
                     b.Property<string>("HeadStyle")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
@@ -586,11 +588,9 @@ namespace WebWMS.Core.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("NavigateActioin")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("NavigateController")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ParentName")
@@ -598,11 +598,9 @@ namespace WebWMS.Core.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Style")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Tag")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Title")

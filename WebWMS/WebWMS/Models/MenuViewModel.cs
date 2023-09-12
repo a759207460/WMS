@@ -16,15 +16,15 @@
 
         public string Title { get; set; }
 
-        public string NavigateController { get; set; } = "Home";
+        public string? NavigateController { get; set; }
 
-        public string NavigateActioin { get; set; } = "Index";
+        public string? NavigateActioin { get; set; }
 
         public string ParentName { get; set; } = "Root";
 
         public string? Url { get; set; }
 
-        public string Tag { get; set; }
+        public string? Tag { get; set; }
 
         public bool HasChildren { get; set; }
 

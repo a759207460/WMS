@@ -23,12 +23,12 @@ namespace WebWMS.Core.Domain.Rolemenus
         /// <summary>
         /// 导航控制器名称
         /// </summary>
-        public string NavigateController { get; set; }
+        public string? NavigateController { get; set; }
          
         /// <summary>
         /// 导航方法名称
         /// </summary>
-        public string NavigateActioin { get; set; }
+        public string? NavigateActioin { get; set; }
          
         /// <summary>
         /// 父类菜单名称
@@ -43,7 +43,7 @@ namespace WebWMS.Core.Domain.Rolemenus
         /// <summary>
         /// 图标
         /// </summary>
-        public string Tag { get; set; }
+        public string? Tag { get; set; }
 
         /// <summary>
         /// 是否有子菜单
@@ -53,12 +53,15 @@ namespace WebWMS.Core.Domain.Rolemenus
         /// <summary>
         /// 子标签样式
         /// </summary>
-        public string Style { get; set; }
+        public string? Style { get; set; }
 
         /// <summary>
         /// 父标签样式
         /// </summary>
-        public string HeadStyle { get; set; }
+        public string? HeadStyle { get; set; }
+
+        public string? Creator { get; set;}
+
         #endregion
     }
 }

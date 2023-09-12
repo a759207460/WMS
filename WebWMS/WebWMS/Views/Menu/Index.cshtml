@@ -211,26 +211,6 @@
            else{
                $("#sTitle").text("*")
            }
-
-           if(txtNavigateController==""||txtNavigateController==null)
-           {
-                $("#sNavigateController").append("导航控制器确认不能为空!");
-                return;
-           }
-           else{
-
-               $("#sNavigateController").text("*")
-           }
-
-            
-           if(txtNavigateActioin==""||txtNavigateActioin==null)
-           {
-                $("#sNavigateActioin").append("导航方法不能为空!");
-                return;
-           }else{
-                 $("#sNavigateActioin").text("*")
-           }
-
            if(txtParentName==""||txtParentName==null)
            {
                $("#sParentName").append("父菜单名不能为空!");
@@ -238,15 +218,6 @@
            }else{
                $("#sParentName").text("*");
            }
-
-            if(txtUrl==""||txtUrl==null)
-           {
-               $("#sUrl").append("导航Url不能为空!");
-               return;
-           }else{
-               $("#sUrl").text("*");
-           }
-
             if(txtStyle==""||txtStyle==null)
            {
                $("#sStyle").append("子菜单样式不能为空!");
@@ -308,7 +279,7 @@
              var result=eval('('+data+')');
              if(result.Status==200)
              {
-                  GridBind(result.Source.Items);
+                  GridBind(result.Source);
              }
              else
              {
@@ -358,8 +329,10 @@
                 filtering: false,
                 paging: true,
                 autoload: true,
-                pageSize: 1,
-                pageButtonCount: 3,
+                pageLoading:true,
+                pageIndex:1,
+                pageSize:5,
+                pageButtonCount:5,
                 pagerFormat: "当前页: {pageIndex} &nbsp;&nbsp; {first} {prev} {pages} {next} {last} &nbsp;&nbsp; 页数: {pageCount} 总数: {itemCount}",
                 pagePrevText: "<",
                 pageNextText: ">",
@@ -373,7 +346,19 @@
                                     },
                 rowClick: function(args) { args.cancel=true },
                 controller: {
-                  deleteItem: function(item) {
+                loadData: function(e) {
+                     
+                       var d = $.Deferred();
+                        $.ajax({
+                            url: "/Menu/GetMenuList",
+                            data:{"pageIndex":e.pageIndex,"pageSize":e.pageSize,"Where":""},
+                            dataType: "json"
+                        }).done(function(response) {
+                            d.resolve({data:response.Source.Items,itemsCount:response.Source.TotalCount});
+                        });
+                        return d.promise();
+                    },
+                deleteItem: function(item) {
                       return  $.post("/Menu/Delete",
                            {"id":item.Id},
                            function(data){
@@ -395,28 +380,12 @@
                                             alert("标题不能为空!");
                                             return;
                                        }
-                                    if(item.NavigateController==""||item.NavigateController==null)
-                                       {
-                                            alert("导航控制器确认不能为空!");
-                                            return;
-                                       }
-                                    if(item.NavigateActioin==""||item.NavigateActioin==null)
-                                       {
-                                            alert("导航方法不能为空!");
-                                            return;
-                                       }
-
                                     if(item.ParentName==""||item.ParentName==null)
                                        {
                                            alert("父菜单名不能为空!");
                                            return;
                                        }
 
-                                    if(item.Url==""||item.Url==null)
-                                       {
-                                           alert("导航Url不能为空!");
-                                           return;
-                                       }
                                     if(item.Style==""||item.Style==null)
                                        {
                                            alert("子菜单样式不能为空!");
@@ -429,7 +398,7 @@
                                        } 
 
                                 return $.post("/Menu/Update",
-                                           {"Id":item.Id,"Name":item.Name,"Title":item.Title,"NavigateController":item.NavigateController,"NavigateActioin":item.NavigateActioin,"ParentName":item.ParentName,"Url":item.Url,"Tag":item.Tag,"Style":txtStyle,"HasChildren":item.HasChildren,"HeadStyle":item.HeadStyle},
+                                           {"Id":item.Id,"Name":item.Name,"Title":item.Title,"NavigateController":item.NavigateController,"NavigateActioin":item.NavigateActioin,"ParentName":item.ParentName,"Url":item.Url,"Tag":item.Tag,"HasChildren":item.HasChildren,"Style":item.Style,"HeadStyle":item.HeadStyle},
                                            function(data){
                                               var result=eval('('+data+')');
                                             if(result.Status==200)
@@ -459,19 +428,19 @@
                     //    sorting: false
                     //},
                     { name: "Id", type: "number", width: 60,title:"序号",align: "center", readOnly: true },
-                    { name: "Name", type: "text", width: 100,title:"名称",align: "center",readOnly: true },
-                    { name: "Title", type: "text", width: 120 ,title:"标题",align: "center"},
+                    { name: "Name", type: "text", width: 150,title:"名称",align: "center",readOnly: true },
+                    { name: "Title", type: "text", width: 150 ,title:"标题",align: "center"},
                     { name: "NavigateController", type: "text", width:80,title:"导航控制器名",align: "center"},
                     { name: "NavigateActioin", type: "text", width: 80,title:"导航方法名",align: "center"},
                     { name: "ParentName", type: "text" , width:80,title:"父菜单名",align: "center"},
                     { name: "Url", type: "text" , width:150,title:"导航Url",align: "center"},
-                    { name: "Tag", type: "text", width: 180,title:"图标",align: "center"},
+                    { name: "Tag", type: "text", width: 240,title:"图标",align: "center"},
                     { name: "HasChildren", type: "checkbox" , width:60,title:"是否有子菜单",align: "center"},
                     { name: "HeadStyle", type: "text" , width:120,title:"父标签样式",align: "center"},
                     { name: "Style", type: "text" , width:120,title:"子标签样式",align: "center"},
                     { type: "control", modeSwitchButton: true, editButton: true , width:80}
-                ],
-                 data: data
+                ]
+                 //data: data.Items
                });
      }
 </script>
