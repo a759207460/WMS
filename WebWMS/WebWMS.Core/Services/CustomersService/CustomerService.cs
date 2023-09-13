@@ -33,7 +33,7 @@ namespace WebWMS.Core.Services.CustomersService
             PagedList<CustomerDto> pagedList = null;
             IPagedList<Customer> plist = null;
             if (!string.IsNullOrWhiteSpace(where))
-                plist = await repository.GetPagedListAsync(pageIndex: pageIndex, pageSize: pageSize, predicate: c => c.Account == where);
+                plist = await repository.GetPagedListAsync(pageIndex: pageIndex, pageSize: pageSize, predicate: c => c.Account.Contains(where));
             else
                 plist = await repository.GetPagedListAsync(pageIndex: pageIndex, pageSize: pageSize);
             if (plist != null)

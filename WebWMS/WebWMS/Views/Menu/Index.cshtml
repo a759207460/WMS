@@ -47,7 +47,7 @@
         <button id="Add" class="btn btn-primary" style="float:right;"><i class="fa fa-plus"></i>新增</button>
         
    </div>
-     <div id="jsGrid" style="margin-top:2px;"></div>
+     <div id="jsGrid" style="margin-top:2px;height:90%;"></div>
    </div>
    @*新增用户弹窗*@
   <div class="modal " tabindex="-1"  id="UserModal" style="height:530px;margin-top:5px;overflow-y:hidden;overflow-x:hidden;" >
@@ -161,18 +161,18 @@
      $(function(){
 
         //数据加载
-        Loading("");
+        GridBind("");
 
         //查询
          $("#search").click(function(){
-             var w=$("#waccount").val();
-            Loading(w);
+             var w=$("#wname").val();
+            GridBind(w);
          });
 
         //清除
         $("#sclear").click(function(){
-           var w=$("#waccount").val("");
-            Loading("");
+           var w=$("#wname").val("");
+            GridBind("");
         });
         //新增
        $("#Add").click(function(){
@@ -270,24 +270,24 @@
         return RegExp(reg).test(content);
     };
 
-      //数据加载
-     function Loading(where)
-        {
-            //列表数据绑定
-         $.post("/Menu/GetMenuList",{"pageIndex":1,"pageSize":10,"Where":where},
-         function(data){
-             var result=eval('('+data+')');
-             if(result.Status==200)
-             {
-                  GridBind(result.Source);
-             }
-             else
-             {
-                  alert(result.Message);
-             }
+     // //数据加载
+     //function Loading(where)
+     //   {
+     //       //列表数据绑定
+     //    $.post("/Menu/GetMenuList",{"pageIndex":1,"pageSize":10,"Where":where},
+     //    function(data){
+     //        var result=eval('('+data+')');
+     //        if(result.Status==200)
+     //        {
+     //             GridBind(result.Source);
+     //        }
+     //        else
+     //        {
+     //             alert(result.Message);
+     //        }
             
-         });
-        }
+     //    });
+     //   }
 
      //编辑
      function Edit(id,account,pwd,name,emai,phone,address,isEnabled,d)
@@ -319,11 +319,11 @@
          };
      
      //列表数据绑定
-     function GridBind(data)
+     function GridBind(where)
      {
          $("#jsGrid").jsGrid({
                 width: "100%",
-                height: "400px",
+                height: "500px",
                 sorting: true,
                 editing: true,
                 filtering: false,
@@ -331,8 +331,7 @@
                 autoload: true,
                 pageLoading:true,
                 pageIndex:1,
-                pageSize:5,
-                pageButtonCount:5,
+                pageSize:10,
                 pagerFormat: "当前页: {pageIndex} &nbsp;&nbsp; {first} {prev} {pages} {next} {last} &nbsp;&nbsp; 页数: {pageCount} 总数: {itemCount}",
                 pagePrevText: "<",
                 pageNextText: ">",
@@ -347,11 +346,10 @@
                 rowClick: function(args) { args.cancel=true },
                 controller: {
                 loadData: function(e) {
-                     
                        var d = $.Deferred();
                         $.ajax({
                             url: "/Menu/GetMenuList",
-                            data:{"pageIndex":e.pageIndex,"pageSize":e.pageSize,"Where":""},
+                            data:{"pageIndex":e.pageIndex,"pageSize":e.pageSize,"Where":where},
                             dataType: "json"
                         }).done(function(response) {
                             d.resolve({data:response.Source.Items,itemsCount:response.Source.TotalCount});
@@ -430,12 +428,12 @@
                     { name: "Id", type: "number", width: 60,title:"序号",align: "center", readOnly: true },
                     { name: "Name", type: "text", width: 150,title:"名称",align: "center",readOnly: true },
                     { name: "Title", type: "text", width: 150 ,title:"标题",align: "center"},
-                    { name: "NavigateController", type: "text", width:80,title:"导航控制器名",align: "center"},
-                    { name: "NavigateActioin", type: "text", width: 80,title:"导航方法名",align: "center"},
-                    { name: "ParentName", type: "text" , width:80,title:"父菜单名",align: "center"},
+                    { name: "NavigateController", type: "text", width:120,title:"导航控制器名",align: "center"},
+                    { name: "NavigateActioin", type: "text", width: 120,title:"导航方法名",align: "center"},
+                    { name: "ParentName", type: "text" , width:150,title:"父菜单名",align: "center"},
                     { name: "Url", type: "text" , width:150,title:"导航Url",align: "center"},
                     { name: "Tag", type: "text", width: 240,title:"图标",align: "center"},
-                    { name: "HasChildren", type: "checkbox" , width:60,title:"是否有子菜单",align: "center"},
+                    { name: "HasChildren", type: "checkbox" , width:120,title:"是否有子菜单",align: "center"},
                     { name: "HeadStyle", type: "text" , width:120,title:"父标签样式",align: "center"},
                     { name: "Style", type: "text" , width:120,title:"子标签样式",align: "center"},
                     { type: "control", modeSwitchButton: true, editButton: true , width:80}

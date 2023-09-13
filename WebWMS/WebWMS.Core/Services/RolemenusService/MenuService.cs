@@ -36,7 +36,7 @@ namespace WebWMS.Core.Services.RolemenusService
             PagedList<MenuDto> pagedList = null;
             IPagedList<Menu> plist = null;
             if (!string.IsNullOrWhiteSpace(where))
-                plist = await repository.GetPagedListAsync(pageIndex: pageIndex, pageSize: pageSize);
+                plist = await repository.GetPagedListAsync(pageIndex: pageIndex, pageSize: pageSize,predicate:r=>r.Name.Contains(where));
             else
                 plist = await repository.GetPagedListAsync(pageIndex: pageIndex, pageSize: pageSize);
             if (plist != null)
