@@ -9,6 +9,9 @@ using System.Web;
 using WebWMS.Common;
 using WebWMS.Core.Services.CustomersService;
 using WebWMS.Models;
+using WebWMS.CommonLibraries.File;
+using WebWMS.CommonLibraries.Encrypt;
+using CommonLibraries.Redis;
 
 namespace WebWMS.Controllers
 {
@@ -16,11 +19,13 @@ namespace WebWMS.Controllers
     {
         private readonly IMemoryCache cache;
         private readonly ICustomerService customerService;
+        private readonly RedisClientHelper redisClient;
 
-        public LoginController(IMemoryCache cache, ICustomerService customerService)
+        public LoginController(IMemoryCache cache, ICustomerService customerService, RedisClientHelper redisClient)
         {
             this.cache = cache;
             this.customerService = customerService;
+            this.redisClient = redisClient;
         }
 
         /// <summary>
@@ -30,12 +35,16 @@ namespace WebWMS.Controllers
         /// <returns></returns>
         public async Task<string> Login(LoginViewModel model)
         {
+            string name = string.Empty;
+            bool t=redisClient.SetString("name", model.Account);
+            if(t)
+            {
+                name=redisClient.GetString("name");
+            }
             ResultMessage result = new ResultMessage();
             try
             {
-                //var dic = HelpFile.ReadFile<FileAccountModel>("C:\\Users\\75920\\test.txt");
-
-                //var ac = dic.FirstOrDefault(f => f.Account == "admin"); 
+                string n = name;
                 string code = cache.Get<string>("code")?.ToLower();
                 if (code != model.ValidateCode.ToLower())
                 {

@@ -15,7 +15,8 @@ namespace WebWMS.Core.Services.RolemenusService
 
         public Task<bool> GetMenuByNameAsync(string name, string title);
 
-        public Task<IPagedList<MenuDto>> GetAllAsync(int pageIndex, int pageSize, string where);
+        public Task<List<MenuDto>> GetAllAsync();
+        public Task<IPagedList<MenuDto>> GetAllPagedListAsync(int pageIndex, int pageSize, string where);
 
         public Task<int> InsertMenuAsync(MenuDto menuDto);
 

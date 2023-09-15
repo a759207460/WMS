@@ -123,7 +123,7 @@ namespace WebWMS.Core.Services.CustomersService
         /// <returns></returns>
         public async Task<bool> GetCustomerAsync(string account, string pwd)
         {
-            var cu = await repository.GetFirstOrDefaultAsync<int>(c => c.Id, predicate: c => c.Account == account && c.PassWord == pwd);
+            var cu = await repository.GetFirstOrDefaultAsync<int>(c => c.Id, predicate: c => c.Account == account && c.PassWord == pwd&&c.IsEnabled&&!c.IsRemove);
             return cu > 0;
         }
     }

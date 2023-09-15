@@ -38,7 +38,7 @@ namespace WebWMS.Controllers
             try
             {
                 result.Status = 200;
-                result.Source = await menuService.GetAllAsync(model.pageIndex - 1, model.pageSize, model.Where);
+                result.Source = await menuService.GetAllPagedListAsync(model.pageIndex - 1, model.pageSize, model.Where);
             }
             catch (Exception ex)
             {

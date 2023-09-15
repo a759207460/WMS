@@ -25,18 +25,30 @@ namespace WebWMS.Core.Services.RolemenusService
         }
 
         /// <summary>
-        /// 获取菜单列表
+        /// 获取所有菜单信息
+        /// </summary>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException"></exception>
+        public async Task<List<MenuDto>> GetAllAsync()
+        {
+            var list = await repository.GetAllAsync();
+            var menuList = mapper.Map<List<MenuDto>>(list);
+            return menuList;
+        }
+
+        /// <summary>
+        /// 获取菜单列表分页
         /// </summary>
         /// <param name="pageIndex"></param>
         /// <param name="pageSize"></param>
         /// <param name="where"></param>
         /// <returns></returns>
-        public async Task<IPagedList<MenuDto>> GetAllAsync(int pageIndex, int pageSize, string where)
+        public async Task<IPagedList<MenuDto>> GetAllPagedListAsync(int pageIndex, int pageSize, string where)
         {
             PagedList<MenuDto> pagedList = null;
             IPagedList<Menu> plist = null;
             if (!string.IsNullOrWhiteSpace(where))
-                plist = await repository.GetPagedListAsync(pageIndex: pageIndex, pageSize: pageSize,predicate:r=>r.Name.Contains(where));
+                plist = await repository.GetPagedListAsync(pageIndex: pageIndex, pageSize: pageSize, predicate: r => r.Name.Contains(where));
             else
                 plist = await repository.GetPagedListAsync(pageIndex: pageIndex, pageSize: pageSize);
             if (plist != null)
@@ -64,9 +76,9 @@ namespace WebWMS.Core.Services.RolemenusService
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
-        public async Task<bool> GetMenuByNameAsync(string name,string title)
+        public async Task<bool> GetMenuByNameAsync(string name, string title)
         {
-            if (string.IsNullOrEmpty(name)|| string.IsNullOrEmpty(title))
+            if (string.IsNullOrEmpty(name) || string.IsNullOrEmpty(title))
                 return false;
             return await repository.GetFirstOrDefaultAsync<bool>(r => r.Name == name);
         }
@@ -121,5 +133,7 @@ namespace WebWMS.Core.Services.RolemenusService
         {
             return await repository.Delete(id);
         }
+
+
     }
 }

@@ -1,6 +1,8 @@
 ﻿using Azure;
+using CommonLibraries.Redis;
 using Microsoft.EntityFrameworkCore;
 using System.Runtime.CompilerServices;
+using WebWMS.Common;
 using WebWMS.Core.DbContexts;
 using WebWMS.Core.Domain.Asns;
 using WebWMS.Core.Domain.Customers;
@@ -30,6 +32,8 @@ namespace WebWMS.Extensions
             services.AddScoped<IRepository<Customer>, Repository<Customer>>();
             services.AddScoped<IMenuService, MenuService>();
             services.AddScoped<IRepository<Menu>, Repository<Menu>>();
+            services.AddScoped<HelpGetMenuList>();
+            services.AddScoped<RedisClientHelper>();
         }
 
     }

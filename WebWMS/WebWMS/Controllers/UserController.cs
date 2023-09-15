@@ -8,6 +8,7 @@ using WebWMS.Models;
 using Newtonsoft.Json;
 using WebWMS.Core.Repositorys.Collections;
 using System.Drawing.Printing;
+using WebWMS.CommonLibraries.Encrypt;
 
 namespace WebWMS.Controllers
 {

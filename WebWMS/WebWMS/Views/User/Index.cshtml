@@ -130,18 +130,18 @@
 
         
         //数据加载
-        Loading("");
+        GridBind("");
 
         //查询
          $("#search").click(function(){
              var w=$("#waccount").val();
-            Loading(w);
+            GridBind(w);
          });
 
         //清除
         $("#sclear").click(function(){
            var w=$("#waccount").val("");
-            Loading("");
+            GridBind("");
         });
         //新增
        $("#Add").click(function(){
@@ -304,25 +304,6 @@
         return RegExp(reg).test(content);
     };
 
-      //数据加载
-     function Loading(where)
-        {
-            //列表数据绑定
-         $.post("/User/GetCustomerList",{"pageIndex":1,"pageSize":10,"Where":where},
-         function(data){
-             var result=eval('('+data+')');
-             if(result.Status==200)
-             {
-                  GridBind(result.Source.Items);
-             }
-             else
-             {
-                  alert(result.Message);
-             }
-            
-         });
-        }
-
      //编辑
      function Edit(id,account,pwd,name,emai,phone,address,isEnabled,d)
         {
@@ -361,7 +342,7 @@
         };
      
      //列表数据绑定
-     function GridBind(data)
+     function GridBind(where)
      {
          $("#jsGrid").jsGrid({
                 width: "100%",
@@ -370,8 +351,9 @@
                 editing: true,
                 filtering: false,
                 paging: true,
+                 pageLoading:true,
                 autoload: true,
-                pageSize: 1,
+                pageSize: 10,
                 pageButtonCount: 3,
                 pagerFormat: "当前页: {pageIndex} &nbsp;&nbsp; {first} {prev} {pages} {next} {last} &nbsp;&nbsp; 页数: {pageCount} 总数: {itemCount}",
                 pagePrevText: "<",
@@ -386,6 +368,17 @@
                                     },
                 rowClick: function(args) { args.cancel=true },
                 controller: {
+                  loadData: function(e) {
+                       var d = $.Deferred();
+                        $.ajax({
+                            url: "/User/GetCustomerList",
+                            data:{"pageIndex":e.pageIndex,"pageSize":e.pageSize,"Where":where},
+                            dataType: "json"
+                        }).done(function(response) {
+                            d.resolve({data:response.Source.Items,itemsCount:response.Source.TotalCount});
+                        });
+                        return d.promise();
+                    },
                   deleteItem: function(item) {
                       return  $.post("/User/Delete",
                            {"id":item.Id},
@@ -469,8 +462,7 @@
                     { name: "IsRemove", type: "checkbox" , width:60,title:"是否删除",align: "center"},
                     { name: "IsEnabled", type: "checkbox" , width:60,title:"是否启用",align: "center"},
                     { type: "control", modeSwitchButton: true, editButton: true }
-                ],
-                 data: data
+                ]
                });
      }
 </script>

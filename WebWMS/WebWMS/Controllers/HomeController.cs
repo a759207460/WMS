@@ -10,10 +10,12 @@ namespace WebWMS.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly HelpGetMenuList helpGetMenuList;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, HelpGetMenuList helpGetMenuList)
         {
             _logger = logger;
+            this.helpGetMenuList = helpGetMenuList;
         }
 
         public IActionResult Index()
@@ -27,9 +29,9 @@ namespace WebWMS.Controllers
         /// <param name="name"></param>
         /// <returns></returns>
         [HttpPost]
-        public string GetMenuList(string name)
+        public async Task<string> GetMenuList(string name)
         {
-            string menuList = HelpGetMenuList.GetMenuList(name);
+            string menuList =await helpGetMenuList.GetMenuList(name);
             return menuList;
         }
 
