@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "LbgHh5+B98NNM3G5o2hWxlBMAHbNw12rIrBV9WJ2qQ2Zv3k40u4KMLdYLbFLxUa9vZV0uZiMmWd2+LedZSXg4Q==",
+  "dgSpecHash": "pzWnwcb3go+2ma74RoQXDBuFpG0ND1v31VzW+40h0SdX6OuKuJOJ1MO+oaKPRX37I9J4hmKH7nLjI9H2zW0oiA==",
   "success": true,
   "projectFilePath": "C:\\项目\\C#学习例子\\WMS\\WebWMS\\WebWMS.Core\\WebWMS.Core.csproj",
   "expectedPackageFiles": [
@@ -46,6 +46,9 @@
     "C:\\Users\\75920\\.nuget\\packages\\microsoft.win32.systemevents\\5.0.0\\microsoft.win32.systemevents.5.0.0.nupkg.sha512",
     "C:\\Users\\75920\\.nuget\\packages\\mono.texttemplating\\2.2.1\\mono.texttemplating.2.2.1.nupkg.sha512",
     "C:\\Users\\75920\\.nuget\\packages\\newtonsoft.json\\13.0.3\\newtonsoft.json.13.0.3.nupkg.sha512",
+    "C:\\Users\\75920\\.nuget\\packages\\nlog\\5.2.4\\nlog.5.2.4.nupkg.sha512",
+    "C:\\Users\\75920\\.nuget\\packages\\nlog.extensions.logging\\5.3.4\\nlog.extensions.logging.5.3.4.nupkg.sha512",
+    "C:\\Users\\75920\\.nuget\\packages\\nlog.web.aspnetcore\\5.3.4\\nlog.web.aspnetcore.5.3.4.nupkg.sha512",
     "C:\\Users\\75920\\.nuget\\packages\\pipelines.sockets.unofficial\\2.2.8\\pipelines.sockets.unofficial.2.2.8.nupkg.sha512",
     "C:\\Users\\75920\\.nuget\\packages\\stackexchange.redis\\2.6.122\\stackexchange.redis.2.6.122.nupkg.sha512",
     "C:\\Users\\75920\\.nuget\\packages\\system.buffers\\4.5.1\\system.buffers.4.5.1.nupkg.sha512",

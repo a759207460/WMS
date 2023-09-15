@@ -5,6 +5,8 @@ using System.Runtime;
 using WebWMS.AutoMapper;
 using WebWMS.Core.DbContexts;
 using WebWMS.Extensions;
+using NLog;
+using NLog.Web;
 
 namespace WebWMS
 {
@@ -15,6 +17,9 @@ namespace WebWMS
             var builder = WebApplication.CreateBuilder(args);
             IConfigurationRoot configurationRoot = new ConfigurationBuilder()
                  .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true).AddEnvironmentVariables().Build();
+
+            var logger = NLog.LogManager.Setup().LoadConfigurationFromAppSettings().GetCurrentClassLogger();
+
             builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(option =>
             {
                 option.LoginPath = "/Login.html";
@@ -29,6 +34,7 @@ namespace WebWMS
             builder.Services.RegisterService();//注册各类服务
             builder.Services.AddAutoMapper(c => c.AddProfile(new AutoMapperProFile()));
             builder.Services.AddOptions().Configure<RedisSetting>(r => configurationRoot.GetSection("RedisConnectionString").Bind(r));
+            builder.Host.UseNLog();
             var app = builder.Build();
 
             //设置登录页面

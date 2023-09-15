@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using CommonLibraries.Redis;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.AspNetCore.Routing;
@@ -9,6 +10,7 @@ using WebWMS.Core.Domain.Asns;
 using WebWMS.Core.DTO.Rolemenus;
 using WebWMS.Core.Services.RolemenusService;
 using WebWMS.Models;
+using static CommonLibraries.Redis.RedisClientHelper;
 
 namespace WebWMS.Common
 {
@@ -16,12 +18,17 @@ namespace WebWMS.Common
     {
         private readonly IMenuService menuService;
         private readonly IMapper mapper;
+        private readonly RedisClientHelper redisClient;
+        private readonly ILogger<HelpGetMenuList> logger;
 
-        public HelpGetMenuList(IMenuService menuService,IMapper mapper)
+        public HelpGetMenuList(IMenuService menuService, IMapper mapper, RedisClientHelper redisClient, ILogger<HelpGetMenuList> logger)
         {
             this.menuService = menuService;
             this.mapper = mapper;
+            this.redisClient = redisClient;
+            this.logger = logger;
         }
+
         //private static List<MenuModel> MenuList { get; set; } = new List<MenuModel>() {
         //         new MenuModel() {Title="首页",HasChildren=false, Url="/Home/Index?name=''",Tag="bi bi-house-door-fill",ParentName="Root",Name="" ,Style="nav nav-list collapse",HeadStyle="nav-header collapsed"},
         //         new MenuModel(){Title="基础信息",HasChildren=true, Url="#",Tag="bi bi-file-spreadsheet-fill",ParentName="Root",Name="user-menu",Style="nav nav-list collapse",HeadStyle="nav-header collapsed"},
@@ -58,45 +65,69 @@ namespace WebWMS.Common
         /// <returns></returns>
         public async Task<string> GetMenuList(string trigerName)
         {
-
-            List<MenuDto>  list= await menuService.GetAllAsync();
-            var MenuList = mapper.Map<List<MenuModel>>(list);
-            StringBuilder stringBuilder = new StringBuilder("<ul>");
-            List<MenuModel> FirstMenu = MenuList.Where(m => m.ParentName == "Root").ToList();
-            List<MenuModel> ChlidrenMenu = MenuList.Where(m => m.ParentName != "Root").ToList();
-            if (MenuList.Count() > 0)
+            try
             {
-                foreach (var first in FirstMenu)
+                StringBuilder stringBuilder = new StringBuilder("<ul>");
+                List<MenuDto> list = null;
+                if (redisClient.ExistsHash("WMS_MenuList", "menuhash"))
                 {
-                    if (first.HasChildren)
+                    list = redisClient.GetObjHash<List<MenuDto>>("WMS_MenuList", "menuhash");
+                }
+                else
+                {
+                    list = await menuService.GetAllAsync();
+                    redisClient.SetObjHash<List<MenuDto>>("WMS_MenuList", "menuhash", list, SerializeType.Json);
+                    TimeSpan timeSpan = TimeSpan.FromHours(24);
+                    redisClient.SetKeyExpire("WMS_MenuList", timeSpan);
+                }
+                if (list != null && list.Count() > 0)
+                {
+                    var MenuList = mapper.Map<List<MenuModel>>(list);
+                    List<MenuModel> FirstMenu = MenuList.Where(m => m.ParentName == "Root").ToList();
+                    List<MenuModel> ChlidrenMenu = MenuList.Where(m => m.ParentName != "Root").ToList();
+                    if (MenuList.Count() > 0)
                     {
-                        if(!string.IsNullOrWhiteSpace(trigerName)&&trigerName.Contains(first.Name))
+                        foreach (var first in FirstMenu)
                         {
-                            first.Style = "nav nav-list collapse in";
-                            first.HeadStyle = "nav-header";
-                        }else
-                        {
-                            first.Style = "nav nav-list collapse";
-                            first.HeadStyle = "nav-header collapsed";
-                        }
-                        stringBuilder.Append($"<li><a href=\"{first.Url}\"  style=\"color:#444;\" data-target=\".{first.Name}\"  class=\"{first.HeadStyle}\" data-toggle=\"collapse\">{first.Tag} {first.Title}<i class=\"fa fa-collapse\"></i></a></li>\r\n<li>\r\n<ul class=\"{first.Name} {first.Style}\">");
-                        foreach (var child in  ChlidrenMenu)
-                        {
-                            if (child.ParentName == first.Name)
+                            if (first.HasChildren)
                             {
-                                stringBuilder.Append($"<li><a href=\"{child.Url}\" style=\"color:#444;\"><span class=\"fa fa-caret-right\"></span>{child.Tag} {child.Title}</a></li>");
+                                if (!string.IsNullOrWhiteSpace(trigerName) && trigerName.Contains(first.Name))
+                                {
+                                    first.Style = "nav nav-list collapse in";
+                                    first.HeadStyle = "nav-header";
+                                }
+                                else
+                                {
+                                    first.Style = "nav nav-list collapse";
+                                    first.HeadStyle = "nav-header collapsed";
+                                }
+                                stringBuilder.Append($"<li><a href=\"{first.Url}\"  style=\"color:#444;\" data-target=\".{first.Name}\"  class=\"{first.HeadStyle}\" data-toggle=\"collapse\">{first.Tag} {first.Title}<i class=\"fa fa-collapse\"></i></a></li>\r\n<li>\r\n<ul class=\"{first.Name} {first.Style}\">");
+                                foreach (var child in ChlidrenMenu)
+                                {
+                                    if (child.ParentName == first.Name)
+                                    {
+                                        stringBuilder.Append($"<li><a href=\"{child.Url}\" style=\"color:#444;\"><span class=\"fa fa-caret-right\"></span>{child.Tag} {child.Title}</a></li>");
+                                    }
+                                }
+                                stringBuilder.Append("</ul>");
+                            }
+                            else
+                            {
+                                stringBuilder.Append($" <li><a href=\"{first.Url}\"  style=\"color:#444;\" class=\"{first.HeadStyle}\" >{first.Tag} {first.Title}</a></li>");
                             }
                         }
-                        stringBuilder.Append("</ul>");
-                    }
-                    else
-                    {
-                        stringBuilder.Append($" <li><a href=\"{first.Url}\"  style=\"color:#444;\" class=\"{first.HeadStyle}\" >{first.Tag} {first.Title}</a></li>");
                     }
                 }
+                stringBuilder.Append("</ul>");
+                return stringBuilder.ToString();
+
             }
-            stringBuilder.Append("</ul>");
-            return stringBuilder.ToString();
+            catch (Exception ex)
+            {
+                logger.LogError("菜单列表获取错误:", ex.Message);
+                return "";
+            }
+
         }
     }
 }
