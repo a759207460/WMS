@@ -71,7 +71,7 @@ namespace CommonLibraries.Excel
                     cell.Style.HorizontalAlignment = ExcelHorizontalAlignment.Center; //水平居中
                     cell.Style.VerticalAlignment = ExcelVerticalAlignment.Center;     //垂直居中
                     cell.Style.Font.Size = 12;
-                    cell.Style.Fill.PatternType = ExcelFillStyle.Gray125;  //背景颜色
+                    cell.Style.Fill.PatternType = ExcelFillStyle.None;  //背景颜色
                     //cell.Style.Fill.BackgroundColor.SetColor(Color.FromArgb(128, 128, 128));//设置单元格背景色
                 }
                 // }
