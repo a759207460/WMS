@@ -12,6 +12,7 @@ using WebWMS.Models;
 using WebWMS.CommonLibraries.File;
 using WebWMS.CommonLibraries.Encrypt;
 using CommonLibraries.Redis;
+using CommonLibraries.Excel;
 
 namespace WebWMS.Controllers
 {
@@ -33,8 +34,10 @@ namespace WebWMS.Controllers
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        public async Task<string> Login(LoginViewModel model)
+        public async Task<string> Login(LoginViewModel model,CancellationToken cancellationToken)
         {
+            //string josn=await EPPlusHelper.ReadExcel(@"C:\Users\75920\test1.xlsx", cancellationToken);
+            //var ls =JsonConvert.DeserializeObject<List<FileAccountModel>>(josn);
             string name = string.Empty;
             bool t=redisClient.SetString("name", model.Account);
             if(t)

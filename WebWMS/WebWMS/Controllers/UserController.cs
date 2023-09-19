@@ -9,6 +9,9 @@ using Newtonsoft.Json;
 using WebWMS.Core.Repositorys.Collections;
 using System.Drawing.Printing;
 using WebWMS.CommonLibraries.Encrypt;
+using CommonLibraries.Excel;
+using System.Data;
+using System.Threading;
 
 namespace WebWMS.Controllers
 {
@@ -17,12 +20,14 @@ namespace WebWMS.Controllers
         private readonly ICustomerService customerService;
         private readonly ILogger<Customer> logger;
         private readonly IMapper mapper;
+        private readonly IHostEnvironment hostEnvironment;
 
-        public UserController(ICustomerService customerService, ILogger<Customer> logger, IMapper mapper)
+        public UserController(ICustomerService customerService, ILogger<Customer> logger, IMapper mapper, IHostEnvironment hostEnvironment)
         {
             this.customerService = customerService;
             this.logger = logger;
             this.mapper = mapper;
+            this.hostEnvironment = hostEnvironment;
         }
 
         public IActionResult Index()
@@ -45,7 +50,7 @@ namespace WebWMS.Controllers
             try
             {
                 result.Status = 200;
-                result.Source = await customerService.GetAllAsync(model.pageIndex - 1, model.pageSize,model.Where);
+                result.Source = await customerService.GetAllPageListAsync(model.pageIndex - 1, model.pageSize, model.Where);
             }
             catch (Exception ex)
             {
@@ -163,5 +168,117 @@ namespace WebWMS.Controllers
             return JsonConvert.SerializeObject(result);
         }
 
+
+        #region 导入导出
+
+        /// <summary>
+        /// excel 导入
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost]
+        public async Task<IActionResult> ImportExcel([FromForm(Name = "file")] IFormFile excelFile, CancellationToken cancellationToken)
+        {
+            //CancellationTokenSource t = new CancellationTokenSource();
+            //t.CancelAfter(30000);
+            //CancellationToken s = t.Token;
+            List<CustomerDto>? list = null;
+            int num = 0;
+            ResultMessage result = new ResultMessage();
+            try
+            {
+                //string filePath = hostEnvironment.ContentRootPath;
+                //string path = Path.Combine(filePath, "userInfo.xlsx");
+                //FileInfo file = new FileInfo(path);
+                if (excelFile == null || excelFile.Length <= 0)
+                {
+                    result.Message = "请选择导入文件!";
+                    result.Status = -1;
+                    ViewBag.ImportExceMessage = result.Message;
+                    ViewBag.ImportExceStatus = result.Status;
+                    return View("Index");
+                }
+                Stream stream = excelFile.OpenReadStream();
+                string json = await EPPlusHelper.ReadExcel(stream, cancellationToken);
+                if (json != null)
+                {
+                    list = JsonConvert.DeserializeObject<List<CustomerDto>>(json);
+                }
+                if (list != null && list.Count > 0)
+                {
+                    bool isRepeat = list.GroupBy(i => i.Account).Any(g => g.Count() > 1);
+                    if (isRepeat)
+                    {
+                        result.Message = "Excel表格中账号有重复请检查!";
+                        ViewBag.ImportExceMessage = result.Message;
+                        ViewBag.ImportExceStatus = result.Status;
+                        return View("Index");
+                    }
+                    var dic = await customerService.CustomeAnyAsync(list);
+                    if (dic.FirstOrDefault().Key)
+                    {
+                        result.Status = -1;
+                        result.Message = "账号" + dic.FirstOrDefault().Value + "已存在,不能重复导入!";
+                        ViewBag.ImportExceMessage = result.Message;
+                        ViewBag.ImportExceStatus = result.Status;
+                        return View("Index");
+                    }
+                    list.ForEach(u => { u.PassWord = HelpCrypto.DESEncrypt("123456"); u.Creator = User?.Identity?.Name; u.IsEnabled = true; u.CreateTime = DateTime.Now.ToString(); });
+                    num = await customerService.BatchInsertCustomerAsync(list, cancellationToken);
+                }
+                if (num > 0)
+                {
+                    result.Status = 200;
+                    result.Message = "导入成功!";
+                }
+                else
+                {
+                    result.Status = -1;
+                    result.Message = "导入失败!";
+                }
+
+            }
+            catch (Exception ex)
+            {
+                result.Status = -1;
+                result.Message = ex.Message;
+            }
+            ViewBag.ImportExceMessage = result.Message;
+            ViewBag.ImportExceStatus = result.Status;
+            return View("Index");
+        }
+
+        /// <summary>
+        /// 导出exce
+        /// </summary>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        public async Task<string> ExportExcel(CancellationToken cancellationToken)
+        {
+            ResultMessage result = new ResultMessage();
+            try
+            {
+                string path = @"C:\项目\UserInfo-" + Guid.NewGuid().ToString() + ".xlsx";
+                var list = await customerService.GetAllAsync();
+                DataTable dt = EPPlusHelper.ListToDt(list);
+                bool b = await EPPlusHelper.ExportExcel(path, dt,cancellationToken);
+                if (b)
+                {
+                    result.Status = 200;
+                    result.Message = $"导出成功!文件导出位置:{path}";
+                }
+                else
+                {
+                    result.Status = -1;
+                    result.Message = "导出失败!";
+                }
+            }
+            catch (Exception ex)
+            {
+                result.Status = -1;
+                result.Message = ex.Message;
+            }
+            return JsonConvert.SerializeObject(result);
+        }
+        #endregion
     }
 }

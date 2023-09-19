@@ -46,6 +46,10 @@
         "net6.0": {
           "targetAlias": "net6.0",
           "dependencies": {
+            "EPPlus": {
+              "target": "Package",
+              "version": "[6.2.9, )"
+            },
             "FileHelpers": {
               "target": "Package",
               "version": "[3.5.2, )"

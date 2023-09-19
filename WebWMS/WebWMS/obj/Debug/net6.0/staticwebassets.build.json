@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "7XL4dBLXMNF+ZV3nYiPUxQwoGxrj8KwxYUXjqivD72w=",
+  "Hash": "wcvZBiG8vuuof7b7o4TvIpdNbPQIpkVAqqEu95dfZGY=",
   "Source": "WebWMS",
   "BasePath": "_content/WebWMS",
   "Mode": "Default",
@@ -33726,6 +33726,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\js\\site.js"
+    },
+    {
+      "Identity": "C:\\项目\\C#学习例子\\WMS\\WebWMS\\WebWMS\\wwwroot\\js\\UploadFile.js",
+      "SourceId": "WebWMS",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\项目\\C#学习例子\\WMS\\WebWMS\\WebWMS\\wwwroot\\",
+      "BasePath": "_content/WebWMS",
+      "RelativePath": "js/UploadFile.js",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\js\\UploadFile.js"
     },
     {
       "Identity": "C:\\项目\\C#学习例子\\WMS\\WebWMS\\WebWMS\\wwwroot\\lib\\bootstrap\\css\\bootstrap-icons.css",

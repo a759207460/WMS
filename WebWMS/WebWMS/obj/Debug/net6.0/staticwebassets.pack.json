@@ -7869,6 +7869,10 @@
       "PackagePath": "staticwebassets\\css\\jsgrid.min.css"
     },
     {
+      "Id": "C:\\项目\\C#学习例子\\WMS\\WebWMS\\WebWMS\\wwwroot\\js\\UploadFile.js",
+      "PackagePath": "staticwebassets\\js\\UploadFile.js"
+    },
+    {
       "Id": "C:\\项目\\C#学习例子\\WMS\\WebWMS\\WebWMS\\wwwroot\\js\\jquery.knob.js",
       "PackagePath": "staticwebassets\\js\\jquery.knob.js"
     },

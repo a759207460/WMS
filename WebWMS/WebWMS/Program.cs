@@ -7,6 +7,8 @@ using WebWMS.Core.DbContexts;
 using WebWMS.Extensions;
 using NLog;
 using NLog.Web;
+using System.Text.Encodings.Web;
+using System.Text.Unicode;
 
 namespace WebWMS
 {
@@ -35,6 +37,7 @@ namespace WebWMS
             builder.Services.AddAutoMapper(c => c.AddProfile(new AutoMapperProFile()));
             builder.Services.AddOptions().Configure<RedisSetting>(r => configurationRoot.GetSection("RedisConnectionString").Bind(r));
             builder.Host.UseNLog();
+            builder.Services.AddSingleton(HtmlEncoder.Create(UnicodeRanges.All));
             var app = builder.Build();
 
             //…Ë÷√µ«¬º“≥√Ê

@@ -16,11 +16,17 @@ namespace WebWMS.Core.Services.CustomersService
 
         public Task<bool> GetCustomerByAccountAsync(string account);
 
-        public Task<IPagedList<CustomerDto>> GetAllAsync(int pageIndex, int pageSize, string where);
+        public Task<IPagedList<CustomerDto>> GetAllPageListAsync(int pageIndex, int pageSize, string where);
+
+        public  Task<List<CustomerDto>> GetAllAsync();
+
+        public Task<Dictionary<bool, string?>> CustomeAnyAsync(List<CustomerDto> list);
 
         public Task<bool> GetCustomerAsync(string account, string pwd);
 
         public Task<int> InsertCustomerAsync(CustomerDto customerDto);
+
+        Task<int> BatchInsertCustomerAsync(List<CustomerDto> listCustomerDto, CancellationToken cancellationToken);
 
         public Task<int> UpdateCustomerAsync(CustomerDto customerDto);
 

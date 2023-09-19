@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query.Internal;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -28,7 +30,7 @@ namespace WebWMS.Core.Services.CustomersService
         /// </summary>
         /// <returns></returns>
         /// <exception cref="NotImplementedException"></exception>
-        public async Task<IPagedList<CustomerDto>> GetAllAsync(int pageIndex, int pageSize, string where)
+        public async Task<IPagedList<CustomerDto>> GetAllPageListAsync(int pageIndex, int pageSize, string where)
         {
             PagedList<CustomerDto> pagedList = null;
             IPagedList<Customer> plist = null;
@@ -44,6 +46,26 @@ namespace WebWMS.Core.Services.CustomersService
             return pagedList;
         }
 
+
+        public async Task<List<CustomerDto>> GetAllAsync()
+        {
+            var list = await repository.GetAllAsync();
+            return mapper.Map<List<CustomerDto>>(list);
+        }
+        /// <summary>
+        /// 获取所有用户集合
+        /// </summary>
+        /// <returns></returns>
+        public async Task<Dictionary<bool, string?>> CustomeAnyAsync(List<CustomerDto> list)
+        {
+            Dictionary<bool, string?> dic = new Dictionary<bool, string?>();
+            List<string> cu = list.Select(c => c.Account).ToList();
+            List<string> clist = (await repository.GetAllAsync()).Select(cu => cu.Account).ToList();
+            bool b = clist.Intersect(cu).Count() > 0;
+            string? account = string.Join(",", clist?.Intersect(cu).ToArray());
+            dic.Add(b, account);
+            return dic;
+        }
         /// <summary>
         /// 根据id获取用户信息
         /// </summary>
@@ -77,6 +99,19 @@ namespace WebWMS.Core.Services.CustomersService
             var cu = mapper.Map<Customer>(customerDto);
             return await repository.InsertAsync(cu);
         }
+
+        /// <summary>
+        /// 批量新增用户
+        /// </summary>
+        /// <param name="customerDto"></param>
+        /// <returns></returns>
+        public async Task<int> BatchInsertCustomerAsync(List<CustomerDto> listCustomerDto, CancellationToken cancellationToken)
+        {
+            var cu = mapper.Map<List<Customer>>(listCustomerDto);
+            return await repository.InsertAsync(cu, cancellationToken);
+        }
+
+
 
         /// <summary>
         /// 更新用户
@@ -123,7 +158,7 @@ namespace WebWMS.Core.Services.CustomersService
         /// <returns></returns>
         public async Task<bool> GetCustomerAsync(string account, string pwd)
         {
-            var cu = await repository.GetFirstOrDefaultAsync<int>(c => c.Id, predicate: c => c.Account == account && c.PassWord == pwd&&c.IsEnabled&&!c.IsRemove);
+            var cu = await repository.GetFirstOrDefaultAsync<int>(c => c.Id, predicate: c => c.Account == account && c.PassWord == pwd && c.IsEnabled && !c.IsRemove);
             return cu > 0;
         }
     }
