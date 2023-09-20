@@ -1,4 +1,5 @@
-﻿<html lang="en">
+﻿@using System.Security.Claims;
+<html lang="en">
 <head>
     <meta charset="utf-8" />
     <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
@@ -65,19 +66,60 @@
           <ul id="main-menu" class="nav navbar-nav navbar-right">
             <li class="dropdown hidden-xs">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                    <span class="glyphicon glyphicon-user padding-right-small" style="position:relative;top: 3px;"></span><p style="display:inline-block;width:40px;">@User?.Identity?.Name</p>
+                    <span class="glyphicon glyphicon-user padding-right-small" style="position:relative;top: 3px;"></span><p style="display:inline-block;width:40px;">@User?.Claims?.FirstOrDefault(x => x.Type == ClaimTypes.Dsa)?.Value</p>
                     <i class="fa fa-caret-down"></i>
                 </a>
-              <ul class="dropdown-menu" style="min-width:100px;background-color:#cccc;">
-                <li><a asp-controller="User">个人信息</a></li>
+              <ul class="dropdown-menu" style="min-width:100px;background-color:white;">
+                <li><a href="#" id="UserInfo">个人信息</a></li>
                 <li><a href="#">设置</a></li>
-                <li><a tabindex="-1" href="/Login/LogOut">退出</a></li>
+                <li><a tabindex="-1" href="/Login/LogOut" style="color:cornflowerblue;">退出</a></li>
               </ul>
             </li>
           </ul>
         </div>
       </div>
     </header>
+
+  @*  个人信息弹框*@
+ <div class="modal" tabindex="-1" id="UserInfoModel" style="height:450px;margin-top:30px;overflow-y:hidden;width:550px;margin-left:35%;" >
+      <div class="modal-dialog" style="height:500px;width:450px;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h7 class="modal-title" style="color:#4d5b76;font-size:1em;font-family:Cambria;font-weight:500;">个人信息</h7>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" style="padding:5px;">
+       <div class="panel panel-default">
+        <div class="panel-body" style="text-align:center;">
+             <div class="row">
+                 <div class="col-sm-1" style="width:100px;">账号:</div>
+                 <div class="col-sm-2" style="width:260px;text-align:left;">@User?.Claims?.FirstOrDefault(x => x.Type == ClaimTypes.Dsa)?.Value</div>
+             </div>
+               <div class="row">
+                 <div class="col-sm-1" style="width:100px;">名称:</div>
+                 <div class="col-sm-2" style="width:260px;text-align:left;">@User?.Claims?.FirstOrDefault(x => x.Type == ClaimTypes.Name)?.Value</div>
+             </div>
+               <div class="row">
+                 <div class="col-sm-1" style="width:100px;">电话:</div>
+                 <div class="col-sm-2" style="width:260px;text-align:left;">@User?.Claims?.FirstOrDefault(x => x.Type == ClaimTypes.MobilePhone)?.Value</div>
+             </div>
+               <div class="row">
+                 <div class="col-sm-1" style="width:100px;">邮箱:</div>
+                 <div class="col-sm-2" style="width:260px;text-align:left;">@User?.Claims?.FirstOrDefault(x => x.Type == ClaimTypes.Email)?.Value</div>
+             </div>
+               <div class="row">
+                 <div class="col-sm-1" style="width:100px;">地址:</div>
+                 <div class="col-sm-2" style="width:260px;text-align:left;">@User?.Claims?.FirstOrDefault(x => x.Type == ClaimTypes.StreetAddress)?.Value</div>
+             </div>
+        </div>
+    </div> 
+    </div>
+  </div>
+</div>
+</div>
+
     <div id="menuList" class="sidebar-nav" style="width:180px;">
 
     </div>
@@ -97,6 +139,11 @@
             var name=window.location.search.substr(1);
             $.post("../Home/GetMenuList",{"name":name},function(data){
                 $("#menuList").append(data);
+            });
+
+            //个人信息弹框
+            $("#UserInfo").click(function(){
+               $("#UserInfoModel").modal('show');
             });
         });
     </script>

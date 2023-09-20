@@ -10,6 +10,8 @@ using System.Threading.Tasks;
 using System.Collections;
 using System.Reflection;
 using Microsoft.Extensions.Primitives;
+using Microsoft.Extensions.Options;
+using Microsoft.AspNetCore.Server.IIS.Core;
 
 namespace CommonLibraries.Excel
 {
@@ -17,7 +19,7 @@ namespace CommonLibraries.Excel
     {
 
         /// <summary>
-        /// 导入数据到Excel中
+        /// 导出数据到Excel中
         /// </summary>
         /// <param name="fileName"></param>
         /// <param name="ds"></param>
@@ -54,14 +56,14 @@ namespace CommonLibraries.Excel
                     {
                         if (i == 0)
                         {
-                            worksheet.Cells[i+1, j+1].Value = dt.Columns[j].ColumnName;
-                            worksheet.Cells[i+2, j + 1].Value = dt.Rows[i][j].ToString();
+                            worksheet.Cells[i + 1, j + 1].Value = dt.Columns[j].ColumnName;
+                            worksheet.Cells[i + 2, j + 1].Value = dt.Rows[i][j].ToString();
                         }
                         else
                         {
                             worksheet.Cells[i + 2, j + 1].Value = dt.Rows[i][j].ToString();
                         }
-                       
+
                     }
                 }
                 using (var cell = worksheet.Cells[1, 1, 1, dt.Columns.Count])
@@ -81,6 +83,71 @@ namespace CommonLibraries.Excel
             return true;
         }
 
+
+        /// <summary>
+        /// 导出数据到Excel中
+        /// </summary>
+        /// <param name="fileName"></param>
+        /// <param name="ds"></param>
+        public static async Task<bool> ExportModleExcel(string modePath, string downLoadPath, DataTable dt, CancellationToken cancellationToken)
+        {
+            ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+            if (dt == null || dt.Rows.Count == 0)
+            {
+                return false;
+            }
+            FileInfo modelfile = new FileInfo(modePath);
+            //在using语句里面我们可以创建多个worksheet，ExcelPackage后面可以传入路径参数
+            //命名空间是using OfficeOpenXml
+            using (ExcelPackage package = new ExcelPackage(modelfile))
+            {
+                if (package != null)
+                {
+                    ExcelWorksheet? ws = package.Workbook.Worksheets.Where(x => x.Name.ToLower() == "sheet1").FirstOrDefault();
+
+                    if (ws != null)
+                    {
+                        //给单元格赋值有两种方式
+                        //worksheet.Cells[1, 1].Value = "单元格的值";直接指定行列数进行赋值
+                        //worksheet.Cells["A1"].Value = "单元格的值";直接指定单元格进行赋值
+                        ws.Cells.Style.Font.Name = "微软雅黑";
+                        ws.Cells.Style.Font.Size = 12;
+                        ws.Cells.Style.ShrinkToFit = true;//单元格自动适应大小
+
+                        for (int i = 1; i < dt.Rows.Count; i++)
+                        {
+                            for (int j = 0; j < dt.Columns.Count; j++)
+                            {
+                                ws.Cells[i + 1, j + 1].Value = dt.Rows[i][j].ToString();
+
+                            }
+                        }
+                        using (var cell = ws.Cells[1, 1, 1, dt.Rows.Count])
+                        {
+                            //设置样式:首行居中加粗背景色
+                            //cell.Style.Font.Bold = false; //加粗
+                            cell.Style.HorizontalAlignment = ExcelHorizontalAlignment.Center; //水平居中
+                            cell.Style.VerticalAlignment = ExcelVerticalAlignment.Center;     //垂直居中
+                        }
+                        //保存
+                        await package.SaveAsAsync(downLoadPath, cancellationToken);
+                    }
+                    else
+                    {
+                        return false;
+                    }
+
+                }
+                else
+                {
+                    return false;
+                }
+
+            }
+            return true;
+        }
+
+
         /// <summary>
         /// 读取Excel数据
         /// </summary>
@@ -92,7 +159,6 @@ namespace CommonLibraries.Excel
                 StringBuilder sb = new StringBuilder();
                 string jsonStr = string.Empty;
                 ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
-                //FileInfo file = new FileInfo(fileName);
                 try
                 {
                     using (ExcelPackage package = new ExcelPackage(fileStream))
@@ -127,7 +193,7 @@ namespace CommonLibraries.Excel
                 }
                 catch (Exception ex)
                 {
-                    return "An error had Happen";
+                    return ex.Message;
                 }
                 return jsonStr;
             }, cancellationToken);
@@ -154,10 +220,15 @@ namespace CommonLibraries.Excel
                     foreach (PropertyInfo pi in props)
                     {
                         object obj = pi?.GetValue(collection.ElementAt(i), null);
+                        if(obj != null)
                         tempList.Add(obj);
                     }
-                    object[] array = tempList?.ToArray();
-                    dt.LoadDataRow(array, true);
+                    if(tempList!=null&&tempList.Count > 0)
+                    {
+                        object[] array = tempList?.ToArray();
+                        if (array != null)
+                            dt.LoadDataRow(array, true);
+                    }
                 }
             }
             return dt;

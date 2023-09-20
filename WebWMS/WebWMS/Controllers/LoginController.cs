@@ -13,6 +13,7 @@ using WebWMS.CommonLibraries.File;
 using WebWMS.CommonLibraries.Encrypt;
 using CommonLibraries.Redis;
 using CommonLibraries.Excel;
+using System.Data;
 
 namespace WebWMS.Controllers
 {
@@ -34,15 +35,18 @@ namespace WebWMS.Controllers
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        public async Task<string> Login(LoginViewModel model,CancellationToken cancellationToken)
+        public async Task<string> Login(LoginViewModel model, CancellationToken cancellationToken)
         {
+
+            //DataTable dt = new DataTable();
+            //EPPlusHelper.ExportModleExcel(dt, cancellationToken);
             //string josn=await EPPlusHelper.ReadExcel(@"C:\Users\75920\test1.xlsx", cancellationToken);
             //var ls =JsonConvert.DeserializeObject<List<FileAccountModel>>(josn);
             string name = string.Empty;
-            bool t=redisClient.SetString("name", model.Account);
-            if(t)
+            bool t = redisClient.SetString("name", model.Account);
+            if (t)
             {
-                name=redisClient.GetString("name");
+                name = redisClient.GetString("name");
             }
             ResultMessage result = new ResultMessage();
             try
@@ -56,12 +60,16 @@ namespace WebWMS.Controllers
                     return JsonConvert.SerializeObject(result);
                 }
                 string pwd = HelpCrypto.DESEncrypt(model.PassWord);
-                bool b = await customerService.GetCustomerAsync(model.Account, pwd);
-                if (b)
+                var cu = await customerService.GetCustomerAsync(model.Account, pwd);
+                if (cu != null && cu.Id > 0)
                 {
                     var claims = new List<Claim>
                     {
-                        new Claim(ClaimTypes.Name, model.Account)
+                        new Claim(ClaimTypes.Dsa, cu.Account),
+                        new Claim(ClaimTypes.Name,cu.Name ),
+                        new Claim(ClaimTypes.MobilePhone,cu.MoblePhone),
+                        new Claim(ClaimTypes.Email,cu.Email ),
+                        new Claim(ClaimTypes.StreetAddress,cu.Address)
                     };//记录需要存储的数据
                     var claimnsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
                     await HttpContext.SignInAsync(new ClaimsPrincipal(claimnsIdentity), new AuthenticationProperties { IsPersistent = true });

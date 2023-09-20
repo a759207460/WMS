@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using WebWMS.Core.Domain.Customers;
 using WebWMS.Core.DTO.Customers;
+using WebWMS.Core.DTO.CustomersDto;
 using WebWMS.Core.Repositorys;
 using WebWMS.Core.Repositorys.Collections;
 
@@ -52,6 +53,19 @@ namespace WebWMS.Core.Services.CustomersService
             var list = await repository.GetAllAsync();
             return mapper.Map<List<CustomerDto>>(list);
         }
+
+        /// <summary>
+        /// 导出客户信息
+        /// </summary>
+        /// <returns></returns>
+        public async Task<List<ExportCustomerDto>> GetExportAsync()
+        {
+            var list = await repository.GetAllAsync();
+            var nlist = list.Select(c => new ExportCustomerDto { Account = c.Account, Name = c.Name, MoblePhone = c.MoblePhone, Email = c.Email, Address = c.Address, IsEnabled = (c.IsEnabled == true ? "是" : "否"), IsRemove = (c.IsRemove == true ? "是" : "否") });
+            return mapper.Map<List<ExportCustomerDto>>(nlist);
+        }
+
+
         /// <summary>
         /// 获取所有用户集合
         /// </summary>
@@ -156,10 +170,11 @@ namespace WebWMS.Core.Services.CustomersService
         /// <param name="account"></param>
         /// <param name="pwd"></param>
         /// <returns></returns>
-        public async Task<bool> GetCustomerAsync(string account, string pwd)
+        public async Task<CustomerDto> GetCustomerAsync(string account, string pwd)
         {
-            var cu = await repository.GetFirstOrDefaultAsync<int>(c => c.Id, predicate: c => c.Account == account && c.PassWord == pwd && c.IsEnabled && !c.IsRemove);
-            return cu > 0;
+            var cu = await repository.GetFirstOrDefaultAsync(c =>c,predicate: c => c.Account == account && c.PassWord == pwd && c.IsEnabled && !c.IsRemove);
+            var customer = mapper.Map<CustomerDto>(cu);
+            return customer;
         }
     }
 }

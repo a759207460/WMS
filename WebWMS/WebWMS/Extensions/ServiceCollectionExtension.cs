@@ -1,4 +1,6 @@
 ﻿using Azure;
+using CommonLibraries.API;
+using CommonLibraries.Excel;
 using CommonLibraries.Redis;
 using Microsoft.EntityFrameworkCore;
 using System.Runtime.CompilerServices;
@@ -34,6 +36,18 @@ namespace WebWMS.Extensions
             services.AddScoped<IRepository<Menu>, Repository<Menu>>();
             services.AddScoped<HelpGetMenuList>();
             services.AddScoped<RedisClientHelper>();
+        }
+
+        /// <summary>
+        /// 注册配置文件
+        /// </summary>
+        /// <param name="services"></param>
+        /// <param name="configurationRoot"></param>
+        public static void RegisterConfigure(this IServiceCollection services, IConfigurationRoot configurationRoot)
+        {
+            services.AddOptions().Configure<RedisSetting>(r => configurationRoot.GetSection("RedisConnectionString").Bind(r));
+            services.AddOptions().Configure<ExceConfig>(r => configurationRoot.GetSection("ImportAndExport").Bind(r));
+            services.AddOptions().Configure<APIConfig>(r => configurationRoot.GetSection("APIUrl").Bind(r));
         }
 
     }

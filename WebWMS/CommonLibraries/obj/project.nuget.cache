@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "cKoUHCkIUQF1De5Or4mV2d1+hLlXtD+d9JgHKkomlC0Iyiw261BMoSutz5pyA0bwT41YzR1JT7a10C8r58mGuw==",
+  "dgSpecHash": "jR+NjDO1eNqFbaniVBGpXQAOGAb40ZLL5D8Kc5Q7QI1LqlRWdfQ4Lr663oTV+8mc/pujFmaouxUgZmLKKtX/Sw==",
   "success": true,
   "projectFilePath": "C:\\项目\\C#学习例子\\WMS\\WebWMS\\CommonLibraries\\CommonLibraries.csproj",
   "expectedPackageFiles": [
@@ -28,6 +28,7 @@
     "C:\\Users\\75920\\.nuget\\packages\\nlog.extensions.logging\\5.3.4\\nlog.extensions.logging.5.3.4.nupkg.sha512",
     "C:\\Users\\75920\\.nuget\\packages\\nlog.web.aspnetcore\\5.3.4\\nlog.web.aspnetcore.5.3.4.nupkg.sha512",
     "C:\\Users\\75920\\.nuget\\packages\\pipelines.sockets.unofficial\\2.2.8\\pipelines.sockets.unofficial.2.2.8.nupkg.sha512",
+    "C:\\Users\\75920\\.nuget\\packages\\restsharp\\110.2.0\\restsharp.110.2.0.nupkg.sha512",
     "C:\\Users\\75920\\.nuget\\packages\\stackexchange.redis\\2.6.122\\stackexchange.redis.2.6.122.nupkg.sha512",
     "C:\\Users\\75920\\.nuget\\packages\\system.diagnostics.diagnosticsource\\6.0.0\\system.diagnostics.diagnosticsource.6.0.0.nupkg.sha512",
     "C:\\Users\\75920\\.nuget\\packages\\system.drawing.common\\6.0.0\\system.drawing.common.6.0.0.nupkg.sha512",
@@ -36,8 +37,8 @@
     "C:\\Users\\75920\\.nuget\\packages\\system.runtime.compilerservices.unsafe\\6.0.0\\system.runtime.compilerservices.unsafe.6.0.0.nupkg.sha512",
     "C:\\Users\\75920\\.nuget\\packages\\system.security.cryptography.pkcs\\6.0.3\\system.security.cryptography.pkcs.6.0.3.nupkg.sha512",
     "C:\\Users\\75920\\.nuget\\packages\\system.text.encoding.codepages\\6.0.0\\system.text.encoding.codepages.6.0.0.nupkg.sha512",
-    "C:\\Users\\75920\\.nuget\\packages\\system.text.encodings.web\\6.0.0\\system.text.encodings.web.6.0.0.nupkg.sha512",
-    "C:\\Users\\75920\\.nuget\\packages\\system.text.json\\6.0.0\\system.text.json.6.0.0.nupkg.sha512"
+    "C:\\Users\\75920\\.nuget\\packages\\system.text.encodings.web\\7.0.0\\system.text.encodings.web.7.0.0.nupkg.sha512",
+    "C:\\Users\\75920\\.nuget\\packages\\system.text.json\\7.0.2\\system.text.json.7.0.2.nupkg.sha512"
   ],
   "logs": []
 }

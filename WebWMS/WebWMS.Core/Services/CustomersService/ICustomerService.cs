@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using WebWMS.Core.Domain.Customers;
 using WebWMS.Core.DTO.Customers;
+using WebWMS.Core.DTO.CustomersDto;
 using WebWMS.Core.Repositorys.Collections;
 
 namespace WebWMS.Core.Services.CustomersService
@@ -20,9 +21,11 @@ namespace WebWMS.Core.Services.CustomersService
 
         public  Task<List<CustomerDto>> GetAllAsync();
 
+        public Task<List<ExportCustomerDto>> GetExportAsync();
+
         public Task<Dictionary<bool, string?>> CustomeAnyAsync(List<CustomerDto> list);
 
-        public Task<bool> GetCustomerAsync(string account, string pwd);
+        public Task<CustomerDto> GetCustomerAsync(string account, string pwd);
 
         public Task<int> InsertCustomerAsync(CustomerDto customerDto);
 

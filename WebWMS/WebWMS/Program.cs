@@ -9,6 +9,7 @@ using NLog;
 using NLog.Web;
 using System.Text.Encodings.Web;
 using System.Text.Unicode;
+using CommonLibraries.Excel;
 
 namespace WebWMS
 {
@@ -35,7 +36,7 @@ namespace WebWMS
             builder.Services.InitialDb(configurationRoot);//注册数据库上下文对象服务
             builder.Services.RegisterService();//注册各类服务
             builder.Services.AddAutoMapper(c => c.AddProfile(new AutoMapperProFile()));
-            builder.Services.AddOptions().Configure<RedisSetting>(r => configurationRoot.GetSection("RedisConnectionString").Bind(r));
+            builder.Services.RegisterConfigure(configurationRoot);
             builder.Host.UseNLog();
             builder.Services.AddSingleton(HtmlEncoder.Create(UnicodeRanges.All));
             var app = builder.Build();

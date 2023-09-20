@@ -12,19 +12,22 @@ using WebWMS.CommonLibraries.Encrypt;
 using CommonLibraries.Excel;
 using System.Data;
 using System.Threading;
+using Microsoft.Extensions.Options;
 
 namespace WebWMS.Controllers
 {
     public class UserController : Controller
     {
         private readonly ICustomerService customerService;
+        private readonly IOptionsSnapshot<ExceConfig> options;
         private readonly ILogger<Customer> logger;
         private readonly IMapper mapper;
         private readonly IHostEnvironment hostEnvironment;
 
-        public UserController(ICustomerService customerService, ILogger<Customer> logger, IMapper mapper, IHostEnvironment hostEnvironment)
+        public UserController(ICustomerService customerService,IOptionsSnapshot<ExceConfig> options,ILogger<Customer> logger, IMapper mapper, IHostEnvironment hostEnvironment)
         {
             this.customerService = customerService;
+            this.options = options;
             this.logger = logger;
             this.mapper = mapper;
             this.hostEnvironment = hostEnvironment;
@@ -168,7 +171,6 @@ namespace WebWMS.Controllers
             return JsonConvert.SerializeObject(result);
         }
 
-
         #region 导入导出
 
         /// <summary>
@@ -257,14 +259,16 @@ namespace WebWMS.Controllers
             ResultMessage result = new ResultMessage();
             try
             {
-                string path = @"C:\项目\UserInfo-" + Guid.NewGuid().ToString() + ".xlsx";
-                var list = await customerService.GetAllAsync();
+                var list = await customerService.GetExportAsync();
                 DataTable dt = EPPlusHelper.ListToDt(list);
-                bool b = await EPPlusHelper.ExportExcel(path, dt,cancellationToken);
+                string modelPath = options.Value.ModelPath + "model.xlsx";
+                string rand="-"+new Random().Next(1,1000).ToString();
+                string downloadPath = options.Value.DownloadPath + "User-" +DateTime.Now.ToString("yyyy-MM-dd")+ rand + ".xlsx";
+                bool b = await EPPlusHelper.ExportModleExcel(modelPath, downloadPath, dt,cancellationToken);
                 if (b)
                 {
                     result.Status = 200;
-                    result.Message = $"导出成功!文件导出位置:{path}";
+                    result.Message = $"导出成功!文件导出位置:{downloadPath}";
                 }
                 else
                 {

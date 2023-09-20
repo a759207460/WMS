@@ -198,3 +198,4 @@ C:\项目\C#学习例子\WMS\WebWMS\WebWMS\bin\Debug\net6.0\EPPlus.System.Drawin
 C:\项目\C#学习例子\WMS\WebWMS\WebWMS\bin\Debug\net6.0\Microsoft.IO.RecyclableMemoryStream.dll
 C:\项目\C#学习例子\WMS\WebWMS\WebWMS\bin\Debug\net6.0\System.Security.Cryptography.Pkcs.dll
 C:\项目\C#学习例子\WMS\WebWMS\WebWMS\bin\Debug\net6.0\runtimes\win\lib\net6.0\System.Security.Cryptography.Pkcs.dll
+C:\项目\C#学习例子\WMS\WebWMS\WebWMS\bin\Debug\net6.0\RestSharp.dll

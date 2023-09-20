@@ -74,6 +74,10 @@
               "target": "Package",
               "version": "[13.0.3, )"
             },
+            "RestSharp": {
+              "target": "Package",
+              "version": "[110.2.0, )"
+            },
             "StackExchange.Redis": {
               "target": "Package",
               "version": "[2.6.122, )"
