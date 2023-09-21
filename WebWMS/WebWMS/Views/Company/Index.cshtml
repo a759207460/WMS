@@ -50,8 +50,8 @@
      <div id="jsGrid" style="margin-top:2px;height:90%;"></div>
    </div>
    @*新增用户弹窗*@
-  <div class="modal " tabindex="-1"  id="CompanyModal" style="height:530px;margin-top:5px;overflow-y:hidden;overflow-x:hidden;" >
-  <div class="modal-dialog">
+  <div class="modal " tabindex="-1"  id="CompanyModal" style="height:370px;margin-top:5px;overflow-y:hidden;overflow-x:hidden;" >
+  <div class="modal-dialog" style="width:470px;">
     <div class="modal-content">
       <div class="modal-header">
         <h7 class="modal-title" id="mTitle" style="color:#4d5b76;font-size:1em;font-family:Cambria;font-weight:500;">新增公司</h7>
@@ -61,23 +61,23 @@
       </div>
       <div class="modal-body" style="padding:5px;">
        <div class="panel panel-default">
-        <div class="panel-body" style="height:450px;">
+        <div class="panel-body" style="height:360px;width:450px;">
             <form>
               <div class="container">
                 <div class="row">
                    <div class="col-md-1 col1">公司编号</div> 
                    <div class="col-md-2 col2"><input type="text" class="form-controlnew"  id="txtCompanyCode" placeholder="公司编号" autocomplete="off"> </div>
-                   <div class="col-md-3"><span style="color:red;" id="sName">*</span></div>
+                   <div class="col-md-3"><span style="color:red;" id="sCompanyCode">*</span></div>
                 </div>
                 <div class="row" id="mpassword">
                     <div class="col-md-1 col1">公司名称</div>
                     <div class="col-md-2 col2"><input type="text" class="form-controlnew" id="txtCompanyName"   placeholder="公司名称" autocomplete="off" ></div>
-                    <div class="col-md-3 col3"><span style="color:red;" id="sTitle">*</span></div>
+                    <div class="col-md-3 col3"><span style="color:red;" id="sCompanyName">*</span></div>
                 </div>
                  <div class="row" id="mpassword1">
                     <div class="col-md-1 col1">所在城市</div>
                     <div class="col-md-2 col2"><input type="text" class="form-controlnew" id="txtCompanyCity"   placeholder="所在城市" autocomplete="off" ></div>
-                    <div class="col-md-3 col3"><span style="color:red;" id="sNavigateController">*</span></div>
+                    <div class="col-md-3 col3"><span style="color:red;" id="sCompanyCity">*</span></div>
                 </div>
                 <div class="row">
                   <div class="col-md-1 col1">详细地址</div>
@@ -87,17 +87,17 @@
                 <div class="row">
                   <div class="col-md-1 col1">负责人</div>
                   <div class="col-md-2 col2"> <input type="text" class="form-controlnew " id="txtCompanyPrincipal"  placeholder="负责人"  autocomplete="off"></div>
-                  <div class="col-md-3 col3"><span style="color:red;" id="sParentName">*</span></div>
+                  <div class="col-md-3 col3"><span style="color:red;" id="sCompanyPrincipal">*</span></div>
                 </div>
                 <div class="row">
                    <div class="col-md-1 col1">联系方式</div>
                    <div class="col-md-2 col2"><input type="text" class="form-controlnew" id="txtCompanyContact"  placeholder="联系方式"   autocomplete="off"></div>
-                   <div class="col-md-3 col3"> <span style="color:red;" id="sUrl">*</span></div>
+                   <div class="col-md-3 col3"> <span style="color:red;" id="sCompanyContact">*</span></div>
                 </div>
                 <div class="row" style="margin-top:10px;">
                      <div class="col-md-3" style="text-align:right;">
-                          <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
-                           <button type="button"  class="btn btn-primary" id="Save">保存</button>
+                          <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>&nbsp;&nbsp;&nbsp;&nbsp;
+                          <button type="button"  class="btn btn-primary" id="Save">保存</button>
                      </div>
                   </div>
               </div>
@@ -154,84 +154,81 @@
         });
         //新增
        $("#Add").click(function(){
-          $("#txtStyle").val("nav nav-list collapse");
-          $("#txtHeadStyle").val("nav-header collapsed");
           $("#CompanyModal").modal('show'); 
        });
 
        //保存
        $("#Save").click(function(){
-           var txtName=$("#txtName").val();
-           var txtTitle=$("#txtTitle").val();
-            var txtNavigateController=$("#txtNavigateController").val();
-           var txtNavigateActioin=$("#txtNavigateActioin").val();
-           var txtParentName=$("#txtParentName").val();
-           var txtUrl=$("#txtUrl").val();
-           var txtTag=$("#txtTag").val();
-           var txtStyle=$("#txtStyle").val();
-           var txtHasChildren=$("#txtHasChildren").prop("checked");
-           var txtHeadStyle=$("#txtHeadStyle").val();
-
+           var txtCompanyCode=$("#txtCompanyCode").val();
+           var txtCompanyName=$("#txtCompanyName").val();
+            var txtCompanyCity=$("#txtCompanyCity").val();
+           var txtCompanyAddress=$("#txtCompanyAddress").val();
+           var txtCompanyPrincipal=$("#txtCompanyPrincipal").val();
+           var txtCompanyContact=$("#txtCompanyContact").val();
+           
           
-           if(txtName==""||txtName==null)
+           if(txtCompanyCode==""||txtCompanyCode==null)
            {
-               $("#stName").append("名称不能为空!");
+               $("#sCompanyCode").append("公司编号不能为空!");
                return;
            }else
            {
-               $("#stName").text("*")
+               $("#sCompanyCode").text("*")
            }
-           if(txtTitle==""||txtTitle==null)
+           if(txtCompanyName==""||txtCompanyName==null)
            {
-                $("#sTitle").append("标题不能为空!");
+                $("#sCompanyName").append("公司名称不能为空!");
                 return;
            }
            else{
-               $("#sTitle").text("*")
+               $("#sCompanyName").text("*")
            }
-           if(txtParentName==""||txtParentName==null)
+           if(txtCompanyCity==""||txtCompanyCity==null)
            {
-               $("#sParentName").append("父菜单名不能为空!");
+               $("#sCompanyCity").append("公司所在城市不能为空!");
                return;
            }else{
-               $("#sParentName").text("*");
+               $("#sCompanyCity").text("*");
            }
-            if(txtStyle==""||txtStyle==null)
+            if(txtCompanyAddress==""||txtCompanyAddress==null)
            {
-               $("#sStyle").append("子菜单样式不能为空!");
+               $("#sCompanyAddress").append("公司地址不能为空!");
                return;
            }else{
-               $("#sStyle").text("*");
+               $("#sCompanyAddress").text("*");
            }
 
-            if(txtHeadStyle==""||txtHeadStyle==null)
+            if(txtCompanyPrincipal==""||txtCompanyPrincipal==null)
            {
-               $("#sHeadStyle").append("父菜单样式不能为空!");
+               $("#sCompanyPrincipal").append("公司负责人不能为空!");
                return;
            }else{
-               $("#sHeadStyle").text("*");
+               $("#sCompanyPrincipal").text("*");
            }
 
+            if(txtCompanyContact==""||txtCompanyContact==null)
+           {
+               $("#sCompanyContact").append("公司联系方式不能为空!");
+               return;
+           }else{
+               $("#sCompanyContact").text("*");
+           }
 
-               $.post("/Menu/Add",
-           {"Name":txtName,"Title":txtTitle,"NavigateController":txtNavigateController,"NavigateActioin":txtNavigateActioin,"ParentName":txtParentName,"Url":txtUrl,"Tag":txtTag,"Style":txtStyle,"HasChildren":txtHasChildren,"HeadStyle":txtHeadStyle},
+               $.post("/Company/Add",
+           {"CompanyCode":txtCompanyCode,"CompanyName":txtCompanyName,"CompanyCity":txtCompanyCity,"CompanyAddress":txtCompanyAddress,"CompanyPrincipal":txtCompanyPrincipal,"CompanyContact":txtCompanyContact},
            function(data){
               var result=eval('('+data+')');
             if(result.Status==200)
             {
                 alert(result.Message);
-                $("#txtName").val("");
-                $("#txtTitle").val("");
-                $("#txtNavigateController").val("");
-                $("#txtNavigateActioin").val("");
-                $("#txtParentName").val("");
-                $("#txtUrl").val("");
-                $("#txtTag").val("");
-                $("#txtStyle").val("");
-                $("#txtHeadStyle").val("");
-                $("#txtHasChildren").prop("checked","");
-                $("#CompanyModal").modal('hide');
-                location.reload(true);
+             $("#txtCompanyCode").val("");
+             $("#txtCompanyName").val("");
+             $("#txtCompanyCity").val("");
+             $("#txtCompanyAddress").val("");
+             $("#txtCompanyPrincipal").val("");
+             $("#txtCompanyContact").val("");
+             $("#CompanyModal").modal('hide');
+             location.reload(true);
             }
             else
             {
@@ -241,42 +238,6 @@
         
     });
 
-     //手机号验证
-     function validatorTel(content){
-        // 正则验证格式
-        eval("var reg = /^1[34578]\\d{9}$/;");
-        return RegExp(reg).test(content);
-    };
-
-     //编辑
-     function Edit(id,account,pwd,name,emai,phone,address,isEnabled,d)
-        {
-
-              $("#mTitle").text("编辑用户");
-               $("#mpassword").hide();
-                $("#mpassword1").hide();
-               $("#operatetype").val("edit");
-               $("#account").val(account);
-                $("#password").val(pwd);
-                $("#password1").val(pwd);
-                $("#name").val(name);
-                $("#phone").val(phone);
-               $("#email").val(emai);
-               $("#address").val(address);
-               $("#editId").val(id);
-               if(isEnabled=='True')
-               {
-                   $("#IsEnabled").attr("checked","checked");
-               }  
-               if(d=='True')
-               {
-                   $("#Delete").attr("checked","checked");
-               }
-               
-              
-              $("#CompanyModal").modal('show');
-         };
-     
      //列表数据绑定
      function GridBind(where)
      {
@@ -308,7 +269,7 @@
                 loadData: function(e) {
                        var d = $.Deferred();
                         $.ajax({
-                            url: "/Menu/GetMenuList",
+                            url: "/Company/GetCompanyList",
                             data:{"pageIndex":e.pageIndex,"pageSize":e.pageSize,"Where":where},
                             dataType: "json"
                         }).done(function(response) {
@@ -371,34 +332,15 @@
                    }
                 },
                 fields: [
-                    // {
-                    //    headerTemplate: function() {
-                    //        return $("<input>").attr("type", "checkbox").text("全选")
-                    //                .on("click", function () {
-                    //                    $("<input>").attr("type","checkbox").prop("checked","checked")
-                    //                });
-                    //    },
-                    //    itemTemplate: function() {
-                    //        return $("<input>").attr("type", "checkbox")
-                    //    },
-                    //    align: "center",
-                    //    width: 50,
-                    //    sorting: false
-                    //},
                     { name: "Id", type: "number", width: 60,title:"序号",align: "center", readOnly: true },
-                    { name: "Name", type: "text", width: 150,title:"名称",align: "center",readOnly: true },
-                    { name: "Title", type: "text", width: 150 ,title:"标题",align: "center"},
-                    { name: "NavigateController", type: "text", width:120,title:"导航控制器名",align: "center"},
-                    { name: "NavigateActioin", type: "text", width: 120,title:"导航方法名",align: "center"},
-                    { name: "ParentName", type: "text" , width:150,title:"父菜单名",align: "center"},
-                    { name: "Url", type: "text" , width:150,title:"导航Url",align: "center"},
-                    { name: "Tag", type: "text", width: 240,title:"图标",align: "center"},
-                    { name: "HasChildren", type: "checkbox" , width:120,title:"是否有子菜单",align: "center"},
-                    { name: "HeadStyle", type: "text" , width:120,title:"父标签样式",align: "center"},
-                    { name: "Style", type: "text" , width:120,title:"子标签样式",align: "center"},
+                    { name: "CompanyCode", type: "text", width: 150,title:"公司编号",align: "center",readOnly: true },
+                    { name: "CompanyName", type: "text", width: 150 ,title:"公司名称",align: "center"},
+                    { name: "CompanyCity", type: "text", width:120,title:"公司城市",align: "center"},
+                    { name: "CompanyAddress", type: "text", width: 120,title:"公司地址",align: "center"},
+                    { name: "CompanyPrincipal", type: "text" , width:150,title:"公司负责人",align: "center"},
+                    { name: "IsDelete", type: "checkbox" , width:120,title:"是否删除",align: "center"},
                     { type: "control", modeSwitchButton: true, editButton: true , width:80}
                 ]
-                 //data: data.Items
                });
      }
 </script>

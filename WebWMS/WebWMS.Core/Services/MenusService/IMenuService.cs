@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using WebWMS.Core.DTO.Customers;
 using WebWMS.Core.DTO.MenusDto;
 using WebWMS.Core.Repositorys.Collections;
 

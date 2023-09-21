@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using WebWMS.Core.Domain.Companys;
-using WebWMS.Core.Domain.Customers;
+using WebWMS.Core.Domain.Users;
 using WebWMS.Core.Domain.Menus;
 
 namespace WebWMS.Core.DbContexts
@@ -17,7 +17,7 @@ namespace WebWMS.Core.DbContexts
 
         }
         public DbSet<Company> Companys { get; set; }
-        public DbSet<Customer> Customers { get; set; }
+        public DbSet<UserInfo> Customers { get; set; }
         public DbSet<Menu> Menus { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

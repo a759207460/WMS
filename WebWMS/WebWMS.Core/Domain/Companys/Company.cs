@@ -34,6 +34,12 @@ namespace WebWMS.Core.Domain.Companys
         public string CompanyPrincipal { get; set; }
 
         /// <summary>
+        ///公司联系方式
+        /// </summary>
+        public string txtCompanyContact { get; set; }
+
+
+        /// <summary>
         /// 是否删除
         /// </summary>
         public bool IsDelete { get; set; }

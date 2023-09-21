@@ -3,15 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WebWMS.Core.DTO.UserInfosDto;
 
-namespace WebWMS.Core.DTO.Customers
+namespace WebWMS.Core.Domain.Users
 {
-    public class CustomerDto:BaseDto
+    public  class UserInfo:BaseModel
     {
         #region Property
-        /// <summary>
-        /// customer name
-        /// </summary>
+
         public string? Name { get; set; }
 
         /// <summary>
@@ -40,11 +39,6 @@ namespace WebWMS.Core.DTO.Customers
         public bool IsEnabled { get; set; }
 
         /// <summary>
-        /// 是否删除
-        /// </summary>
-        public bool IsRemove { get; set; }
-
-        /// <summary>
         /// contact tel
         /// </summary>
         public string MoblePhone { get; set; }
@@ -53,6 +47,8 @@ namespace WebWMS.Core.DTO.Customers
         /// creator
         /// </summary>
         public string? Creator { get; set; }
+
+        public bool IsRemove { get; set; }
 
         #endregion
     }

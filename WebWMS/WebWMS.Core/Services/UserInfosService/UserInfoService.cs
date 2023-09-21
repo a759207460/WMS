@@ -7,20 +7,20 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using WebWMS.Core.Domain.Customers;
-using WebWMS.Core.DTO.Customers;
-using WebWMS.Core.DTO.CustomersDto;
+using WebWMS.Core.Domain.Users;
+using WebWMS.Core.DTO.UserInfosDto;
 using WebWMS.Core.Repositorys;
 using WebWMS.Core.Repositorys.Collections;
+using WebWMS.Core.Services.UserInfosService;
 
-namespace WebWMS.Core.Services.CustomersService
+namespace WebWMS.Core.Services.UserInfosService
 {
-    public class CustomerService : ICustomerService
+    public class UserInfoService : IUserInfoService
     {
-        private readonly IRepository<Customer> repository;
+        private readonly IRepository<UserInfo> repository;
         private readonly IMapper mapper;
 
-        public CustomerService(IRepository<Customer> repository, IMapper mapper)
+        public UserInfoService(IRepository<UserInfo> repository, IMapper mapper)
         {
             this.repository = repository;
             this.mapper = mapper;
@@ -31,38 +31,38 @@ namespace WebWMS.Core.Services.CustomersService
         /// </summary>
         /// <returns></returns>
         /// <exception cref="NotImplementedException"></exception>
-        public async Task<IPagedList<CustomerDto>> GetAllPageListAsync(int pageIndex, int pageSize, string where)
+        public async Task<IPagedList<UserInfoDto>> GetAllPageListAsync(int pageIndex, int pageSize, string where)
         {
-            PagedList<CustomerDto> pagedList = null;
-            IPagedList<Customer> plist = null;
+            PagedList<UserInfoDto> pagedList = null;
+            IPagedList<UserInfo> plist = null;
             if (!string.IsNullOrWhiteSpace(where))
                 plist = await repository.GetPagedListAsync(pageIndex: pageIndex, pageSize: pageSize, predicate: c => c.Account.Contains(where));
             else
                 plist = await repository.GetPagedListAsync(pageIndex: pageIndex, pageSize: pageSize);
             if (plist != null)
             {
-                var list = mapper.Map<PagedList<CustomerDto>>(plist);
+                var list = mapper.Map<PagedList<UserInfoDto>>(plist);
                 pagedList = list;
             }
             return pagedList;
         }
 
 
-        public async Task<List<CustomerDto>> GetAllAsync()
+        public async Task<List<UserInfoDto>> GetAllAsync()
         {
             var list = await repository.GetAllAsync();
-            return mapper.Map<List<CustomerDto>>(list);
+            return mapper.Map<List<UserInfoDto>>(list);
         }
 
         /// <summary>
         /// 导出客户信息
         /// </summary>
         /// <returns></returns>
-        public async Task<List<ExportCustomerDto>> GetExportAsync()
+        public async Task<List<ExportUserInfDto>> GetExportAsync()
         {
             var list = await repository.GetAllAsync();
-            var nlist = list.Select(c => new ExportCustomerDto { Account = c.Account, Name = c.Name, MoblePhone = c.MoblePhone, Email = c.Email, Address = c.Address, IsEnabled = (c.IsEnabled == true ? "是" : "否"), IsRemove = (c.IsRemove == true ? "是" : "否") });
-            return mapper.Map<List<ExportCustomerDto>>(nlist);
+            var nlist = list.Select(c => new ExportUserInfDto { Account = c.Account, Name = c.Name, MoblePhone = c.MoblePhone, Email = c.Email, Address = c.Address, IsEnabled = (c.IsEnabled == true ? "是" : "否"), IsRemove = (c.IsRemove == true ? "是" : "否") });
+            return mapper.Map<List<ExportUserInfDto>>(nlist);
         }
 
 
@@ -70,7 +70,7 @@ namespace WebWMS.Core.Services.CustomersService
         /// 获取所有用户集合
         /// </summary>
         /// <returns></returns>
-        public async Task<Dictionary<bool, string?>> CustomeAnyAsync(List<CustomerDto> list)
+        public async Task<Dictionary<bool, string?>> CustomeAnyAsync(List<UserInfoDto> list)
         {
             Dictionary<bool, string?> dic = new Dictionary<bool, string?>();
             List<string> cu = list.Select(c => c.Account).ToList();
@@ -84,10 +84,10 @@ namespace WebWMS.Core.Services.CustomersService
         /// 根据id获取用户信息
         /// </summary>
         /// <returns></returns>
-        public async Task<CustomerDto> GetCustomerByIdAsync(int id)
+        public async Task<UserInfoDto> GetCustomerByIdAsync(int id)
         {
             var cu = await repository.FindAsync(id);
-            var cuto = mapper.Map<CustomerDto>(cu);
+            var cuto = mapper.Map<UserInfoDto>(cu);
             return cuto;
         }
 
@@ -108,9 +108,9 @@ namespace WebWMS.Core.Services.CustomersService
         /// </summary>
         /// <param name="customerDto"></param>
         /// <returns></returns>
-        public async Task<int> InsertCustomerAsync(CustomerDto customerDto)
+        public async Task<int> InsertCustomerAsync(UserInfoDto customerDto)
         {
-            var cu = mapper.Map<Customer>(customerDto);
+            var cu = mapper.Map<UserInfo>(customerDto);
             return await repository.InsertAsync(cu);
         }
 
@@ -119,9 +119,9 @@ namespace WebWMS.Core.Services.CustomersService
         /// </summary>
         /// <param name="customerDto"></param>
         /// <returns></returns>
-        public async Task<int> BatchInsertCustomerAsync(List<CustomerDto> listCustomerDto, CancellationToken cancellationToken)
+        public async Task<int> BatchInsertCustomerAsync(List<UserInfoDto> listCustomerDto, CancellationToken cancellationToken)
         {
-            var cu = mapper.Map<List<Customer>>(listCustomerDto);
+            var cu = mapper.Map<List<UserInfo>>(listCustomerDto);
             return await repository.InsertAsync(cu, cancellationToken);
         }
 
@@ -131,7 +131,7 @@ namespace WebWMS.Core.Services.CustomersService
         /// 更新用户
         /// </summary>
         /// <param name="customerDto"></param>
-        public async Task<int> UpdateCustomerAsync(CustomerDto customerDto)
+        public async Task<int> UpdateCustomerAsync(UserInfoDto customerDto)
         {
             var cu = await repository.FindAsync(customerDto.Id);
             if (cu != null)
@@ -170,10 +170,10 @@ namespace WebWMS.Core.Services.CustomersService
         /// <param name="account"></param>
         /// <param name="pwd"></param>
         /// <returns></returns>
-        public async Task<CustomerDto> GetCustomerAsync(string account, string pwd)
+        public async Task<UserInfoDto> GetCustomerAsync(string account, string pwd)
         {
             var cu = await repository.GetFirstOrDefaultAsync(c =>c,predicate: c => c.Account == account && c.PassWord == pwd && c.IsEnabled && !c.IsRemove);
-            var customer = mapper.Map<CustomerDto>(cu);
+            var customer = mapper.Map<UserInfoDto>(cu);
             return customer;
         }
     }

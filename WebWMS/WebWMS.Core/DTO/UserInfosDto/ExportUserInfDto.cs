@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WebWMS.Core.DTO.CustomersDto
+namespace WebWMS.Core.DTO.UserInfosDto
 {
-    public class ExportCustomerDto
+    public class ExportUserInfDto
     {
         public string? Name { get; set; }
 

@@ -1,9 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using WebWMS.Common;
-using WebWMS.Core.Domain.Customers;
-using WebWMS.Core.DTO.Customers;
-using WebWMS.Core.Services.CustomersService;
 using WebWMS.Models;
 using Newtonsoft.Json;
 using WebWMS.Core.Repositorys.Collections;
@@ -13,18 +10,21 @@ using CommonLibraries.Excel;
 using System.Data;
 using System.Threading;
 using Microsoft.Extensions.Options;
+using WebWMS.Core.DTO.UserInfosDto;
+using WebWMS.Core.Domain.Users;
+using WebWMS.Core.Services.UserInfosService;
 
 namespace WebWMS.Controllers
 {
     public class UserController : Controller
     {
-        private readonly ICustomerService customerService;
+        private readonly IUserInfoService customerService;
         private readonly IOptionsSnapshot<ExceConfig> options;
-        private readonly ILogger<Customer> logger;
+        private readonly ILogger<UserInfo> logger;
         private readonly IMapper mapper;
         private readonly IHostEnvironment hostEnvironment;
 
-        public UserController(ICustomerService customerService,IOptionsSnapshot<ExceConfig> options,ILogger<Customer> logger, IMapper mapper, IHostEnvironment hostEnvironment)
+        public UserController(IUserInfoService customerService,IOptionsSnapshot<ExceConfig> options,ILogger<UserInfo> logger, IMapper mapper, IHostEnvironment hostEnvironment)
         {
             this.customerService = customerService;
             this.options = options;
@@ -49,7 +49,7 @@ namespace WebWMS.Controllers
 
         public async Task<string> GetCustomerList(RequestModel model)
         {
-            ResultMessage<IPagedList<CustomerDto>> result = new ResultMessage<IPagedList<CustomerDto>>();
+            ResultMessage<IPagedList<UserInfoDto>> result = new ResultMessage<IPagedList<UserInfoDto>>();
             try
             {
                 result.Status = 200;
@@ -74,7 +74,7 @@ namespace WebWMS.Controllers
             ResultMessage result = new ResultMessage();
             try
             {
-                var cuto = mapper.Map<CustomerDto>(model);
+                var cuto = mapper.Map<UserInfoDto>(model);
                 cuto.IsRemove = model.IsRemove;
                 cuto.IsEnabled = model.IsEnabled;
                 cuto.PassWord = HelpCrypto.DESEncrypt(cuto.PassWord);
@@ -122,7 +122,7 @@ namespace WebWMS.Controllers
                 cu.IsEnabled = model.IsEnabled;
                 cu.IsRemove = model.IsRemove;
                 cu.UpdateTime = DateTime.Now.ToString();
-                var cuto = mapper.Map<CustomerDto>(cu);
+                var cuto = mapper.Map<UserInfoDto>(cu);
                 int num = await customerService.UpdateCustomerAsync(cuto);
                 if (num > 0)
                 {
@@ -183,7 +183,7 @@ namespace WebWMS.Controllers
             //CancellationTokenSource t = new CancellationTokenSource();
             //t.CancelAfter(30000);
             //CancellationToken s = t.Token;
-            List<CustomerDto>? list = null;
+            List<UserInfoDto>? list = null;
             int num = 0;
             ResultMessage result = new ResultMessage();
             try
@@ -203,7 +203,7 @@ namespace WebWMS.Controllers
                 string json = await EPPlusHelper.ReadExcel(stream, cancellationToken);
                 if (json != null)
                 {
-                    list = JsonConvert.DeserializeObject<List<CustomerDto>>(json);
+                    list = JsonConvert.DeserializeObject<List<UserInfoDto>>(json);
                 }
                 if (list != null && list.Count > 0)
                 {

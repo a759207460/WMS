@@ -31,7 +31,7 @@ namespace WebWMS.Core.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Customers",
+                name: "UserInfos",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -50,7 +50,7 @@ namespace WebWMS.Core.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Customers", x => x.Id);
+                    table.PrimaryKey("PK_UserInfos", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -86,7 +86,7 @@ namespace WebWMS.Core.Migrations
                 name: "Companys");
 
             migrationBuilder.DropTable(
-                name: "Customers");
+                name: "UserInfos");
 
             migrationBuilder.DropTable(
                 name: "Menus");

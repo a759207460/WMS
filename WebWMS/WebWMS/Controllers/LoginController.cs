@@ -7,23 +7,23 @@ using System.Drawing;
 using System.Security.Claims;
 using System.Web;
 using WebWMS.Common;
-using WebWMS.Core.Services.CustomersService;
 using WebWMS.Models;
 using WebWMS.CommonLibraries.File;
 using WebWMS.CommonLibraries.Encrypt;
 using CommonLibraries.Redis;
 using CommonLibraries.Excel;
 using System.Data;
+using WebWMS.Core.Services.UserInfosService;
 
 namespace WebWMS.Controllers
 {
     public class LoginController : Controller
     {
         private readonly IMemoryCache cache;
-        private readonly ICustomerService customerService;
+        private readonly IUserInfoService customerService;
         private readonly RedisClientHelper redisClient;
 
-        public LoginController(IMemoryCache cache, ICustomerService customerService, RedisClientHelper redisClient)
+        public LoginController(IMemoryCache cache, IUserInfoService customerService, RedisClientHelper redisClient)
         {
             this.cache = cache;
             this.customerService = customerService;
