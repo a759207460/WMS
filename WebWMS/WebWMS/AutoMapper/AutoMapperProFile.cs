@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using WebWMS.Core.Domain.Customers;
-using WebWMS.Core.Domain.Rolemenus;
+using WebWMS.Core.Domain.Menus;
 using WebWMS.Core.DTO.Customers;
-using WebWMS.Core.DTO.Rolemenus;
+using WebWMS.Core.DTO.MenusDto;
 using WebWMS.Core.Repositorys.Collections;
 using WebWMS.Models;
 

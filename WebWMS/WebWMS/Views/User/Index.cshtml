@@ -418,6 +418,7 @@
                                         }
                                     },
                 rowClick: function(args) { args.cancel=true },
+                rowDoubleClick:function(args){$("#jsGrid").jsGrid("editItem", args.item);},
                 controller: {
                   loadData: function(e) {
                        var d = $.Deferred();

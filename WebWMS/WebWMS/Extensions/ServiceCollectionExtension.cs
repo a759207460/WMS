@@ -3,16 +3,13 @@ using CommonLibraries.API;
 using CommonLibraries.Excel;
 using CommonLibraries.Redis;
 using Microsoft.EntityFrameworkCore;
-using System.Runtime.CompilerServices;
 using WebWMS.Common;
 using WebWMS.Core.DbContexts;
-using WebWMS.Core.Domain.Asns;
 using WebWMS.Core.Domain.Customers;
-using WebWMS.Core.Domain.Rolemenus;
+using WebWMS.Core.Domain.Menus;
 using WebWMS.Core.Repositorys;
-using WebWMS.Core.Repositorys.CustomerRepositors;
 using WebWMS.Core.Services.CustomersService;
-using WebWMS.Core.Services.RolemenusService;
+using WebWMS.Core.Services.MenusService;
 
 namespace WebWMS.Extensions
 {

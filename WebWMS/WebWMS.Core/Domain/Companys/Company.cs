@@ -9,34 +9,33 @@ namespace WebWMS.Core.Domain.Companys
     public class Company:BaseModel
     {
         /// <summary>
-        /// company's Name
+        /// 公司编号
         /// </summary>
-        public string company_name { get; set; }
+        public string CompanyCode { get; set; }
 
         /// <summary>
-        /// city
+        /// 公司名称
         /// </summary>
-        public string city { get; set; }
+        public string CompanyName { get; set; }
 
         /// <summary>
-        /// address
+        /// 公司所在城市
         /// </summary>
-        public string address { get; set; }
+        public string CompanyCity { get; set; }
 
         /// <summary>
-        /// manager
+        /// 公司地址
         /// </summary>
-        public string manager { get; set; }
+        public string CompanyAddress { get; set; }
 
         /// <summary>
-        /// contact tel
+        ///公司负责人
         /// </summary>
-        public string contact_tel { get; set; }
+        public string CompanyPrincipal { get; set; }
 
-  
         /// <summary>
-        /// the tenant id
+        /// 是否删除
         /// </summary>
-        public long tenant_id { get; set; }
+        public bool IsDelete { get; set; }
     }
 }

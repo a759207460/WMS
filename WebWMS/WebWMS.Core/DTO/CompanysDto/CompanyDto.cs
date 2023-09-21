@@ -9,34 +9,33 @@ namespace WebWMS.Core.DTO.Companys
     public class CompanyDto:BaseDto
     {
         /// <summary>
-        /// company's Name
+        /// 公司编号
         /// </summary>
-        public string company_name { get; set; } = string.Empty;
+        public string CompanyCode { get; set; }
 
         /// <summary>
-        /// city
+        /// 公司名称
         /// </summary>
-        public string city { get; set; } = string.Empty;
+        public string CompanyName { get; set; }
 
         /// <summary>
-        /// address
+        /// 公司所在城市
         /// </summary>
-        public string address { get; set; } = string.Empty;
+        public string CompanyCity { get; set; }
 
         /// <summary>
-        /// manager
+        /// 公司地址
         /// </summary>
-        public string manager { get; set; } = string.Empty;
+        public string CompanyAddress { get; set; }
 
         /// <summary>
-        /// contact tel
+        ///公司负责人
         /// </summary>
-        public string contact_tel { get; set; } = string.Empty;
+        public string CompanyPrincipal { get; set; }
 
-  
         /// <summary>
-        /// the tenant id
+        /// 是否删除
         /// </summary>
-        public long tenant_id { get; set; } = 1;
+        public bool IsDelete { get; set; }
     }
 }

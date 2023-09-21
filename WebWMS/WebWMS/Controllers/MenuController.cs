@@ -1,13 +1,11 @@
 ﻿using AutoMapper;
+using CommonLibraries.Redis;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using WebWMS.Common;
-using WebWMS.Core.Domain.Rolemenus;
-using WebWMS.Core.DTO.Customers;
-using WebWMS.Core.DTO.Rolemenus;
+using WebWMS.Core.DTO.MenusDto;
 using WebWMS.Core.Repositorys.Collections;
-using WebWMS.Core.Services.CustomersService;
-using WebWMS.Core.Services.RolemenusService;
+using WebWMS.Core.Services.MenusService;
 using WebWMS.Models;
 
 namespace WebWMS.Controllers
@@ -15,11 +13,13 @@ namespace WebWMS.Controllers
     public class MenuController : Controller
     {
         private readonly IMenuService menuService;
+        private readonly RedisClientHelper redisClient;
         private readonly IMapper mapper;
 
-        public MenuController(IMenuService menuService,IMapper mapper)
+        public MenuController(IMenuService menuService, RedisClientHelper redisClient, IMapper mapper)
         {
             this.menuService = menuService;
+            this.redisClient = redisClient;
             this.mapper = mapper;
         }
         public IActionResult Index()
@@ -80,7 +80,7 @@ namespace WebWMS.Controllers
                 {
                     result.Message = "新增成功!";
                     result.Status = 200;
-
+                    await redisClient.DeleteHashOfAsync("WMS_MenuList", "menuhash");
                 }
                 else
                 {
@@ -115,6 +115,7 @@ namespace WebWMS.Controllers
                 menuto.HasChildren = model.HasChildren;
                 menuto.HeadStyle = model.HeadStyle;
                 menuto.Style = model.Style;
+                menuto.Url = model.Url;
                 menuto.UpdateTime = DateTime.Now.ToString();
                 var menu= mapper.Map<MenuDto>(menuto);
                 int num = await menuService.UpdateMenuAsync(menu);
@@ -122,7 +123,7 @@ namespace WebWMS.Controllers
                 {
                     result.Message = "修改成功!";
                     result.Status = 200;
-
+                    await redisClient.DeleteHashOfAsync("WMS_MenuList", "menuhash");
                 }
                 else
                 {
