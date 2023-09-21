@@ -67,7 +67,7 @@ namespace WebWMS.Core.Migrations
                     b.ToTable("Companys", (string)null);
                 });
 
-            modelBuilder.Entity("WebWMS.Core.Domain.Customers.Customer", b =>
+            modelBuilder.Entity("WebWMS.Core.Domain.Users.UserInfo", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -115,7 +115,7 @@ namespace WebWMS.Core.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Customers", (string)null);
+                    b.ToTable("UserInfos", (string)null);
                 });
 
             modelBuilder.Entity("WebWMS.Core.Domain.Menus.Menu", b =>

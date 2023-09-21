@@ -1,12 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using WebWMS.Core.DTO.Customers;
+using WebWMS.Core.DTO.UserInfosDto;
 using WebWMS.Core.Repositorys.Collections;
 
 namespace WebWMS.Models
 {
     public class UserViewModel
     {
-        public IPagedList<CustomerDto>? PagedList { get; set; }
+        public IPagedList<UserInfoDto>? PagedList { get; set; }
 
         public int Id { get; set; }
         public string Account { get; set; }
