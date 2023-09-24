@@ -203,7 +203,8 @@ namespace WebWMS.Controllers
                 string json = await EPPlusHelper.ReadExcel(stream, cancellationToken);
                 if (json != null)
                 {
-                    list = JsonConvert.DeserializeObject<List<UserInfoDto>>(json);
+                    var elist= JsonConvert.DeserializeObject<List<ImportUserInfoDto>>(json);
+                    list =mapper.Map<List<UserInfoDto>>(elist);
                 }
                 if (list != null && list.Count > 0)
                 {

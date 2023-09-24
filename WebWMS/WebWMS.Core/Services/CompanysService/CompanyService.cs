@@ -8,6 +8,9 @@ using WebWMS.Core.Repositorys.Collections;
 using WebWMS.Core.Repositorys;
 using WebWMS.Core.DTO.Companys;
 using WebWMS.Core.Domain.Companys;
+using WebWMS.Core.DTO.UserInfosDto;
+using WebWMS.Core.Domain.Users;
+using WebWMS.Core.DTO.CompanysDto;
 
 namespace WebWMS.Core.Services.CompanysService
 {
@@ -74,12 +77,53 @@ namespace WebWMS.Core.Services.CompanysService
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
-        public async Task<bool> GetCompanyByNameAsync(string code)
+        public async Task<bool> GetCompanyByNameAsync(string code,string name)
         {
             if (string.IsNullOrEmpty(code))
                 return false;
-            return await repository.GetFirstOrDefaultAsync<bool>(r => r.CompanyCode == code);
+            return await repository.GetFirstOrDefaultAsync<bool>(r => r.CompanyCode == code||r.CompanyName== name);
         }
+
+
+        /// <summary>
+        /// 获取所有用户集合
+        /// </summary>
+        /// <returns></returns>
+        public async Task<Dictionary<bool, string?>>CompanyAnyAsync(List<CompanyDto> list)
+        {
+            Dictionary<bool, string?> dic = new Dictionary<bool, string?>();
+            List<string> cu = list.Select(c => c.CompanyCode).ToList();
+            List<string> clist = (await repository.GetAllAsync()).Select(cu => cu.CompanyCode).ToList();
+            bool b = clist.Intersect(cu).Count() > 0;
+            string? code = string.Join(",", clist?.Intersect(cu).ToArray());
+            dic.Add(b, code);
+            return dic;
+        }
+
+
+        /// <summary>
+        /// 批量新增用户
+        /// </summary>
+        /// <param name="customerDto"></param>
+        /// <returns></returns>
+        public async Task<int> BatchInsertCompanyAsync(List<CompanyDto> listCustomerDto, CancellationToken cancellationToken)
+        {
+            var cp = mapper.Map<List<Company>>(listCustomerDto);
+            return await repository.InsertAsync(cp, cancellationToken);
+        }
+
+
+        /// <summary>
+        /// 导出客户信息
+        /// </summary>
+        /// <returns></returns>
+        public async Task<List<ExportCompanyDto>> GetExportAsync()
+        {
+            var list = await repository.GetAllAsync();
+            var nlist = list.Select(c => new ExportCompanyDto { CompanyCode = c.CompanyCode, CompanyName = c.CompanyName, CompanyCity = c.CompanyCity, CompanyAddress = c.CompanyAddress, CompanyPrincipal = c.CompanyPrincipal, CompanyContact=c.CompanyContact });
+            return mapper.Map<List<ExportCompanyDto>>(nlist);
+        }
+
 
         /// <summary>
         /// 新增公司

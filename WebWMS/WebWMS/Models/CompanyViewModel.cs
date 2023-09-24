@@ -3,6 +3,11 @@
     public class CompanyViewModel
     {
         /// <summary>
+        /// Id
+        /// </summary>
+        public int Id { get; set; }
+
+        /// <summary>
         /// 公司编号
         /// </summary>
         public string CompanyCode { get; set; }
@@ -26,6 +31,8 @@
         ///公司负责人
         /// </summary>
         public string CompanyPrincipal { get; set; }
+
+        public string CompanyContact { get; set; }
 
         /// <summary>
         /// 是否删除

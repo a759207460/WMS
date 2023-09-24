@@ -45,11 +45,21 @@
         <button class="btn btn-primary" id="ImportExcel" style="float:right;"><i class="bi bi-file-arrow-up-fill"></i>导入</button>
         <button class="btn btn-primary" id="ExportExcel" style="float:right;"><i class="bi bi-file-arrow-down-fill"></i>导出</button>
         <button id="Add" class="btn btn-primary" style="float:right;"><i class="fa fa-plus"></i>新增</button>
-        
+    
+     @if(ViewBag.ImportExceStatus==200)
+            {
+                <script type="text/javascript">
+                    alert("@ViewBag.ImportExceMessage");
+                </script>
+            }else if(ViewBag.ImportExceStatus==-1){
+                 <script type="text/javascript">
+                     alert("@ViewBag.ImportExceMessage");
+                 </script>
+            }      
    </div>
      <div id="jsGrid" style="margin-top:2px;height:90%;"></div>
    </div>
-   @*新增用户弹窗*@
+   @*新增公司弹窗*@
   <div class="modal " tabindex="-1"  id="CompanyModal" style="height:370px;margin-top:5px;overflow-y:hidden;overflow-x:hidden;" >
   <div class="modal-dialog" style="width:470px;">
     <div class="modal-content">
@@ -133,7 +143,38 @@
     </div>
   </div>
 </div>
-    
+ 
+@*Exce导入弹框*@
+<div class="modal fade" id="ExcelModal" tabindex="-1" role="dialog" aria-labelledby="myModalExcel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalExcel">文件上传</h4>
+            </div>
+            <div class="modal-body">
+                <form enctype="multipart/form-data" method="post" asp-controller="Company" asp-action="ImportExcel">
+                    <div class="container">
+                      
+                        <div class="row">
+                          <div class="col-sm-1" style="width:260px;">
+                            <input id="f_upload" type="file"  name="file" style="height:40px;"/>
+                          </div>
+                          <div class="col-sm-2">
+                           <input type="submit" value="提交更改" class="btn btn-primary" style="height:30px;" />
+                        </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+               @* <input type="submit" class="btn btn-primary" value="提交更改"/>*@
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+
+
 <script>
 
      $(function(){
@@ -235,8 +276,22 @@
                 alert(result.Message);
             }});
        });
-        
+       
+       //导入
+       $("#ImportExcel").click(function(){
+           $("#ExcelModal").modal("show");
+       });
+       
+       //导出
+       $("#ExportExcel").click(function(){
+         $.post("/Company/ExportExcel",{},function(data){
+              var result=eval('('+data+')');
+              alert(result.Message);
+         });
+       });
+
     });
+
 
      //列表数据绑定
      function GridBind(where)
@@ -264,7 +319,7 @@
                                         }
                                     },
                 rowClick: function(args) { args.cancel=true },
-                rowDoubleClick:function(args){args.cancel=false},
+                rowDoubleClick:function(args){$("#jsGrid").jsGrid("editItem", args.item);},
                 controller: {
                 loadData: function(e) {
                        var d = $.Deferred();
@@ -278,7 +333,7 @@
                         return d.promise();
                     },
                 deleteItem: function(item) {
-                      return  $.post("/Menu/Delete",
+                      return  $.post("/Company/Delete",
                            {"id":item.Id},
                            function(data){
                               var result=eval('('+data+')');
@@ -294,30 +349,35 @@
                     },
                   updateItem: function(item) {
                       
-                                    if(item.Title==""||item.Title==null)
+                                    if(item.CompanyName==""||item.CompanyName==null)
                                        {
-                                            alert("标题不能为空!");
-                                            return;
-                                       }
-                                    if(item.ParentName==""||item.ParentName==null)
-                                       {
-                                           alert("父菜单名不能为空!");
+                                           alert("公司名称不能为空!");
                                            return;
                                        }
 
-                                    if(item.Style==""||item.Style==null)
+                                    if(item.CompanyCity==""||item.CompanyCity==null)
                                        {
-                                           alert("子菜单样式不能为空!");
+                                           alert("公司城市不能为空!");
                                            return;
                                        }
-                                    if(item.HeadStyle==""||item.HeadStyle==null)
+                                    if(item.CompanyAddress==""||item.CompanyAddress==null)
                                        {
-                                           alert("父菜单样式不能为空!");
+                                           alert("公司地址不能为空!");
+                                           return;
+                                       } 
+                                    if(item.CompanyPrincipal==""||item.CompanyPrincipal==null)
+                                       {
+                                           alert("公司负责人不能为空!");
+                                           return;
+                                       } 
+                                   if(item.CompanyContact==""||item.CompanyContact==null)
+                                       {
+                                           alert("公司联系方式不能为空!");
                                            return;
                                        } 
 
-                                return $.post("/Menu/Update",
-                                           {"Id":item.Id,"Name":item.Name,"Title":item.Title,"NavigateController":item.NavigateController,"NavigateActioin":item.NavigateActioin,"ParentName":item.ParentName,"Url":item.Url,"Tag":item.Tag,"HasChildren":item.HasChildren,"Style":item.Style,"HeadStyle":item.HeadStyle},
+                                return $.post("/Company/Update",
+                                           {"Id":item.Id,"CompanyCode":item.CompanyCode,"CompanyName":item.CompanyName,"CompanyCity":item.CompanyCity,"CompanyAddress":item.CompanyAddress,"CompanyPrincipal":item.CompanyPrincipal,"CompanyContact":item.CompanyContact,"IsDelete":item.IsDelete},
                                            function(data){
                                               var result=eval('('+data+')');
                                             if(result.Status==200)
@@ -338,6 +398,7 @@
                     { name: "CompanyCity", type: "text", width:120,title:"公司城市",align: "center"},
                     { name: "CompanyAddress", type: "text", width: 120,title:"公司地址",align: "center"},
                     { name: "CompanyPrincipal", type: "text" , width:150,title:"公司负责人",align: "center"},
+                    { name: "CompanyContact", type: "text" , width:150,title:"公司联系方式",align: "center"},
                     { name: "IsDelete", type: "checkbox" , width:120,title:"是否删除",align: "center"},
                     { type: "control", modeSwitchButton: true, editButton: true , width:80}
                 ]

@@ -111,14 +111,14 @@ namespace CommonLibraries.Excel
                         //worksheet.Cells[1, 1].Value = "单元格的值";直接指定行列数进行赋值
                         //worksheet.Cells["A1"].Value = "单元格的值";直接指定单元格进行赋值
                         ws.Cells.Style.Font.Name = "微软雅黑";
-                        ws.Cells.Style.Font.Size = 12;
+                        ws.Cells.Style.Font.Size = 10;
                         ws.Cells.Style.ShrinkToFit = true;//单元格自动适应大小
 
-                        for (int i = 1; i < dt.Rows.Count; i++)
+                        for (int i = 0; i < dt.Rows.Count; i++)
                         {
                             for (int j = 0; j < dt.Columns.Count; j++)
                             {
-                                ws.Cells[i + 1, j + 1].Value = dt.Rows[i][j].ToString();
+                                ws.Cells[i + 2, j + 1].Value = dt.Rows[i][j].ToString();
 
                             }
                         }
