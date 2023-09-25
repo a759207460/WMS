@@ -13,6 +13,10 @@ using WebWMS.Models;
 using WebWMS.Core.DTO.Companys;
 using WebWMS.Core.Domain.Companys;
 using WebWMS.Core.DTO.CompanysDto;
+using WebWMS.Core.Domain.Vendors;
+using WebWMS.Core.DTO.VendorsDto;
+using WebWMS.Core.DTO.CustomersDto;
+using WebWMS.Core.Domain.Customers;
 
 namespace WebWMS.AutoMapper
 {
@@ -29,6 +33,13 @@ namespace WebWMS.AutoMapper
             CreateMap<CompanyDto, Company>().ReverseMap();
             CreateMap<CompanyViewModel, CompanyDto>().ReverseMap();
             CreateMap<PagedList<CompanyDto>, PagedList<Company>>().ReverseMap();
+            CreateMap<VendorInfo, VendorInfoDto>().ReverseMap();
+            CreateMap<VendorViewModel, VendorInfoDto>().ReverseMap();
+            CreateMap<PagedList<VendorInfoDto>, PagedList<VendorInfo>>().ReverseMap();
+            CreateMap<CustomerDto, Customer>().ReverseMap();
+            CreateMap<CustomerViewModel, CustomerDto>().ReverseMap();
+            CreateMap<PagedList<CustomerDto>, PagedList<Customer>>().ReverseMap();
+
             CreateMap<UserInfoDto, ImportUserInfoDto>().ForMember(dest => dest.账号, option => option.MapFrom(c => c.Account))
                .ForMember(dest => dest.名称, option => option.MapFrom(c => c.Name))
                .ForMember(dest => dest.邮箱, option => option.MapFrom(c => c.Email))
@@ -42,6 +53,20 @@ namespace WebWMS.AutoMapper
                 .ForMember(dest => dest.负责人, option => option.MapFrom(c => c.CompanyPrincipal))
                 .ForMember(dest => dest.联系方式, option => option.MapFrom(c => c.CompanyContact))
                 .ReverseMap();
+            CreateMap<VendorInfoDto, ImportVendorDto>().ForMember(dest => dest.供应商编号, option => option.MapFrom(c => c.VendorCode))
+                .ForMember(dest => dest.供应商名称, option => option.MapFrom(c => c.VendorName))
+                .ForMember(dest => dest.所在城市, option => option.MapFrom(c => c.VendorCity))
+                .ForMember(dest => dest.详细地址, option => option.MapFrom(c => c.VendorAddress))
+                .ForMember(dest => dest.负责人, option => option.MapFrom(c => c.VendorPrincipal))
+                .ForMember(dest => dest.联系方式, option => option.MapFrom(c => c.VendorContact))
+                .ReverseMap();
+            CreateMap<CustomerDto, ImportCustomerDto>().ForMember(dest => dest.客户编号, option => option.MapFrom(c => c.CustomerCode))
+              .ForMember(dest => dest.客户名称, option => option.MapFrom(c => c.CustomerName))
+              .ForMember(dest => dest.所在城市, option => option.MapFrom(c => c.CustomerCity))
+              .ForMember(dest => dest.详细地址, option => option.MapFrom(c => c.CustomerAddress))
+              .ForMember(dest => dest.负责人, option => option.MapFrom(c => c.CustomerPrincipal))
+              .ForMember(dest => dest.联系方式, option => option.MapFrom(c => c.CustomerContact))
+              .ReverseMap();
 
         }
     }

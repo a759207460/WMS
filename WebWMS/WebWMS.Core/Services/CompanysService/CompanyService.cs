@@ -152,6 +152,7 @@ namespace WebWMS.Core.Services.CompanysService
                 company.CompanyAddress= companyDto.CompanyAddress;
                 company.CompanyCity= companyDto.CompanyCity;
                 company.CompanyPrincipal= companyDto.CompanyPrincipal;
+                company.CompanyContact = companyDto.CompanyContact;
                 company.IsDelete=companyDto.IsDelete;
                 company.UpdateTime=companyDto.UpdateTime;
                 return await repository.Update(company);

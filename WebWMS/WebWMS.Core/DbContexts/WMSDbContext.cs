@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 using WebWMS.Core.Domain.Companys;
 using WebWMS.Core.Domain.Users;
 using WebWMS.Core.Domain.Menus;
+using System.Numerics;
+using WebWMS.Core.Domain.Vendors;
 
 namespace WebWMS.Core.DbContexts
 {
@@ -19,6 +21,7 @@ namespace WebWMS.Core.DbContexts
         public DbSet<Company> Companys { get; set; }
         public DbSet<UserInfo> Customers { get; set; }
         public DbSet<Menu> Menus { get; set; }
+        public DbSet<VendorInfo> Vendors { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

@@ -118,6 +118,7 @@ namespace WebWMS.Controllers
                 companyto.CompanyAddress = model.CompanyAddress;
                 companyto.CompanyCity = model.CompanyCity;
                 companyto.CompanyPrincipal = model.CompanyPrincipal;
+                companyto.CompanyContact = model.CompanyContact;
                 companyto.UpdateTime = DateTime.Now.ToString();
                 var company = mapper.Map<CompanyDto>(companyto);
                 int num = await companyService.UpdateCompanyAsync(company);

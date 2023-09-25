@@ -6,12 +6,16 @@ using Microsoft.EntityFrameworkCore;
 using WebWMS.Common;
 using WebWMS.Core.DbContexts;
 using WebWMS.Core.Domain.Companys;
+using WebWMS.Core.Domain.Customers;
 using WebWMS.Core.Domain.Menus;
 using WebWMS.Core.Domain.Users;
+using WebWMS.Core.Domain.Vendors;
 using WebWMS.Core.Repositorys;
 using WebWMS.Core.Services.CompanysService;
+using WebWMS.Core.Services.CustomersService;
 using WebWMS.Core.Services.MenusService;
 using WebWMS.Core.Services.UserInfosService;
+using WebWMS.Core.Services.VendorsService;
 
 namespace WebWMS.Extensions
 {
@@ -35,6 +39,10 @@ namespace WebWMS.Extensions
             services.AddScoped<IRepository<Menu>, Repository<Menu>>();
             services.AddScoped<IRepository<Company>, Repository<Company>>();
             services.AddScoped<ICompanyService, CompanyService>();
+            services.AddScoped<IRepository<VendorInfo>, Repository<VendorInfo>>();
+            services.AddScoped<IVendorInfoService, VendorInfoService>();
+            services.AddScoped<IRepository<Customer>, Repository<Customer>>();
+            services.AddScoped<ICustomerService, CustomerService>();
             services.AddScoped<HelpGetMenuList>();
             services.AddScoped<RedisClientHelper>();
         }
