@@ -21,6 +21,36 @@ namespace WebWMS.Core.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("MenuRoleInfo", b =>
+                {
+                    b.Property<int>("MenusId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("RolesId")
+                        .HasColumnType("int");
+
+                    b.HasKey("MenusId", "RolesId");
+
+                    b.HasIndex("RolesId");
+
+                    b.ToTable("MenuRoleInfo");
+                });
+
+            modelBuilder.Entity("RoleInfoUserInfo", b =>
+                {
+                    b.Property<int>("RolesId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UsersId")
+                        .HasColumnType("int");
+
+                    b.HasKey("RolesId", "UsersId");
+
+                    b.HasIndex("UsersId");
+
+                    b.ToTable("RoleInfoUserInfo");
+                });
+
             modelBuilder.Entity("WebWMS.Core.Domain.Companys.Company", b =>
                 {
                     b.Property<int>("Id")
@@ -168,6 +198,34 @@ namespace WebWMS.Core.Migrations
                     b.ToTable("Menus", (string)null);
                 });
 
+            modelBuilder.Entity("WebWMS.Core.Domain.Roles.RoleInfo", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("CreateTime")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("RoleCode")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("RoleName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UpdateTime")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Roles", (string)null);
+                });
+
             modelBuilder.Entity("WebWMS.Core.Domain.Users.UserInfo", b =>
                 {
                     b.Property<int>("Id")
@@ -261,6 +319,36 @@ namespace WebWMS.Core.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Vendors", (string)null);
+                });
+
+            modelBuilder.Entity("MenuRoleInfo", b =>
+                {
+                    b.HasOne("WebWMS.Core.Domain.Menus.Menu", null)
+                        .WithMany()
+                        .HasForeignKey("MenusId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("WebWMS.Core.Domain.Roles.RoleInfo", null)
+                        .WithMany()
+                        .HasForeignKey("RolesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("RoleInfoUserInfo", b =>
+                {
+                    b.HasOne("WebWMS.Core.Domain.Roles.RoleInfo", null)
+                        .WithMany()
+                        .HasForeignKey("RolesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("WebWMS.Core.Domain.Users.UserInfo", null)
+                        .WithMany()
+                        .HasForeignKey("UsersId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

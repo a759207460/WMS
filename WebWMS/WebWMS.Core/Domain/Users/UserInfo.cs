@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WebWMS.Core.Domain.Roles;
 using WebWMS.Core.DTO.UserInfosDto;
 
 namespace WebWMS.Core.Domain.Users
@@ -49,6 +50,8 @@ namespace WebWMS.Core.Domain.Users
         public string? Creator { get; set; }
 
         public bool IsRemove { get; set; }
+
+        public List<RoleInfo> Roles { get; set; }
 
         #endregion
     }

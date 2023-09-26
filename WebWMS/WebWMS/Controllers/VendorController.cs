@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using CommonLibraries.Excel;
 using CommonLibraries.Redis;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
@@ -13,6 +14,7 @@ using WebWMS.Models;
 
 namespace WebWMS.Controllers
 {
+    [Authorize]
     public class VendorController : Controller
     {
         private readonly IVendorInfoService vendorInfoService;

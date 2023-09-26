@@ -127,9 +127,9 @@ namespace WebWMS.Core.Services.CustomersService
         /// </summary>
         /// <param name="menuDto"></param>
         /// <returns></returns>
-        public async Task<int> InsertCustomerAsync(CustomerDto CustomerDto)
+        public async Task<int> InsertCustomerAsync(CustomerDto customerDto)
         {
-            var cu = mapper.Map<Customer>(CustomerDto);
+            var cu = mapper.Map<Customer>(customerDto);
             return await repository.InsertAsync(cu);
         }
 
@@ -139,19 +139,19 @@ namespace WebWMS.Core.Services.CustomersService
         /// <param name="menuDto"></param>
         /// <returns></returns>
         /// <exception cref="NotImplementedException"></exception>
-        public async Task<int> UpdateCustomerAsync(CustomerDto CustomerDto)
+        public async Task<int> UpdateCustomerAsync(CustomerDto customerDto)
         {
-            var Customer = await repository.FindAsync(CustomerDto.Id);
-            if (Customer != null)
+            var customer = await repository.FindAsync(customerDto.Id);
+            if (customer != null)
             {
-                Customer.CustomerCode = CustomerDto.CustomerCode;
-                Customer.CustomerName = CustomerDto.CustomerName;
-                Customer.CustomerAddress = CustomerDto.CustomerAddress;
-                Customer.CustomerCity = CustomerDto.CustomerCity;
-                Customer.CustomerPrincipal = CustomerDto.CustomerPrincipal;
-                Customer.CustomerContact = CustomerDto.CustomerContact;
-                Customer.UpdateTime = CustomerDto.UpdateTime;
-                return await repository.Update(Customer);
+                customer.CustomerCode = customerDto.CustomerCode;
+                customer.CustomerName = customerDto.CustomerName;
+                customer.CustomerAddress = customerDto.CustomerAddress;
+                customer.CustomerCity = customerDto.CustomerCity;
+                customer.CustomerPrincipal = customerDto.CustomerPrincipal;
+                customer.CustomerContact = customerDto.CustomerContact;
+                customer.UpdateTime = customerDto.UpdateTime;
+                return await repository.Update(customer);
             }
             else
             {

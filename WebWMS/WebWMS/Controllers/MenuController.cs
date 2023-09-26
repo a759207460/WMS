@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using CommonLibraries.Redis;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using WebWMS.Common;
@@ -10,6 +11,7 @@ using WebWMS.Models;
 
 namespace WebWMS.Controllers
 {
+    [Authorize]
     public class MenuController : Controller
     {
         private readonly IMenuService menuService;

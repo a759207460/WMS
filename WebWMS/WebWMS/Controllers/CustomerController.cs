@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using CommonLibraries.Excel;
 using CommonLibraries.Redis;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
@@ -13,16 +14,17 @@ using WebWMS.Models;
 
 namespace WebWMS.Controllers
 {
+    [Authorize]
     public class CustomerController : Controller
     {
-        private readonly ICustomerService CustomerService;
+        private readonly ICustomerService customerService;
         private readonly IOptionsSnapshot<ExceConfig> options;
         private readonly RedisClientHelper redisClient;
         private readonly IMapper mapper;
 
-        public CustomerController(ICustomerService CustomerService, IOptionsSnapshot<ExceConfig> options, RedisClientHelper redisClient, IMapper mapper)
+        public CustomerController(ICustomerService customerService, IOptionsSnapshot<ExceConfig> options, RedisClientHelper redisClient, IMapper mapper)
         {
-            this.CustomerService = CustomerService;
+            this.customerService = customerService;
             this.options = options;
             this.redisClient = redisClient;
             this.mapper = mapper;
@@ -44,7 +46,7 @@ namespace WebWMS.Controllers
             try
             {
                 result.Status = 200;
-                result.Source = await CustomerService.GetAllPagedListAsync(model.pageIndex - 1, model.pageSize, model.Where);
+                result.Source = await customerService.GetAllPagedListAsync(model.pageIndex - 1, model.pageSize, model.Where);
             }
             catch (Exception ex)
             {
@@ -65,20 +67,20 @@ namespace WebWMS.Controllers
             ResultMessage result = new ResultMessage();
             try
             {
-                var Customerto = mapper.Map<CustomerDto>(model);
-                Customerto.CustomerName = model.CustomerName;
-                Customerto.CustomerCode = model.CustomerCode;
-                Customerto.CustomerAddress = model.CustomerAddress;
-                Customerto.CustomerCity = model.CustomerCity;
-                Customerto.CustomerPrincipal = model.CustomerPrincipal;
-                Customerto.CustomerContact = model.CustomerContact;
-                Customerto.CreateTime = DateTime.Now.ToString();
-                if (await CustomerService.GetCustomerByNameAsync(Customerto.CustomerCode, Customerto.CustomerName))
+                var customerto = mapper.Map<CustomerDto>(model);
+                customerto.CustomerName = model.CustomerName;
+                customerto.CustomerCode = model.CustomerCode;
+                customerto.CustomerAddress = model.CustomerAddress;
+                customerto.CustomerCity = model.CustomerCity;
+                customerto.CustomerPrincipal = model.CustomerPrincipal;
+                customerto.CustomerContact = model.CustomerContact;
+                customerto.CreateTime = DateTime.Now.ToString();
+                if (await customerService.GetCustomerByNameAsync(customerto.CustomerCode, customerto.CustomerName))
                 {
                     result.Message = "客户编号或名称已存在不能重复添加!";
                     result.Status = -1;
                 }
-                int num = await CustomerService.InsertCustomerAsync(Customerto);
+                int num = await customerService.InsertCustomerAsync(customerto);
                 if (num > 0)
                 {
                     result.Message = "新增成功!";
@@ -107,16 +109,16 @@ namespace WebWMS.Controllers
             ResultMessage result = new ResultMessage();
             try
             {
-                var Customerto = mapper.Map<CustomerDto>(model);
-                Customerto.CustomerName = model.CustomerName;
-                Customerto.CustomerCode = model.CustomerCode;
-                Customerto.CustomerAddress = model.CustomerAddress;
-                Customerto.CustomerCity = model.CustomerCity;
-                Customerto.CustomerPrincipal = model.CustomerPrincipal;
-                Customerto.CustomerContact = model.CustomerContact;
-                Customerto.UpdateTime = DateTime.Now.ToString();
-                var Customer = mapper.Map<CustomerDto>(Customerto);
-                int num = await CustomerService.UpdateCustomerAsync(Customer);
+                var customerto = mapper.Map<CustomerDto>(model);
+                customerto.CustomerName = model.CustomerName;
+                customerto.CustomerCode = model.CustomerCode;
+                customerto.CustomerAddress = model.CustomerAddress;
+                customerto.CustomerCity = model.CustomerCity;
+                customerto.CustomerPrincipal = model.CustomerPrincipal;
+                customerto.CustomerContact = model.CustomerContact;
+                customerto.UpdateTime = DateTime.Now.ToString();
+                var customer = mapper.Map<CustomerDto>(customerto);
+                int num = await customerService.UpdateCustomerAsync(customerto);
                 if (num > 0)
                 {
                     result.Message = "修改成功!";
@@ -145,7 +147,7 @@ namespace WebWMS.Controllers
             ResultMessage result = new ResultMessage();
             try
             {
-                int num = await CustomerService.DeleteCustomerAsync(id);
+                int num = await customerService.DeleteCustomerAsync(id);
                 if (num > 0)
                 {
                     result.Message = "删除成功!";
@@ -210,7 +212,7 @@ namespace WebWMS.Controllers
                         ViewBag.ImportExceStatus = result.Status;
                         return View("Index");
                     }
-                    var dic = await CustomerService.CustomerAnyAsync(list);
+                    var dic = await customerService.CustomerAnyAsync(list);
                     if (dic.FirstOrDefault().Key)
                     {
                         result.Status = -1;
@@ -220,7 +222,7 @@ namespace WebWMS.Controllers
                         return View("Index");
                     }
                     list.ForEach(u => { u.CreateTime = DateTime.Now.ToString(); });
-                    num = await CustomerService.BatchInsertCustomerAsync(list, cancellationToken);
+                    num = await customerService.BatchInsertCustomerAsync(list, cancellationToken);
                 }
                 if (num > 0)
                 {
@@ -254,7 +256,7 @@ namespace WebWMS.Controllers
             ResultMessage result = new ResultMessage();
             try
             {
-                var list = await CustomerService.GetExportAsync();
+                var list = await customerService.GetExportAsync();
                 DataTable dt = EPPlusHelper.ListToDt(list);
                 string modelPath = options.Value.ModelPath + "CustomerModel.xlsx";
                 string rand = "-" + new Random().Next(1, 1000).ToString();

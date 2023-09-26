@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WebWMS.Core.Domain.Roles;
 
 namespace WebWMS.Core.Domain.Menus
 {
@@ -10,6 +11,8 @@ namespace WebWMS.Core.Domain.Menus
     {
         #region Property
          
+        public List<RoleInfo> Roles { get; set; }
+
         /// <summary>
         /// 菜单名称
         /// </summary>

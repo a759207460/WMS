@@ -13,9 +13,11 @@ using Microsoft.Extensions.Options;
 using WebWMS.Core.DTO.UserInfosDto;
 using WebWMS.Core.Domain.Users;
 using WebWMS.Core.Services.UserInfosService;
+using Microsoft.AspNetCore.Authorization;
 
 namespace WebWMS.Controllers
 {
+    [Authorize]
     public class UserController : Controller
     {
         private readonly IUserInfoService customerService;

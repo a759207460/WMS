@@ -17,6 +17,9 @@ using WebWMS.Core.Domain.Vendors;
 using WebWMS.Core.DTO.VendorsDto;
 using WebWMS.Core.DTO.CustomersDto;
 using WebWMS.Core.Domain.Customers;
+using WebWMS.Core.DTO.RolesDto;
+using WebWMS.Core.Domain.Roles;
+using StackExchange.Redis;
 
 namespace WebWMS.AutoMapper
 {
@@ -39,6 +42,9 @@ namespace WebWMS.AutoMapper
             CreateMap<CustomerDto, Customer>().ReverseMap();
             CreateMap<CustomerViewModel, CustomerDto>().ReverseMap();
             CreateMap<PagedList<CustomerDto>, PagedList<Customer>>().ReverseMap();
+            CreateMap<RoleDto, RoleInfo>().ReverseMap();
+            CreateMap<RoleViewModel, RoleDto>().ReverseMap();
+            CreateMap<PagedList<RoleDto>, PagedList<RoleInfo>>().ReverseMap();
 
             CreateMap<UserInfoDto, ImportUserInfoDto>().ForMember(dest => dest.账号, option => option.MapFrom(c => c.Account))
                .ForMember(dest => dest.名称, option => option.MapFrom(c => c.Name))

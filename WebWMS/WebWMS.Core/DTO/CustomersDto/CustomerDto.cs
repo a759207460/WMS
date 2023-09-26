@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace WebWMS.Core.DTO.CustomersDto
 {
-    public class CustomerDto:BaseDto
+    public class CustomerDto : BaseDto
     {
         /// <summary>
         /// 客户编号

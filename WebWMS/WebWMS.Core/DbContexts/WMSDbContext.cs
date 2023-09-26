@@ -9,6 +9,7 @@ using WebWMS.Core.Domain.Users;
 using WebWMS.Core.Domain.Menus;
 using System.Numerics;
 using WebWMS.Core.Domain.Vendors;
+using WebWMS.Core.Domain.Roles;
 
 namespace WebWMS.Core.DbContexts
 {
@@ -22,6 +23,7 @@ namespace WebWMS.Core.DbContexts
         public DbSet<UserInfo> Customers { get; set; }
         public DbSet<Menu> Menus { get; set; }
         public DbSet<VendorInfo> Vendors { get; set; }
+        public DbSet<RoleInfo> Roles { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
