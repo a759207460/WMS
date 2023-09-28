@@ -21,55 +21,18 @@
      <div id="jsGrid" style="margin-top:2px;height:90%;"></div>
    </div>
 
-   <div class="modal " tabindex="-1"  id="ShowModal" style="height:450px;margin-top:50px;overflow-y:hidden;" >
-  <div class="modal-dialog" style="height:430px;">
-    <div class="modal-content">
+ <div class="modal " tabindex="-1"  id="ShowModal" style="height:450px;overflow-y:hidden;">
+   <div class="modal-dialog" style="height:420px;overflow-y:hidden;">
+       <input type="hidden" id="RoleId" />
+      <div class="modal-content" style="height:400px;">
       <div class="modal-header">
         <h7 class="modal-title" id="mTitle" style="color:#4d5b76;font-size:1em;font-family:Cambria;font-weight:500;">分配菜单权限</h7>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
       </div>
-      <div class="modal-body" style="padding:5px;">
-       <div class="panel panel-default">
-        <div class="panel-body">
-          <div class="container">
-            <div class="row">
-              <div class="col-sm-2">
-                  <input type="checkbox" value="1"/>首页
-              </div>
-              <div class="col-sm-2">
-                  <input type="checkbox" value="2"/>基础信息
-              </div>
-              <div class="col-sm-2">
-                  <input type="checkbox" value="3"/>设置信息
-              </div>
-           </div>
-           <div class="row">
-                  <div class="col-sm-2">
-                  <input type="checkbox" value="5"/>首页1
-              </div>
-                <div class="col-sm-2">
-                  <input type="checkbox" value="6"/>基础信息1
-              </div>
-                <div class="col-sm-2">
-                  <input type="checkbox" value="7"/>设置信息1
-              </div>
-           </div>
-           <div class="row">
-                  <div class="col-sm-2">
-                  <input type="checkbox" value="9"/>首页2
-              </div>
-                <div class="col-sm-2">
-                  <input type="checkbox" value="10"/>基础信息2
-              </div>
-                <div class="col-sm-2">
-                  <input type="checkbox" value="11"/>设置信息2
-              </div>
-           </div>
-          </div>
-        </div>
-    </div> 
+      <div id="Content" style="height:280px; overflow-y:scroll;">
+      </div>
+      <div  class="modal-footer">
+         <button type="button" class="btn btn-default"  data-dismiss="modal">关闭</button>
+         <button type="button" class="btn btn-default" data-dismiss="modal">保存</button>
       </div>
     </div>
   </div>
@@ -152,7 +115,23 @@
      //显示权限分配窗口
      function ShowModal(id)
      {
+         $.post("/Authority/GetMenusList",{},function(data){
+               var result=eval('('+data+')');
+               if(result.Status==200)
+               {
+                   $("#Content").append(result.Source);
+               }else
+               {
+                   alert(result.Message);
+               }
+         });
          $("#ShowModal").modal('show');
+     }
+
+   //checkbox选择事件
+     function CheckBoxClick()
+     {
+         alert(1);
      }
 </script>
 
