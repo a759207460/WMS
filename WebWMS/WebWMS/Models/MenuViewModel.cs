@@ -31,5 +31,10 @@
         public string Style { get; set; } = "nav nav-list collapse";
 
         public string HeadStyle { get; set; } = "nav-header collapsed";
+
+        /// <summary>
+        /// 显示顺序
+        /// </summary>
+        public int ?Sort { get; set; }
     }
 }

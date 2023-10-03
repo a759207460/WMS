@@ -14,8 +14,6 @@ namespace WebWMS.Core.Domain.Roles
 
         public string RoleCode { get; set; }
 
-        public List<UserInfo> Users { get; set; }
-
-        public List<Menu> Menus { get; set; }
+        public ICollection<MenuRole> Menus { get; set; }
     }
 }

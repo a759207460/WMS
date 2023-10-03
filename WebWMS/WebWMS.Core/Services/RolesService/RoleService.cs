@@ -1,15 +1,25 @@
 ﻿using AutoMapper;
+using CommonLibraries.DeepCopy;
+using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
 using StackExchange.Redis;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Transactions;
+using WebWMS.Core.Domain.Menus;
 using WebWMS.Core.Domain.Roles;
 using WebWMS.Core.DTO.CustomersDto;
 using WebWMS.Core.DTO.RolesDto;
 using WebWMS.Core.Repositorys;
 using WebWMS.Core.Repositorys.Collections;
+using WebWMS.Core.Services.MenusService;
+using static CommonLibraries.DeepCopy.DeepCoypHelp;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace WebWMS.Core.Services.RolesService
 {
@@ -17,29 +27,42 @@ namespace WebWMS.Core.Services.RolesService
     {
         private readonly IRepository<RoleInfo> repository;
         private readonly IMapper mapper;
+        private readonly IMenuRoleInfoService menuRoleInfoService;
 
-        public RoleService(IRepository<RoleInfo> repository, IMapper mapper)
+        public RoleService(IRepository<RoleInfo> repository, IMapper mapper, IMenuRoleInfoService menuRoleInfoService)
         {
             this.repository = repository;
             this.mapper = mapper;
+            this.menuRoleInfoService = menuRoleInfoService;
         }
 
 
         /// <summary>
-        /// 获取所有客户信息
+        /// 获取所有角色信息
         /// </summary>
         /// <returns></returns>
         /// <exception cref="NotImplementedException"></exception>
         public async Task<List<RoleDto>> GetAllAsync()
         {
             var list = await repository.GetAllAsync();
-            var menuList = mapper.Map<List<RoleDto>>(list);
-            return menuList;
+            var roleList = mapper.Map<List<RoleDto>>(list);
+            return roleList;
+        }
+        ///// <summary>
+        /////  根据id获取所有角色信息
+        ///// </summary>
+        ///// <param name="id"></param>
+        ///// <returns></returns>
+        public async Task<RoleDto> GetRoleByIdAsync(int id)
+        {
+            var r = await repository.GetFirstOrDefaultAsync(predicate: r => r.Id == id, include: r1 => r1.Include(rr => rr.Menus));
+            var role = mapper.Map<RoleDto>(r);
+            return role;
         }
 
 
         /// <summary>
-        /// 根据菜单名称获取客户
+        /// 根据角色名称获取角色
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
@@ -52,7 +75,7 @@ namespace WebWMS.Core.Services.RolesService
 
 
         /// <summary>
-        /// 获取客户列表分页
+        /// 获取角色列表分页
         /// </summary>
         /// <param name="pageIndex"></param>
         /// <param name="pageSize"></param>
@@ -77,7 +100,7 @@ namespace WebWMS.Core.Services.RolesService
 
 
         /// <summary>
-        /// 新增客户
+        /// 新增角色
         /// </summary>
         /// <param name="menuDto"></param>
         /// <returns></returns>
@@ -88,29 +111,47 @@ namespace WebWMS.Core.Services.RolesService
         }
 
         /// <summary>
-        /// 更新客户信息
+        /// 更新角色信息
         /// </summary>
         /// <param name="menuDto"></param>
         /// <returns></returns>
         /// <exception cref="NotImplementedException"></exception>
         public async Task<int> UpdateRoleAsync(RoleDto roleDto)
         {
-            var role = await repository.FindAsync(roleDto.Id);
-            if (role != null)
+            using (IDbContextTransaction dbContextTransaction = repository.db.Database.BeginTransaction())
             {
-                role.RoleCode = roleDto.RoleCode;
-                role.RoleName = roleDto.RoleName;
-                role.UpdateTime = roleDto.UpdateTime;
-                return await repository.Update(role);
-            }
-            else
-            {
-                return -1;
+                try
+                {
+                    var roleInfo = await repository.GetFirstOrDefaultAsync(include: r => r.Include(r1 => r1.Menus), predicate: r => r.Id == roleDto.Id);
+                    var role = mapper.Map<RoleDto>(roleInfo);
+                    if (role != null)
+                    {
+                        var mlist =roleDto.Menus;
+                        repository.db.MenuAndRoles.RemoveRange(roleInfo.Menus);
+                        await repository.db.SaveChangesAsync();
+                        roleInfo.RoleCode = roleDto.RoleCode;
+                        roleInfo.RoleName = roleDto.RoleName;
+                        roleInfo.Menus = mlist;
+                        roleInfo.UpdateTime = roleDto.UpdateTime;
+                        int n = await repository.Update(roleInfo);
+                        await dbContextTransaction.CommitAsync();
+                        return n;
+                    }
+                    else
+                    {
+                        return -1;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    await dbContextTransaction.RollbackAsync();
+                    return -1;
+                }
             }
         }
 
         /// <summary>
-        /// 删除客户信息
+        /// 删除角色信息
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
@@ -119,5 +160,6 @@ namespace WebWMS.Core.Services.RolesService
         {
             return await repository.Delete(id);
         }
+
     }
 }

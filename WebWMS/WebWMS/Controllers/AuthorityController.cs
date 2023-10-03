@@ -2,9 +2,11 @@
 using CommonLibraries.Redis;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.VisualBasic;
 using Newtonsoft.Json;
 using System.Text;
 using WebWMS.Common;
+using WebWMS.Core.Domain.Menus;
 using WebWMS.Core.DTO.CustomersDto;
 using WebWMS.Core.DTO.MenusDto;
 using WebWMS.Core.DTO.RolesDto;
@@ -70,6 +72,8 @@ namespace WebWMS.Controllers
             List<MenuDto> list = null;
             try
             {
+                int rid = 1;
+                var role = await roleService.GetRoleByIdAsync(rid);
                 if (redisClient.ExistsHash("WMS_MenuList", "menuhash"))
                 {
                     list = redisClient.GetObjHash<List<MenuDto>>("WMS_MenuList", "menuhash");
@@ -101,7 +105,14 @@ namespace WebWMS.Controllers
                                     builder.Append("<div class=\"container\" style=\"display:flex;flex-wrap:wrap;width:550px;\">");
                                     foreach (var child in childrenList)
                                     {
-                                        builder.Append($"<input type=\"checkbox\" onchange=\"CheckBoxClick()\" value=\"{child.Id}\" style=\" margin-left:5px;\"/><span>{child.Title}</span>");
+                                        if (role.Menus.Where(m => m.MenuId == child.Id).Count() > 0)
+                                        {
+                                            builder.Append($"<input type=\"checkbox\" checked=\"checked\" id=\"check_{child.Id}\"  value=\"{child.Id}\" style=\" margin-left:5px;\"/><span>{child.Title}</span>");
+                                        }else
+                                        {
+                                            builder.Append($"<input type=\"checkbox\"  id=\"check_{child.Id}\"  value=\"{child.Id}\" style=\" margin-left:5px;\"/><span>{child.Title}</span>");
+                                        }
+
                                     }
                                     builder.Append("</div>");
                                     builder.Append("</div>");
@@ -112,7 +123,14 @@ namespace WebWMS.Controllers
                                     builder.Append("<div class=\"modal-body\" style=\"padding:5px;\">");
                                     builder.Append(" <div class=\"panel panel-default\"  >");
                                     builder.Append("<div class=\"container\" style=\"display:flex;flex-wrap:wrap;width:550px;\">");
-                                    builder.Append($"<input type=\"checkbox\" onchange=\"CheckBoxClick()\" value=\"{first.Id}\" style=\" margin-left:5px;\"/><span>{first.Title}</span>");
+                                    if (role.Menus.Where(m => m.MenuId == first.Id).Count() > 0)
+                                    {
+                                        builder.Append($"<input type=\"checkbox\" checked=\"checked\" id=\"check_{first.Id}\"  value=\"{first.Id}\" style=\" margin-left:5px;\"/><span>{first.Title}</span>");
+                                    }
+                                    else
+                                    {
+                                        builder.Append($"<input type=\"checkbox\"  id=\"check_{first.Id}\"  value=\"{first.Id}\" style=\" margin-left:5px;\"/><span>{first.Title}</span>");
+                                    }
                                     builder.Append("</div>");
                                     builder.Append("</div>");
                                     builder.Append("</div>");
@@ -124,7 +142,14 @@ namespace WebWMS.Controllers
                                 builder.Append("<div class=\"modal-body\" style=\"padding:5px;\">");
                                 builder.Append(" <div class=\"panel panel-default\"  >");
                                 builder.Append("<div class=\"container\" style=\"display:flex;flex-wrap:wrap;width:550px;\">");
-                                builder.Append($"<input type=\"checkbox\" onchange=\"CheckBoxClick()\" value=\"{first.Id}\" style=\" margin-left:5px;\"/><span>{first.Title}</span>");
+                                if (role.Menus.Where(m => m.MenuId == first.Id).Count() > 0)
+                                {
+                                    builder.Append($"<input type=\"checkbox\" checked=\"checked\" id=\"check_{first.Id}\"  value=\"{first.Id}\" style=\" margin-left:5px;\"/><span>{first.Title}</span>");
+                                }
+                                else
+                                {
+                                    builder.Append($"<input type=\"checkbox\"  id=\"check_{first.Id}\"  value=\"{first.Id}\" style=\" margin-left:5px;\"/><span>{first.Title}</span>");
+                                }
                                 builder.Append("</div>");
                                 builder.Append("</div>");
                                 builder.Append("</div>");
@@ -142,5 +167,53 @@ namespace WebWMS.Controllers
             }
             return JsonConvert.SerializeObject(result);
         }
+
+        /// <summary>
+        /// 分配权限
+        /// </summary>
+        /// <param name="list"></param>
+        /// <returns></returns>
+        public async Task<string> AddAuthority(List<int> list, int rid)
+        {
+            ResultMessage<string> result = new ResultMessage<string>();
+            try
+            {
+                RoleDto role = await roleService.GetRoleByIdAsync(rid);
+                List<MenuDto> menus = await menuService.GetMenusByIdsAsync(list);
+                if (menus == null || menus.Count == 0)
+                {
+                    result.Status = -1;
+                    result.Message = "未找到相关菜单信息!";
+                    return JsonConvert.SerializeObject(result);
+                }
+                if (role != null)
+                {
+                    role.Menus = menus.Select(r => new MenuRole { MenuId = r.Id, RoleId = rid }).ToList();
+                    int num = await roleService.UpdateRoleAsync(role);
+                    if (num > 0)
+                    {
+                        result.Status = 200;
+                        result.Message = "权限分配成功!";
+                    }
+                    else
+                    {
+                        result.Status = -1;
+                        result.Message = "权限分配失败!";
+                    }
+                }
+                else
+                {
+                    result.Status = -1;
+                    result.Message = "未找到角色相关信息!";
+                }
+            }
+            catch (Exception ex)
+            {
+                result.Status = -1;
+                result.Message = ex.Message;
+            }
+            return JsonConvert.SerializeObject(result);
+        }
+
     }
 }

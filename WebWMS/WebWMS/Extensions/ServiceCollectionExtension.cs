@@ -47,6 +47,7 @@ namespace WebWMS.Extensions
             services.AddScoped<ICustomerService, CustomerService>();
             services.AddScoped<IRepository<RoleInfo>, Repository<RoleInfo>>();
             services.AddScoped<IRoleService, RoleService>();
+            services.AddScoped<IMenuRoleInfoService, MenuRoleInfoService>();
             services.AddScoped<HelpGetMenuList>();
             services.AddScoped<RedisClientHelper>();
         }

@@ -11,7 +11,7 @@ namespace WebWMS.Core.Domain.Menus
     {
         #region Property
          
-        public List<RoleInfo> Roles { get; set; }
+        public ICollection<MenuRole> Roles { get; set; }
 
         /// <summary>
         /// 菜单名称
@@ -62,6 +62,11 @@ namespace WebWMS.Core.Domain.Menus
         /// 父标签样式
         /// </summary>
         public string? HeadStyle { get; set; }
+
+        /// <summary>
+        /// 显示顺序
+        /// </summary>
+        public int? Sort { get; set; }
 
         public string? Creator { get; set;}
 

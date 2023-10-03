@@ -24,6 +24,7 @@ namespace WebWMS.Core.DbContexts
         public DbSet<Menu> Menus { get; set; }
         public DbSet<VendorInfo> Vendors { get; set; }
         public DbSet<RoleInfo> Roles { get; set; }
+        public DbSet<MenuRole> MenuAndRoles { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

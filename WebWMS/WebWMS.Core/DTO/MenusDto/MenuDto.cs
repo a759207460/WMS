@@ -59,6 +59,11 @@ namespace WebWMS.Core.DTO.MenusDto
         /// 父标签样式
         /// </summary>
         public string HeadStyle { get; set; }
+
+        /// <summary>
+        /// 显示序
+        /// </summary>
+        public int? Sort { get; set; }
         #endregion
     }
 }

@@ -12,13 +12,11 @@ namespace WebWMS.Core.Services.RolesService
     public interface IRoleService
     {
         public Task<List<RoleDto>> GetAllAsync();
+        public Task<RoleDto> GetRoleByIdAsync(int id);
         public Task<IPagedList<RoleDto>> GetAllPagedListAsync(int pageIndex, int pageSize, string where);
-
         Task<bool> GetRoleByNameAsync(string code, string name);
         public Task<int> InsertRoleAsync(RoleDto roleDto);
-
         public Task<int> UpdateRoleAsync(RoleDto roleDto);
-
         public Task<int> DeleteRoleAsync(int id);
     }
 }

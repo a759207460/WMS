@@ -29,7 +29,19 @@ namespace WebWMS.Core.Services.MenusService
         /// <exception cref="NotImplementedException"></exception>
         public async Task<List<MenuDto>> GetAllAsync()
         {
-            var list = await repository.GetAllAsync();
+            var list = (await repository.GetAllAsync()).OrderBy(m => m.Sort).ToList();
+            var menuList = mapper.Map<List<MenuDto>>(list);
+            return menuList;
+        }
+
+        /// <summary>
+        ///根据多个id获取菜单信息
+        /// </summary>
+        /// <param name="ids"></param>
+        /// <returns></returns>
+        public async Task<List<MenuDto>> GetMenusByIdsAsync(List<int> ids)
+        {
+            var list = await repository.GetAllAsync(predicate:m=>ids.Contains(m.Id));
             var menuList = mapper.Map<List<MenuDto>>(list);
             return menuList;
         }

@@ -31,7 +31,12 @@ namespace WebWMS.Core.Repositorys
         {
             _dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
             _dbSet = _dbContext.Set<TEntity>();
+            this.db = _dbContext;
         }
+         
+
+        public WMSDbContext db { get; }
+
 
         /// <summary>
         /// Changes the table name. This require the tables in the same database.
@@ -811,7 +816,7 @@ namespace WebWMS.Core.Repositorys
         /// <param name="entities">The entities to insert.</param>
         public virtual Task<int> Insert(params TEntity[] entities)
         {
-             _dbSet.AddRange(entities);
+            _dbSet.AddRange(entities);
             return _dbContext.SaveChangesAsync();
         }
 
@@ -821,7 +826,7 @@ namespace WebWMS.Core.Repositorys
         /// <param name="entities">The entities to insert.</param>
         public virtual Task<int> Insert(IEnumerable<TEntity> entities)
         {
-             _dbSet.AddRange(entities);
+            _dbSet.AddRange(entities);
             return _dbContext.SaveChangesAsync();
         }
 
@@ -862,8 +867,8 @@ namespace WebWMS.Core.Repositorys
         /// <returns>A <see cref="Task"/> that represents the asynchronous insert operation.</returns>
         public virtual Task<int> InsertAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken = default(CancellationToken))
         {
-           _dbSet.AddRangeAsync(entities, cancellationToken);
-           return _dbContext.SaveChangesAsync();
+            _dbSet.AddRangeAsync(entities, cancellationToken);
+            return _dbContext.SaveChangesAsync();
         }
 
         /// <summary>
@@ -912,8 +917,8 @@ namespace WebWMS.Core.Repositorys
         public virtual Task<int> Delete(TEntity entity)
         {
             _dbSet.Remove(entity);
-           return _dbContext.SaveChangesAsync();
-        } 
+            return _dbContext.SaveChangesAsync();
+        }
 
         /// <summary>
         /// Deletes the entity by the specified primary key.
@@ -922,7 +927,7 @@ namespace WebWMS.Core.Repositorys
         public virtual async Task<int> Delete(int id)
         {
             // using a stub entity to mark for deletion
-           var entity= await _dbSet.FindAsync(id);
+            var entity = await _dbSet.FindAsync(id);
             _dbSet.Remove(entity);
             return await _dbContext.SaveChangesAsync();
         }
@@ -943,7 +948,7 @@ namespace WebWMS.Core.Repositorys
         /// <param name="entities">The entities.</param>
         public virtual Task<int> Delete(IEnumerable<TEntity> entities)
         {
-             _dbSet.RemoveRange(entities);
+            _dbSet.RemoveRange(entities);
             return _dbContext.SaveChangesAsync();
         }
 

@@ -14,8 +14,6 @@ namespace WebWMS.Core.Configure.RolesConfig
         public void Configure(EntityTypeBuilder<RoleInfo> builder)
         {
             builder.ToTable("Roles");
-            builder.HasMany(r=>r.Users).WithMany(r=>r.Roles);
-            builder.HasMany(r => r.Menus).WithMany(r => r.Roles);
         }
     }
 }

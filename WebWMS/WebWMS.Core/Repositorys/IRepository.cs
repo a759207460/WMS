@@ -8,6 +8,7 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using WebWMS.Core.Repositorys.Collections;
+using WebWMS.Core.DbContexts;
 
 namespace WebWMS.Core.Repositorys
 {
@@ -25,6 +26,9 @@ namespace WebWMS.Core.Repositorys
         /// This only been used for supporting multiple tables in the same model. This require the tables in the same database.
         /// </remarks>
         void ChangeTable(string table);
+
+        WMSDbContext db { get; }
+
 
         /// <summary>
         /// Gets the <see cref="IPagedList{TEntity}"/> based on a predicate, orderby delegate and page information. This method default no-tracking query.
@@ -490,5 +494,8 @@ namespace WebWMS.Core.Repositorys
         /// <param name="entity">The entity.</param>
         /// /// <param name="state">The entity state.</param>
         void ChangeEntityState(TEntity entity, EntityState state);
+
+        int ExecuteSqlCommand(string sql, params object[] parameters);
+
     }
 }
