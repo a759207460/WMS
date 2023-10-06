@@ -218,14 +218,32 @@ namespace WebWMS.Core.Migrations
                     b.Property<string>("UpdateTime")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("UserInfoId")
+                    b.HasKey("Id");
+
+                    b.ToTable("Roles", (string)null);
+                });
+
+            modelBuilder.Entity("WebWMS.Core.Domain.Users.UserAndRoles", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("RoleId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserInfoId");
+                    b.HasIndex("RoleId");
 
-                    b.ToTable("Roles", (string)null);
+                    b.HasIndex("UserId");
+
+                    b.ToTable("UserAndRoles", (string)null);
                 });
 
             modelBuilder.Entity("WebWMS.Core.Domain.Users.UserInfo", b =>
@@ -342,11 +360,23 @@ namespace WebWMS.Core.Migrations
                     b.Navigation("Role");
                 });
 
-            modelBuilder.Entity("WebWMS.Core.Domain.Roles.RoleInfo", b =>
+            modelBuilder.Entity("WebWMS.Core.Domain.Users.UserAndRoles", b =>
                 {
-                    b.HasOne("WebWMS.Core.Domain.Users.UserInfo", null)
+                    b.HasOne("WebWMS.Core.Domain.Roles.RoleInfo", "Role")
+                        .WithMany("Users")
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("WebWMS.Core.Domain.Users.UserInfo", "User")
                         .WithMany("Roles")
-                        .HasForeignKey("UserInfoId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Role");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("WebWMS.Core.Domain.Menus.Menu", b =>
@@ -357,6 +387,8 @@ namespace WebWMS.Core.Migrations
             modelBuilder.Entity("WebWMS.Core.Domain.Roles.RoleInfo", b =>
                 {
                     b.Navigation("Menus");
+
+                    b.Navigation("Users");
                 });
 
             modelBuilder.Entity("WebWMS.Core.Domain.Users.UserInfo", b =>

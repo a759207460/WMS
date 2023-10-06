@@ -45,6 +45,7 @@ namespace WebWMS.AutoMapper
             CreateMap<RoleDto, RoleInfo>().ReverseMap();
             CreateMap<RoleViewModel, RoleDto>().ReverseMap();
             CreateMap<PagedList<RoleDto>, PagedList<RoleInfo>>().ReverseMap();
+            CreateMap<UserAndRolesDto, UserAndRoles>().ReverseMap();
 
             CreateMap<UserInfoDto, ImportUserInfoDto>().ForMember(dest => dest.账号, option => option.MapFrom(c => c.Account))
                .ForMember(dest => dest.名称, option => option.MapFrom(c => c.Name))

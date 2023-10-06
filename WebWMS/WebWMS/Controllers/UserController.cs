@@ -14,6 +14,10 @@ using WebWMS.Core.DTO.UserInfosDto;
 using WebWMS.Core.Domain.Users;
 using WebWMS.Core.Services.UserInfosService;
 using Microsoft.AspNetCore.Authorization;
+using WebWMS.Core.Services.RolesService;
+using WebWMS.Core.DTO.RolesDto;
+using WebWMS.Core.Domain.Roles;
+using System.Collections.Generic;
 
 namespace WebWMS.Controllers
 {
@@ -24,14 +28,16 @@ namespace WebWMS.Controllers
         private readonly IOptionsSnapshot<ExceConfig> options;
         private readonly ILogger<UserInfo> logger;
         private readonly IMapper mapper;
+        private readonly IRoleService roleService;
         private readonly IHostEnvironment hostEnvironment;
 
-        public UserController(IUserInfoService customerService,IOptionsSnapshot<ExceConfig> options,ILogger<UserInfo> logger, IMapper mapper, IHostEnvironment hostEnvironment)
+        public UserController(IUserInfoService customerService, IOptionsSnapshot<ExceConfig> options, ILogger<UserInfo> logger, IMapper mapper, IRoleService roleService, IHostEnvironment hostEnvironment)
         {
             this.customerService = customerService;
             this.options = options;
             this.logger = logger;
             this.mapper = mapper;
+            this.roleService = roleService;
             this.hostEnvironment = hostEnvironment;
         }
 
@@ -40,7 +46,10 @@ namespace WebWMS.Controllers
             return View();
         }
 
-
+        /// <summary>
+        /// 注册
+        /// </summary>
+        /// <returns></returns>
         public IActionResult Register()
         {
 
@@ -48,14 +57,50 @@ namespace WebWMS.Controllers
         }
 
 
-
+        /// <summary>
+        /// 获取用户列表
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
         public async Task<string> GetCustomerList(RequestModel model)
         {
             ResultMessage<IPagedList<UserInfoDto>> result = new ResultMessage<IPagedList<UserInfoDto>>();
+            string json = string.Empty;
             try
             {
                 result.Status = 200;
                 result.Source = await customerService.GetAllPageListAsync(model.pageIndex - 1, model.pageSize, model.Where);
+                //循环序列化设置
+                var setting = new JsonSerializerSettings();
+                //将循环引用的对象部进行序列化设置
+                //setting.ReferenceLoopHandling = ReferenceLoopHandling.Ignore; 
+
+                //如果想要循环引用的数据得以保留，以便后面反序列化时能还原数据，所以将循环引用设置为序列化
+                setting.PreserveReferencesHandling = PreserveReferencesHandling.Objects;
+                setting.ReferenceLoopHandling = ReferenceLoopHandling.Serialize;
+                json = JsonConvert.SerializeObject(result,setting);
+            }
+            catch (Exception ex)
+            {
+                result.Status = -1;
+                result.Message = ex.Message;
+            }
+           
+            return json;
+        }
+
+        /// <summary>
+        /// 获取角色列表
+        /// </summary>
+        /// <returns></returns>
+        public async Task<string> GetRoleList()
+        {
+            ResultMessage<List<RoleDto>> result = new ResultMessage<List<RoleDto>>();
+            try
+            {
+                var rlist = await roleService.GetAllAsync();
+                result.Status = 200;
+                result.Source = rlist;
             }
             catch (Exception ex)
             {
@@ -65,23 +110,38 @@ namespace WebWMS.Controllers
             string js = JsonConvert.SerializeObject(result);
             return js;
         }
-
         /// <summary>
         /// 新增用户
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        public async Task<string> Add(UserViewModel model)
+        public async Task<string> Add(UserViewModel model, CancellationToken cancellation)
         {
             ResultMessage result = new ResultMessage();
             try
             {
-                var cuto = mapper.Map<UserInfoDto>(model);
+                UserInfoDto cuto = new UserInfoDto();
+                cuto.Address = model.Address;
+                cuto.Account = model.Account;
+                cuto.Email=model.Email;
+                cuto.MoblePhone= model.MoblePhone;
+                cuto.Name=model.Name;
                 cuto.IsRemove = model.IsRemove;
                 cuto.IsEnabled = model.IsEnabled;
-                cuto.PassWord = HelpCrypto.DESEncrypt(cuto.PassWord);
+                cuto.PassWord = HelpCrypto.DESEncrypt(model.PassWord);
                 cuto.CreateTime = DateTime.Now.ToString();
                 cuto.Creator = User.Identity?.Name;
+                List<UserAndRolesDto> ur = new List<UserAndRolesDto>();
+                for (int i = 0; i < model.RoleList.Count; i++)
+                {
+                    UserAndRolesDto userAndRoles = new UserAndRolesDto()
+                    {
+                        RoleId = model.RoleList[i],
+                        UserId = model.Id
+                    };
+                    ur.Add(userAndRoles);
+                }
+                cuto.Roles = ur;
                 if (await customerService.GetCustomerByAccountAsync(cuto.Account))
                 {
                     result.Message = "账号已存在不能重复添加!";
@@ -124,6 +184,17 @@ namespace WebWMS.Controllers
                 cu.IsEnabled = model.IsEnabled;
                 cu.IsRemove = model.IsRemove;
                 cu.UpdateTime = DateTime.Now.ToString();
+                List<UserAndRolesDto> ur = new List<UserAndRolesDto>();
+                for (int i = 0; i < model.RoleList.Count; i++)
+                {
+                    UserAndRolesDto userAndRoles = new UserAndRolesDto()
+                    {
+                        RoleId = model.RoleList[i],
+                        UserId = model.Id
+                    };
+                    ur.Add(userAndRoles);
+                }
+                cu.Roles = ur;
                 var cuto = mapper.Map<UserInfoDto>(cu);
                 int num = await customerService.UpdateCustomerAsync(cuto);
                 if (num > 0)
@@ -205,8 +276,8 @@ namespace WebWMS.Controllers
                 string json = await EPPlusHelper.ReadExcel(stream, cancellationToken);
                 if (json != null)
                 {
-                    var elist= JsonConvert.DeserializeObject<List<ImportUserInfoDto>>(json);
-                    list =mapper.Map<List<UserInfoDto>>(elist);
+                    var elist = JsonConvert.DeserializeObject<List<ImportUserInfoDto>>(json);
+                    list = mapper.Map<List<UserInfoDto>>(elist);
                 }
                 if (list != null && list.Count > 0)
                 {
@@ -265,9 +336,9 @@ namespace WebWMS.Controllers
                 var list = await customerService.GetExportAsync();
                 DataTable dt = EPPlusHelper.ListToDt(list);
                 string modelPath = options.Value.ModelPath + "model.xlsx";
-                string rand="-"+new Random().Next(1,1000).ToString();
-                string downloadPath = options.Value.DownloadPath + "User-" +DateTime.Now.ToString("yyyy-MM-dd")+ rand + ".xlsx";
-                bool b = await EPPlusHelper.ExportModleExcel(modelPath, downloadPath, dt,cancellationToken);
+                string rand = "-" + new Random().Next(1, 1000).ToString();
+                string downloadPath = options.Value.DownloadPath + "User-" + DateTime.Now.ToString("yyyy-MM-dd") + rand + ".xlsx";
+                bool b = await EPPlusHelper.ExportModleExcel(modelPath, downloadPath, dt, cancellationToken);
                 if (b)
                 {
                     result.Status = 200;

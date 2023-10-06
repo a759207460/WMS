@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Models\UserAndRoleViewModel.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Content Remove="wwwroot\css\elements.css" />
     <Content Remove="wwwroot\css\isotope.css" />
     <Content Remove="wwwroot\css\premium.css" />

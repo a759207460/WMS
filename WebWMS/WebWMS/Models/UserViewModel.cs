@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using WebWMS.Core.Domain.Users;
 using WebWMS.Core.DTO.RolesDto;
 using WebWMS.Core.DTO.UserInfosDto;
 using WebWMS.Core.Repositorys.Collections;
@@ -9,7 +10,7 @@ namespace WebWMS.Models
     {
         public IPagedList<UserInfoDto>? PagedList { get; set; }
 
-        public List<RoleDto> RoleList { get; set; }
+        public List<int> RoleList { get; set; }
 
         public int Id { get; set; }
         public string Account { get; set; }

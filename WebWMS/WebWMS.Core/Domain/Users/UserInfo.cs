@@ -52,7 +52,7 @@ namespace WebWMS.Core.Domain.Users
 
         public bool IsRemove { get; set; }
 
-        public List<RoleInfo> Roles { get; set; }
+        public List<UserAndRoles> Roles { get; set; }
 
         #endregion
     }

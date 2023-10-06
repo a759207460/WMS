@@ -7853,6 +7853,18 @@
       "PackagePath": "staticwebassets\\css\\Load.css"
     },
     {
+      "Id": "C:\\项目\\C#学习例子\\WMS\\WebWMS\\WebWMS\\wwwroot\\css\\bootstrap-select.css",
+      "PackagePath": "staticwebassets\\css\\bootstrap-select.css"
+    },
+    {
+      "Id": "C:\\项目\\C#学习例子\\WMS\\WebWMS\\WebWMS\\wwwroot\\css\\bootstrap-select.css.map",
+      "PackagePath": "staticwebassets\\css\\bootstrap-select.css.map"
+    },
+    {
+      "Id": "C:\\项目\\C#学习例子\\WMS\\WebWMS\\WebWMS\\wwwroot\\css\\bootstrap-select.min.css",
+      "PackagePath": "staticwebassets\\css\\bootstrap-select.min.css"
+    },
+    {
       "Id": "C:\\项目\\C#学习例子\\WMS\\WebWMS\\WebWMS\\wwwroot\\css\\jsgrid-theme.css",
       "PackagePath": "staticwebassets\\css\\jsgrid-theme.css"
     },
@@ -7871,6 +7883,22 @@
     {
       "Id": "C:\\项目\\C#学习例子\\WMS\\WebWMS\\WebWMS\\wwwroot\\js\\UploadFile.js",
       "PackagePath": "staticwebassets\\js\\UploadFile.js"
+    },
+    {
+      "Id": "C:\\项目\\C#学习例子\\WMS\\WebWMS\\WebWMS\\wwwroot\\js\\bootstrap-select.js",
+      "PackagePath": "staticwebassets\\js\\bootstrap-select.js"
+    },
+    {
+      "Id": "C:\\项目\\C#学习例子\\WMS\\WebWMS\\WebWMS\\wwwroot\\js\\bootstrap-select.js.map",
+      "PackagePath": "staticwebassets\\js\\bootstrap-select.js.map"
+    },
+    {
+      "Id": "C:\\项目\\C#学习例子\\WMS\\WebWMS\\WebWMS\\wwwroot\\js\\bootstrap-select.min.js",
+      "PackagePath": "staticwebassets\\js\\bootstrap-select.min.js"
+    },
+    {
+      "Id": "C:\\项目\\C#学习例子\\WMS\\WebWMS\\WebWMS\\wwwroot\\js\\bootstrap-select.min.js.map",
+      "PackagePath": "staticwebassets\\js\\bootstrap-select.min.js.map"
     },
     {
       "Id": "C:\\项目\\C#学习例子\\WMS\\WebWMS\\WebWMS\\wwwroot\\js\\jquery.knob.js",

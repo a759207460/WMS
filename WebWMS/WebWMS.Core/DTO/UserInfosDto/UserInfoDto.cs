@@ -2,13 +2,22 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
+using WebWMS.Core.Domain.Users;
 
 namespace WebWMS.Core.DTO.UserInfosDto
 {
     public class UserInfoDto:BaseDto
     {
         #region Property
+
+        public List<UserAndRolesDto> Roles { get; set; }
+
+        public List<int> RoleIds { get; set; }
+
+        public string RoleNames { get; set; }
+
         /// <summary>
         /// customer name
         /// </summary>
