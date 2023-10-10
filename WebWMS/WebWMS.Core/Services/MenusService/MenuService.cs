@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -45,6 +47,20 @@ namespace WebWMS.Core.Services.MenusService
             var menuList = mapper.Map<List<MenuDto>>(list);
             return menuList;
         }
+
+
+        /// <summary>
+        ///根据多个角色id获取菜单信息
+        /// </summary>
+        /// <param name="ids"></param>
+        /// <returns></returns>
+        public async Task<List<MenuDto>> GetMenusByRoleIdsAsync(List<int> ids)
+        {
+            var list = await repository.GetAllAsync(predicate: m =>m.Roles.Any(r=>ids.Contains(r.RoleId)),include:m1=>m1.Include(mm=>mm.Roles),orderBy:rr=>rr.OrderBy(s=>s.Sort));
+            var menuList = mapper.Map<List<MenuDto>>(list);
+            return menuList;
+        }
+
 
         /// <summary>
         /// 获取菜单列表分页

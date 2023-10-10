@@ -32,7 +32,12 @@ namespace WebWMS.Core.Domain.Menus
         /// 导航方法名称
         /// </summary>
         public string? NavigateActioin { get; set; }
-         
+
+        /// <summary>
+        /// 父类菜单ID
+        /// </summary>
+        public int ParentId { get; set; }
+
         /// <summary>
         /// 父类菜单名称
         /// </summary>

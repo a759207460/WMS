@@ -144,6 +144,9 @@ namespace WebWMS.Core.Migrations
                     b.Property<string>("NavigateController")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("ParentId")
+                        .HasColumnType("int");
+
                     b.Property<string>("ParentName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");

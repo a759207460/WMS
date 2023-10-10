@@ -175,6 +175,9 @@
                    $("#selectRole").selectpicker("refresh");
                }
            });
+          $("#mTitle").text("编辑用户");
+          $("#mpassword").show();
+          $("#mpassword1").show();
           $("#UserModal").modal('show');
           $("#operatetype").val("add");
        });
@@ -192,7 +195,6 @@
            var isEnabled=$("#IsEnabled").prop("checked");
            var del=$("#Delete").prop("checked");
            var selectRole=$('#selectRole').val();
-          
            if(account==""||account==null)
            {
                $("#saccount").append("账号不能为空!");
@@ -201,27 +203,30 @@
            {
                $("#saccount").text("*")
            }
-           if(password==""||password==null)
-           {
-                $("#spassword").append("密码不能为空!");
-                return;
-           }
-           else{
-               $("#spassword").text("*")
-           }
 
-           if(password1==""||password1==null)
+           if(operatetype=="add")
            {
-                $("#spassword1").append("密码确认不能为空!");
-                return;
-           }
-           else{
-
-               $("#spassword1").text("*")
-               if(password!=password1)
+              if(password==""||password==null)
                {
-                     $("#spassword1").append("两次密码不相等!");
-                     return;
+                    $("#spassword").append("密码不能为空!");
+                    return;
+               }
+               else{
+                   $("#spassword").text("*")
+               }
+               if(password1==""||password1==null)
+               {
+                    $("#spassword1").append("密码确认不能为空!");
+                    return;
+               }
+               else{
+
+                   $("#spassword1").text("*")
+                   if(password!=password1)
+                   {
+                         $("#spassword1").append("两次密码不相等!");
+                         return;
+                   }
                }
            }
            //名称
@@ -236,11 +241,11 @@
            //角色
            if(selectRole==""||selectRole==null)
            {
-                 $("#selectRole").append("密码确认不能为空!");
+                 $("#sselectRole").append("角色不能为空!");
                 return;
            } else{
 
-               $("#selectRole").text("*");
+               $("#sselectRole").text("*");
            }
            //邮箱
            if(email==""||email==null)
@@ -269,52 +274,42 @@
                  return;
                } 
            }
-
            if(operatetype=="add")
            {
                $.post("/User/Add",
-           {"Account":account,"PassWord":password,"Name":name,"Email":email,"MoblePhone":phone,"Address":address,"IsEnabled":isEnabled,"Delete":del,"RoleList":selectRole},
-           function(data){
-              var result=eval('('+data+')');
-            if(result.Status==200)
-            {
-                alert(result.Message);
-                $("#account").val("");
-                $("#password").val("");
-                $("#password1").val("");
-                $("#name").val("");
-                $("#phone").val("");
-                $("#email").val("");
-                $("#address").val("");
-                $("#IsEnabled").prop("checked","");
-                $("#Delete").prop("checked","");
-                $("#selectRole").val("");
-                $("#UserModal").modal('hide');
-                location.reload(true);
-            }
-            else
-            {
-                alert(result.Message);
-            }});
+                   {"Account":account,"PassWord":password,"Name":name,"Email":email,"MoblePhone":phone,"Address":address,"IsEnabled":isEnabled,"Delete":del,"RoleList":selectRole},
+                   function(data){
+                      var result=eval('('+data+')');
+                    if(result.Status==200)
+                    {
+                        alert(result.Message);
+                        $("#account").val("");
+                        $("#password").val("");
+                        $("#password1").val("");
+                        $("#name").val("");
+                        $("#phone").val("");
+                        $("#email").val("");
+                        $("#address").val("");
+                        $("#IsEnabled").prop("checked","");
+                        $("#Delete").prop("checked","");
+                        $("#UserModal").modal('hide');
+                        location.reload(true);
+                    }
+                    else
+                    {
+                        alert(result.Message);
+                    }});
            }else if(operatetype=="edit")
            {
-               var id= $("#editId").val();
-               $.post("/User/Update",
-                       {"Id":id,"Account":account,"PassWord":password,"Name":name,"Email":email,"MoblePhone":phone,"Address":address,"IsEnabled":isEnabled,"Delete":del},
+               var id=$("#editId").val();
+              $.post("/User/Update",
+                       {"Id":id,"Account":account,"Name":name,"Email":email,"MoblePhone":phone,"Address":address,"IsEnabled":isEnabled,"IsRemove":del,"RoleList":selectRole},
                        function(data){
                           var result=eval('('+data+')');
                         if(result.Status==200)
                         {
                             alert(result.Message);
-                            $("#account").val("");
-                            $("#password").val("");
-                            $("#password1").val("");
-                            $("#name").val("");
-                            $("#phone").val("");
-                            $("#email").val("");
-                            $("#address").val("");
-                            $("#UserModal").modal('hide');
-                            location.reload(true);
+                             location.reload(true);
                         }
                         else
                         {
@@ -467,6 +462,7 @@
                 ]
                });
      }
+
       //编辑用户
     function showDetailsDialog(item)
        {
@@ -485,7 +481,8 @@
                    $('#selectRole').selectpicker('render');
                }
            });
-            
+            $("#editId").val(item.Id);
+            $("#operatetype").val("edit");
             $("#account").val(item.Account);
             $("#name").val(item.Name);
             $("#mpassword").hide();

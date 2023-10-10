@@ -65,25 +65,24 @@ namespace WebWMS.Controllers
         /// 获取菜单信息
         /// </summary>
         /// <returns></returns>
-        public async Task<string> GetMenusList()
+        public async Task<string> GetMenusList(int rid)
         {
             ResultMessage<string> result = new ResultMessage<string>();
             StringBuilder builder = new StringBuilder();
             List<MenuDto> list = null;
             try
             {
-                int rid = 1;
                 var role = await roleService.GetRoleByIdAsync(rid);
-                if (redisClient.ExistsHash("WMS_MenuList", "menuhash"))
+                if (redisClient.ExistsHash("WMS_MenuList_All", "menuhash"))
                 {
-                    list = redisClient.GetObjHash<List<MenuDto>>("WMS_MenuList", "menuhash");
+                    list = redisClient.GetObjHash<List<MenuDto>>("WMS_MenuList_All", "menuhash");
                 }
                 else
                 {
                     list = await menuService.GetAllAsync();
-                    redisClient.SetObjHash<List<MenuDto>>("WMS_MenuList", "menuhash", list, SerializeType.Json);
+                    redisClient.SetObjHash<List<MenuDto>>("WMS_MenuList_All", "menuhash", list, SerializeType.Json);
                     TimeSpan timeSpan = TimeSpan.FromHours(24);
-                    redisClient.SetKeyExpire("WMS_MenuList", timeSpan);
+                    redisClient.SetKeyExpire("WMS_MenuList_All", timeSpan);
                 }
                 if (list != null && list.Count() > 0)
                 {
@@ -180,15 +179,24 @@ namespace WebWMS.Controllers
             {
                 RoleDto role = await roleService.GetRoleByIdAsync(rid);
                 List<MenuDto> menus = await menuService.GetMenusByIdsAsync(list);
+                List<int> plist = menus.Where(m => m.ParentId>0).Select(m =>m.ParentId ).Distinct().ToList();
                 if (menus == null || menus.Count == 0)
                 {
                     result.Status = -1;
                     result.Message = "未找到相关菜单信息!";
                     return JsonConvert.SerializeObject(result);
                 }
+               
                 if (role != null)
                 {
                     role.Menus = menus.Select(r => new MenuRole { MenuId = r.Id, RoleId = rid }).ToList();
+                    if (plist != null && plist.Count > 0)
+                    {
+                        for (int i = 0; i < plist.Count(); i++)
+                        {
+                            role.Menus.Add(new MenuRole { MenuId = plist[i], RoleId = rid });
+                        }
+                    }
                     int num = await roleService.UpdateRoleAsync(role);
                     if (num > 0)
                     {

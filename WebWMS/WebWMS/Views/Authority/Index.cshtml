@@ -136,11 +136,11 @@
      function ShowModal(id)
      {
          $("#RoleId").val(id);
-         $.post("/Authority/GetMenusList",{},function(data){
+         $.post("/Authority/GetMenusList",{"rid":id},function(data){
                var result=eval('('+data+')');
                if(result.Status==200)
                {
-                    $("#Content").html("");
+                   $("#Content").html("");
                    $("#Content").append(result.Source);
                }else
                {

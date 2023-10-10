@@ -65,6 +65,7 @@ namespace WebWMS.Controllers
                 {
                     var claims = new List<Claim>
                     {
+                        new Claim(ClaimTypes.Sid,cu.Id.ToString()),
                         new Claim(ClaimTypes.Dsa, cu.Account),
                         new Claim(ClaimTypes.Name,cu.Name ),
                         new Claim(ClaimTypes.MobilePhone,cu.MoblePhone),

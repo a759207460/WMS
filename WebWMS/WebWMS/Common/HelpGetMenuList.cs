@@ -5,9 +5,12 @@ using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.AspNetCore.Routing;
 using System;
 using System.Collections.Generic;
+using System.Security.Claims;
 using System.Text;
 using WebWMS.Core.DTO.MenusDto;
 using WebWMS.Core.Services.MenusService;
+using WebWMS.Core.Services.RolesService;
+using WebWMS.Core.Services.UserInfosService;
 using WebWMS.Models;
 using static CommonLibraries.Redis.RedisClientHelper;
 
@@ -16,13 +19,17 @@ namespace WebWMS.Common
     public class HelpGetMenuList
     {
         private readonly IMenuService menuService;
+        private readonly IUserInfoService userInfoService;
+        private readonly IRoleService roleService;
         private readonly IMapper mapper;
         private readonly RedisClientHelper redisClient;
         private readonly ILogger<HelpGetMenuList> logger;
 
-        public HelpGetMenuList(IMenuService menuService, IMapper mapper, RedisClientHelper redisClient, ILogger<HelpGetMenuList> logger)
+        public HelpGetMenuList(IMenuService menuService,IUserInfoService userInfoService,IRoleService roleService ,IMapper mapper, RedisClientHelper redisClient, ILogger<HelpGetMenuList> logger)
         {
             this.menuService = menuService;
+            this.userInfoService = userInfoService;
+            this.roleService = roleService;
             this.mapper = mapper;
             this.redisClient = redisClient;
             this.logger = logger;
@@ -62,22 +69,27 @@ namespace WebWMS.Common
         /// 获取菜单数据
         /// </summary>
         /// <returns></returns>
-        public async Task<string> GetMenuList(string trigerName)
+        public async Task<string> GetMenuList(string trigerName,int id)
         {
             try
             {
+                var user =await userInfoService.GetCustomerByIdAsync(id);
                 StringBuilder stringBuilder = new StringBuilder("<ul>");
+                List<int> ids = user.Roles.Select(r => r.RoleId).ToList();
                 List<MenuDto> list = null;
-                if (redisClient.ExistsHash("WMS_MenuList", "menuhash"))
+                if (redisClient.ExistsHash("WMS_MenuList_"+ user.Account, "menuhash"))
                 {
-                    list = redisClient.GetObjHash<List<MenuDto>>("WMS_MenuList", "menuhash");
+                    list = redisClient.GetObjHash<List<MenuDto>>("WMS_MenuList_" + user.Account, "menuhash");
                 }
                 else
                 {
-                    list = await menuService.GetAllAsync();
-                    redisClient.SetObjHash<List<MenuDto>>("WMS_MenuList", "menuhash", list, SerializeType.Json);
-                    TimeSpan timeSpan = TimeSpan.FromHours(24);
-                    redisClient.SetKeyExpire("WMS_MenuList", timeSpan);
+                    list = await menuService.GetMenusByRoleIdsAsync(ids);
+                    if(list != null&& list.Count()>0)
+                    {
+                        redisClient.SetObjHash<List<MenuDto>>("WMS_MenuList_" + user.Account, "menuhash", list, SerializeType.Json);
+                        TimeSpan timeSpan = TimeSpan.FromHours(24);
+                        redisClient.SetKeyExpire("WMS_MenuList_" + user.Account, timeSpan);
+                    }
                 }
                 if (list != null && list.Count() > 0)
                 {

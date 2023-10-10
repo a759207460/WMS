@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+using System.Security.Claims;
 using WebWMS.Common;
 using WebWMS.Models;
 
@@ -31,7 +32,9 @@ namespace WebWMS.Controllers
         [HttpPost]
         public async Task<string> GetMenuList(string name)
         {
-            string menuList =await helpGetMenuList.GetMenuList(name);
+            string strId = User?.Claims?.FirstOrDefault(x => x.Type == ClaimTypes.Sid)?.Value;
+            int id = string.IsNullOrWhiteSpace(strId)?0:Convert.ToInt32(strId);
+            string menuList =await helpGetMenuList.GetMenuList(name, id);
             return menuList;
         }
 

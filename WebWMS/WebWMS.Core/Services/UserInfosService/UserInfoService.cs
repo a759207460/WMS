@@ -23,7 +23,7 @@ namespace WebWMS.Core.Services.UserInfosService
         private readonly IRoleService roleService;
         private readonly IMapper mapper;
 
-        public UserInfoService(IRepository<UserInfo> repository,IRoleService roleService, IMapper mapper)
+        public UserInfoService(IRepository<UserInfo> repository, IRoleService roleService, IMapper mapper)
         {
             this.repository = repository;
             this.roleService = roleService;
@@ -39,9 +39,9 @@ namespace WebWMS.Core.Services.UserInfosService
         {
             PagedList<UserInfoDto> pagedList = null;
             IPagedList<UserInfo> plist = null;
-            var rlist =await roleService.GetAllAsync();
+            var rlist = await roleService.GetAllAsync();
             if (!string.IsNullOrWhiteSpace(where))
-                plist = await repository.GetPagedListAsync(pageIndex: pageIndex, pageSize: pageSize, predicate: c => c.Account.Contains(where),include:u=>u.Include(r=>r.Roles));
+                plist = await repository.GetPagedListAsync(pageIndex: pageIndex, pageSize: pageSize, predicate: c => c.Account.Contains(where), include: u => u.Include(r => r.Roles));
             else
                 plist = await repository.GetPagedListAsync(pageIndex: pageIndex, pageSize: pageSize, include: u => u.Include(r => r.Roles));
             if (plist != null)
@@ -53,8 +53,8 @@ namespace WebWMS.Core.Services.UserInfosService
                 {
                     nlist = rlist.Where(r => list.Items[i].Roles.Where(rr => rr.RoleId == r.Id).Count() > 0).Select(r1 => r1.RoleName).ToList();
                     nlistId = rlist.Where(r => list.Items[i].Roles.Where(rr => rr.RoleId == r.Id).Count() > 0).Select(r1 => r1.Id).ToList();
-                    if (nlist != null&&nlist.Count()>0)
-                    list.Items[i].RoleNames =string.Join(",", nlist);
+                    if (nlist != null && nlist.Count() > 0)
+                        list.Items[i].RoleNames = string.Join(",", nlist);
                     list.Items[i].RoleIds = nlistId;
                 }
                 pagedList = list;
@@ -101,7 +101,7 @@ namespace WebWMS.Core.Services.UserInfosService
         /// <returns></returns>
         public async Task<UserInfoDto> GetCustomerByIdAsync(int id)
         {
-            var cu = await repository.GetFirstOrDefaultAsync(predicate:u=>u.Id==id,include:u1=>u1.Include(r=>r.Roles));
+            var cu = await repository.GetFirstOrDefaultAsync(predicate: u => u.Id == id, include: u1 => u1.Include(r => r.Roles));
             var cuto = mapper.Map<UserInfoDto>(cu);
             return cuto;
         }
@@ -130,69 +130,86 @@ namespace WebWMS.Core.Services.UserInfosService
             return await repository.InsertAsync(cu);
         }
 
-    
-
-    /// <summary>
-    /// 批量新增用户
-    /// </summary>
-    /// <param name="customerDto"></param>
-    /// <returns></returns>
-    public async Task<int> BatchInsertCustomerAsync(List<UserInfoDto> listCustomerDto, CancellationToken cancellationToken)
-    {
-        var cu = mapper.Map<List<UserInfo>>(listCustomerDto);
-        return await repository.InsertAsync(cu, cancellationToken);
-    }
 
 
-
-    /// <summary>
-    /// 更新用户
-    /// </summary>
-    /// <param name="customerDto"></param>
-    public async Task<int> UpdateCustomerAsync(UserInfoDto customerDto)
-    {
-        var cu = await repository.FindAsync(customerDto.Id);
-        if (cu != null)
+        /// <summary>
+        /// 批量新增用户
+        /// </summary>
+        /// <param name="customerDto"></param>
+        /// <returns></returns>
+        public async Task<int> BatchInsertCustomerAsync(List<UserInfoDto> listCustomerDto, CancellationToken cancellationToken)
         {
-            cu.Address = customerDto.Address;
-            cu.Email = customerDto.Email;
-            cu.IsRemove = customerDto.IsRemove;
-            cu.IsEnabled = customerDto.IsEnabled;
-            cu.MoblePhone = customerDto.MoblePhone;
-            cu.Name = customerDto.Name;
-            cu.UpdateTime = customerDto.UpdateTime;
-            return await repository.Update(cu);
-        }
-        else
-        {
-            return -1;
+            var cu = mapper.Map<List<UserInfo>>(listCustomerDto);
+            return await repository.InsertAsync(cu, cancellationToken);
         }
 
-    }
-
-    /// <summary>
-    /// 删除用户
-    /// </summary>
-    /// <param name="id"></param>
-    /// <returns></returns>
-    /// <exception cref="NotImplementedException"></exception>
-    public async Task<int> DeleteCustomerAsync(int id)
-    {
-        return await repository.Delete(id);
-    }
 
 
-    /// <summary>
-    /// 获取用户信息
-    /// </summary>
-    /// <param name="account"></param>
-    /// <param name="pwd"></param>
-    /// <returns></returns>
-    public async Task<UserInfoDto> GetCustomerAsync(string account, string pwd)
-    {
-        var cu = await repository.GetFirstOrDefaultAsync(c => c, predicate: c => c.Account == account && c.PassWord == pwd && c.IsEnabled && !c.IsRemove);
-        var customer = mapper.Map<UserInfoDto>(cu);
-        return customer;
+        /// <summary>
+        /// 更新用户
+        /// </summary>
+        /// <param name="customerDto"></param>
+        public async Task<int> UpdateCustomerAsync(UserInfoDto customerDto)
+        {
+            using (IDbContextTransaction dbContextTransaction = repository.db.Database.BeginTransaction())
+            {
+                try
+                {
+                    var cu = await repository.GetFirstOrDefaultAsync(predicate: u => u.Id == customerDto.Id, include: u => u.Include(u1 => u1.Roles));
+                    if (cu != null)
+                    {
+                        repository.db.UserAndRoles.RemoveRange(cu.Roles);
+                        await repository.db.SaveChangesAsync();
+                        cu.Address = customerDto.Address;
+                        cu.Email = customerDto.Email;
+                        cu.IsRemove = customerDto.IsRemove;
+                        cu.IsEnabled = customerDto.IsEnabled;
+                        cu.MoblePhone = customerDto.MoblePhone;
+                        cu.Name = customerDto.Name;
+                        cu.Roles =mapper.Map<List<UserAndRoles>>(customerDto.Roles);
+                        cu.UpdateTime = customerDto.UpdateTime;
+                        int n= await repository.Update(cu);
+                        await dbContextTransaction.CommitAsync();
+                        return n;
+                    }
+                    else
+                    {
+                        return -1;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    await dbContextTransaction.RollbackAsync();
+                    throw new Exception(ex.Message);
+                }
+
+            }
+
+        }
+
+        /// <summary>
+        /// 删除用户
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException"></exception>
+        public async Task<int> DeleteCustomerAsync(int id)
+        {
+            return await repository.Delete(id);
+        }
+
+
+        /// <summary>
+        /// 获取用户信息
+        /// </summary>
+        /// <param name="account"></param>
+        /// <param name="pwd"></param>
+        /// <returns></returns>
+        public async Task<UserInfoDto> GetCustomerAsync(string account, string pwd)
+        {
+            var cu = await repository.GetFirstOrDefaultAsync(c => c, predicate: c => c.Account == account && c.PassWord == pwd && c.IsEnabled && !c.IsRemove);
+            var customer = mapper.Map<UserInfoDto>(cu);
+            return customer;
+        }
     }
-}
 }

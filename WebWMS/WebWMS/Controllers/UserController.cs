@@ -78,14 +78,14 @@ namespace WebWMS.Controllers
                 //如果想要循环引用的数据得以保留，以便后面反序列化时能还原数据，所以将循环引用设置为序列化
                 setting.PreserveReferencesHandling = PreserveReferencesHandling.Objects;
                 setting.ReferenceLoopHandling = ReferenceLoopHandling.Serialize;
-                json = JsonConvert.SerializeObject(result,setting);
+                json = JsonConvert.SerializeObject(result, setting);
             }
             catch (Exception ex)
             {
                 result.Status = -1;
                 result.Message = ex.Message;
             }
-           
+
             return json;
         }
 
@@ -123,9 +123,9 @@ namespace WebWMS.Controllers
                 UserInfoDto cuto = new UserInfoDto();
                 cuto.Address = model.Address;
                 cuto.Account = model.Account;
-                cuto.Email=model.Email;
-                cuto.MoblePhone= model.MoblePhone;
-                cuto.Name=model.Name;
+                cuto.Email = model.Email;
+                cuto.MoblePhone = model.MoblePhone;
+                cuto.Name = model.Name;
                 cuto.IsRemove = model.IsRemove;
                 cuto.IsEnabled = model.IsEnabled;
                 cuto.PassWord = HelpCrypto.DESEncrypt(model.PassWord);
@@ -210,7 +210,8 @@ namespace WebWMS.Controllers
             }
             catch (Exception ex)
             {
-                result.Status = -1; result.Message = ex.Message;
+                result.Status = -1;
+                result.Message = ex.Message;
             }
             return JsonConvert.SerializeObject(result);
         }

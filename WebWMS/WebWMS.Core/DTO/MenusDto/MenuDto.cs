@@ -36,6 +36,11 @@ namespace WebWMS.Core.DTO.MenusDto
         public string ParentName { get; set; }
 
         /// <summary>
+        /// 父类菜单ID
+        /// </summary>
+        public int ParentId { get; set; }
+
+        /// <summary>
         /// 导航Url地址
         /// </summary>
         public string? Url { get; set; }
