@@ -14,6 +14,7 @@ namespace WebWMS.Core.Services.MenusService
         public Task<bool> GetMenuByNameAsync(string name, string title);
         public Task<List<MenuDto>> GetAllAsync();
         public Task<List<MenuDto>> GetMenusByIdsAsync(List<int> ids);
+        public Task<List<MenuDto>> GetMenusByParentIdAsync(int id);
         public Task<List<MenuDto>> GetMenusByRoleIdsAsync(List<int> ids);
         public Task<IPagedList<MenuDto>> GetAllPagedListAsync(int pageIndex, int pageSize, string where);
         public Task<int> InsertMenuAsync(MenuDto menuDto);

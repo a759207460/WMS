@@ -48,6 +48,18 @@ namespace WebWMS.Core.Services.MenusService
             return menuList;
         }
 
+        /// <summary>
+        ///根据多个id获取菜单信息
+        /// </summary>
+        /// <param name="ids"></param>
+        /// <returns></returns>
+        public async Task<List<MenuDto>> GetMenusByParentIdAsync(int id)
+        {
+            var list = await repository.GetAllAsync(predicate: m =>m.ParentId==id);
+            var menuList = mapper.Map<List<MenuDto>>(list);
+            return menuList;
+        }
+
 
         /// <summary>
         ///根据多个角色id获取菜单信息
@@ -56,7 +68,7 @@ namespace WebWMS.Core.Services.MenusService
         /// <returns></returns>
         public async Task<List<MenuDto>> GetMenusByRoleIdsAsync(List<int> ids)
         {
-            var list = await repository.GetAllAsync(predicate: m =>m.Roles.Any(r=>ids.Contains(r.RoleId)),include:m1=>m1.Include(mm=>mm.Roles),orderBy:rr=>rr.OrderBy(s=>s.Sort));
+            var list = await repository.GetAllAsync(predicate: m =>m.Roles.Any(r=>ids.Contains(r.RoleId))&&m.Name!="Root",include:m1=>m1.Include(mm=>mm.Roles),orderBy:rr=>rr.OrderBy(s=>s.Sort));
             var menuList = mapper.Map<List<MenuDto>>(list);
             return menuList;
         }
@@ -136,6 +148,7 @@ namespace WebWMS.Core.Services.MenusService
                 menu.NavigateController = menuDto.NavigateController;
                 menu.NavigateActioin = menuDto.NavigateActioin;
                 menu.ParentName = menuDto.ParentName;
+                menu.ParentId=menuDto.ParentId;
                 menu.HasChildren = menuDto.HasChildren;
                 menu.UpdateTime = menuDto.UpdateTime;
                 menu.Tag = menuDto.Tag;

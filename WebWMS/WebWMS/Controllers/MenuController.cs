@@ -52,6 +52,30 @@ namespace WebWMS.Controllers
         }
 
         /// <summary>
+        /// 获取父菜单
+        /// </summary>
+        /// <returns></returns>
+        public async Task<string> GetMenuListByParentId()
+        {
+            ResultMessage<List<SelectMenuDto>> result = new ResultMessage<List<SelectMenuDto>>();
+            try
+            {
+                var list = await menuService.GetMenusByParentIdAsync(0);
+                var mlist = list?.Select(m => new SelectMenuDto { Id = m.Id, Name = m.Title }).ToList();
+                result.Status = 200;
+                result.Source = mlist;
+            }
+            catch (Exception ex)
+            {
+                result.Status = -1;
+                result.Message = ex.Message;
+            }
+            string js = JsonConvert.SerializeObject(result);
+            return js;
+        }
+
+
+        /// <summary>
         /// 新增用户
         /// </summary>
         /// <param name="model"></param>
@@ -65,14 +89,14 @@ namespace WebWMS.Controllers
                 menuto.Name = model.Name;
                 menuto.Title = model.Title;
                 menuto.NavigateController = model.NavigateController;
-                menuto.NavigateActioin=model.NavigateActioin;
-                menuto.Tag= model.Tag;
-                menuto.ParentName= model.ParentName;
+                menuto.NavigateActioin = model.NavigateActioin;
+                menuto.Tag = model.Tag;
+                menuto.ParentName = model.ParentName;
                 menuto.HasChildren = model.HasChildren;
-                menuto.HeadStyle= model.HeadStyle;
-                menuto.Style=model.Style;
+                menuto.HeadStyle = model.HeadStyle;
+                menuto.Style = model.Style;
                 menuto.CreateTime = DateTime.Now.ToString();
-                if (await menuService.GetMenuByNameAsync(menuto.Name,model.Title))
+                if (await menuService.GetMenuByNameAsync(menuto.Name, model.Title))
                 {
                     result.Message = "菜单名称或标题已存在不能重复添加!";
                     result.Status = -1;
@@ -107,25 +131,28 @@ namespace WebWMS.Controllers
             ResultMessage result = new ResultMessage();
             try
             {
+                var plist = await menuService.GetMenusByParentIdAsync(0);
                 var menuto = await menuService.GetMenuByIdAsync(model.Id);
+                var pname = plist.Where(m => m.Title == model.ParentName).FirstOrDefault();
                 menuto.Name = model.Name;
                 menuto.Title = model.Title;
                 menuto.NavigateController = model.NavigateController;
                 menuto.NavigateActioin = model.NavigateActioin;
                 menuto.Tag = model.Tag;
-                menuto.ParentName = model.ParentName;
+                menuto.ParentName = pname?.Name;
                 menuto.HasChildren = model.HasChildren;
                 menuto.HeadStyle = model.HeadStyle;
                 menuto.Style = model.Style;
                 menuto.Url = model.Url;
+                menuto.ParentId = model.ParentId;
                 menuto.UpdateTime = DateTime.Now.ToString();
-                var menu= mapper.Map<MenuDto>(menuto);
+                var menu = mapper.Map<MenuDto>(menuto);
                 int num = await menuService.UpdateMenuAsync(menu);
                 if (num > 0)
                 {
                     result.Message = "修改成功!";
                     result.Status = 200;
-                    await redisClient.DeleteHashOfAsync("WMS_MenuList", "menuhash");
+                    await redisClient.DeleteHashOfAsync("WMS_MenuListAll", "menuhash");
                 }
                 else
                 {

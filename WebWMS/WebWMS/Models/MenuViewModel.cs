@@ -22,6 +22,8 @@
 
         public string ParentName { get; set; } = "Root";
 
+        public int ParentId{ get; set; }
+
         public string? Url { get; set; }
 
         public string? Tag { get; set; }

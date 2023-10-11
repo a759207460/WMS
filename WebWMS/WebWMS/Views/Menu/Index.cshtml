@@ -49,9 +49,11 @@
    </div>
      <div id="jsGrid" style="margin-top:2px;height:90%;"></div>
    </div>
-   @*新增用户弹窗*@
-  <div class="modal " tabindex="-1"  id="UserModal" style="height:530px;margin-top:5px;overflow-y:hidden;overflow-x:hidden;" >
-  <div class="modal-dialog">
+   @*新增菜单弹窗*@
+  <div class="modal " tabindex="-1"  id="MenuModal" style="height:530px;margin-top:5px;overflow-y:hidden;overflow-x:hidden;" >
+   <input type="hidden" id="operatetype" />
+       <input type="hidden" id="editId" />
+      <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
         <h7 class="modal-title" id="mTitle" style="color:#4d5b76;font-size:1em;font-family:Cambria;font-weight:500;">新增菜单</h7>
@@ -72,34 +74,36 @@
                 <div class="row" id="mpassword">
                     <div class="col-md-1 col1">标题</div>
                     <div class="col-md-2 col2"><input type="text" class="form-controlnew" id="txtTitle"   placeholder="标 题" autocomplete="off" ></div>
-                    <div class="col-md-3 col3"><span style="color:red;" id="sTitle">*</span></div>
+                    <div class="col-md-3"><span style="color:red;" id="sTitle">*</span></div>
                 </div>
                  <div class="row" id="mpassword1">
                     <div class="col-md-1 col1">导航控制器</div>
                     <div class="col-md-2 col2"><input type="text" class="form-controlnew" id="txtNavigateController"   placeholder="导航控制器" autocomplete="off" ></div>
-                    <div class="col-md-3 col3"><span style="color:red;" id="sNavigateController">*</span></div>
+                    <div class="col-md-3 col3"></div>
                 </div>
                 <div class="row">
                   <div class="col-md-1 col1">导航方法名</div>
                    <div class="col-md-2 col2"><input type="text" class="form-controlnew" id="txtNavigateActioin" placeholder=" 导航方法名"  autocomplete="off"></div>
-                  <div class="col-md-3 col3"><span style="color:red;" id="sNavigateActioin">*</span></div>
+                  <div class="col-md-3 col3"></div>
                 </div>
                 <div class="row">
                   <div class="col-md-1 col1">父类菜单名</div>
-                  <div class="col-md-2 col2"> <input type="text" class="form-controlnew " id="txtParentName"  placeholder="父类菜单名"  autocomplete="off"></div>
+                  <div class="col-md-2 col2">  <select class="selectpicker" id="selectParentName" data-width="220px">
+                     </select>
+                     </div>
                   <div class="col-md-3 col3"><span style="color:red;" id="sParentName">*</span></div>
                 </div>
                 <div class="row">
                    <div class="col-md-1 col1">导航Url</div>
                    <div class="col-md-2 col2"><input type="text" class="form-controlnew" id="txtUrl"  placeholder="导航Url"   autocomplete="off"></div>
-                   <div class="col-md-3 col3"> <span style="color:red;" id="sUrl">*</span></div>
+                   <div class="col-md-3 col3"></div>
                 </div>
                 <div class="row">
                     <div class="col-md-1 col1">图标</div>
                     <div class="col-md-2 col2"><input type="text" class="form-controlnew span12" id="txtTag"  placeholder="图标"   autocomplete="off">
                     <a href="https://icons.bootcss.com/" target="_blank">图标参考网址</a>    
                     </div>
-                    <div class="col-md-3 col3"><span style="color:red;" id="sTag">*</span></div>
+                    <div class="col-md-3 col3"></div>
                 </div>
                 <div class="row">
                     <div class="col-md-2 col1">是否有子菜单</div>
@@ -132,32 +136,7 @@
     </div>
   </div>
 </div>
-
-@*提示框*@
-  <div class="modal" tabindex="-1" id="MessageModel" style="height:210px;margin-top:50px;overflow-y:hidden;width:210px;margin-left:46%;" >
-      <div class="modal-dialog" style="height:200px;width:200px;">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h7 class="modal-title" style="color:#4d5b76;font-size:1em;font-family:Cambria;font-weight:500;">提示!</h7>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body" style="padding:5px;">
-       <div class="panel panel-default">
-        <div class="panel-body" style="text-align:center;">
-            <span id="msg"></span>
-        </div>
-    </div> 
-     <div style="text-align:right;">
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
-               <button type="button"  class="btn btn-primary" id="MSave">保存</button>
-         </div>
-      </div>
-    </div>
-  </div>
-</div>
-    
+  
 <script>
 
      $(function(){
@@ -180,30 +159,44 @@
        $("#Add").click(function(){
           $("#txtStyle").val("nav nav-list collapse");
           $("#txtHeadStyle").val("nav-header collapsed");
-          $("#UserModal").modal('show'); 
+          $("#operatetype").val("add");
+         //父类菜单下拉列表绑定
+          $.post("/Menu/GetMenuListByParentId",{},function(data){
+               var result=eval('('+data+')');
+               if(result.Status==200)
+               {
+                   for(var i=0;i<result.Source.length;i++)
+                   {
+                      $("#selectParentName").append("<option value='"+result.Source[i].Id+"'>"+result.Source[i].Name+"</option>");
+                   }
+                   $("#selectParentName").selectpicker("refresh");
+                   $('#selectParentName').selectpicker('render');
+               }
+           });
+          $("#MenuModal").modal('show'); 
        });
 
        //保存
        $("#Save").click(function(){
+           var operatetype=$("#operatetype").val();
            var txtName=$("#txtName").val();
            var txtTitle=$("#txtTitle").val();
             var txtNavigateController=$("#txtNavigateController").val();
            var txtNavigateActioin=$("#txtNavigateActioin").val();
-           var txtParentName=$("#txtParentName").val();
+           var selectParentId=$("#selectParentName").val();
+           var selectParentName=$("#selectParentName").find("option:selected").text();
            var txtUrl=$("#txtUrl").val();
            var txtTag=$("#txtTag").val();
            var txtStyle=$("#txtStyle").val();
            var txtHasChildren=$("#txtHasChildren").prop("checked");
            var txtHeadStyle=$("#txtHeadStyle").val();
-
-          
            if(txtName==""||txtName==null)
            {
-               $("#stName").append("名称不能为空!");
+               $("#sName").append("名称不能为空!");
                return;
            }else
            {
-               $("#stName").text("*")
+               $("#sName").text("*")
            }
            if(txtTitle==""||txtTitle==null)
            {
@@ -213,7 +206,7 @@
            else{
                $("#sTitle").text("*")
            }
-           if(txtParentName==""||txtParentName==null)
+           if(selectParentName==""||selectParentName==null)
            {
                $("#sParentName").append("父菜单名不能为空!");
                return;
@@ -236,31 +229,49 @@
                $("#sHeadStyle").text("*");
            }
 
+           if(operatetype=="add")
+           {
+              $.post("/Menu/Add",
+               {"Name":txtName,"Title":txtTitle,"NavigateController":txtNavigateController,"NavigateActioin":txtNavigateActioin,"ParentName":selectParentName,"ParentId":selectParentId,"Url":txtUrl,"Tag":txtTag,"Style":txtStyle,"HasChildren":txtHasChildren,"HeadStyle":txtHeadStyle},
+              function(data){
+                 var result=eval('('+data+')');
+                 if(result.Status==200)
+                    {
+                        alert(result.Message);
+                        $("#txtName").val("");
+                        $("#txtTitle").val("");
+                        $("#txtNavigateController").val("");
+                        $("#txtNavigateActioin").val("");
+                        $("#txtUrl").val("");
+                        $("#txtTag").val("");
+                        $("#txtStyle").val("");
+                        $("#txtHeadStyle").val("");
+                        $("#txtHasChildren").prop("checked","");
+                        $("#MenuModal").modal('hide');
+                        location.reload(true);
+                    }
+                    else
+                    {
+                        alert(result.Message);
+                    }});
+           }else if(operatetype=="edit")
+           {
+                var id=$("#editId").val();
+                 $.post("/Menu/Update",
+                       {"Id":id,"Name":txtName,"Title":txtTitle,"NavigateController":txtNavigateController,"NavigateActioin":txtNavigateActioin,"ParentName":selectParentName,"ParentId":selectParentId,"Url":txtUrl,"Tag":txtTag,"Style":txtStyle,"HasChildren":txtHasChildren,"HeadStyle":txtHeadStyle},
+                       function(data){
+                          var result=eval('('+data+')');
+                        if(result.Status==200)
+                        {
+                            alert(result.Message);
+                             location.reload(true);
+                        }
+                        else
+                        {
+                            alert(result.Message);
+                        }});
+           }
 
-               $.post("/Menu/Add",
-           {"Name":txtName,"Title":txtTitle,"NavigateController":txtNavigateController,"NavigateActioin":txtNavigateActioin,"ParentName":txtParentName,"Url":txtUrl,"Tag":txtTag,"Style":txtStyle,"HasChildren":txtHasChildren,"HeadStyle":txtHeadStyle},
-           function(data){
-              var result=eval('('+data+')');
-            if(result.Status==200)
-            {
-                alert(result.Message);
-                $("#txtName").val("");
-                $("#txtTitle").val("");
-                $("#txtNavigateController").val("");
-                $("#txtNavigateActioin").val("");
-                $("#txtParentName").val("");
-                $("#txtUrl").val("");
-                $("#txtTag").val("");
-                $("#txtStyle").val("");
-                $("#txtHeadStyle").val("");
-                $("#txtHasChildren").prop("checked","");
-                $("#UserModal").modal('hide');
-                location.reload(true);
-            }
-            else
-            {
-                alert(result.Message);
-            }});
        });
         
     });
@@ -272,35 +283,6 @@
         return RegExp(reg).test(content);
     };
 
-     //编辑
-     function Edit(id,account,pwd,name,emai,phone,address,isEnabled,d)
-        {
-
-              $("#mTitle").text("编辑用户");
-               $("#mpassword").hide();
-                $("#mpassword1").hide();
-               $("#operatetype").val("edit");
-               $("#account").val(account);
-                $("#password").val(pwd);
-                $("#password1").val(pwd);
-                $("#name").val(name);
-                $("#phone").val(phone);
-               $("#email").val(emai);
-               $("#address").val(address);
-               $("#editId").val(id);
-               if(isEnabled=='True')
-               {
-                   $("#IsEnabled").attr("checked","checked");
-               }  
-               if(d=='True')
-               {
-                   $("#Delete").attr("checked","checked");
-               }
-               
-              
-              $("#UserModal").modal('show');
-         };
-     
      //列表数据绑定
      function GridBind(where)
      {
@@ -326,8 +308,18 @@
                                             args.cancel = true;
                                         }
                                     },
-                rowClick: function(args) { args.cancel=true },
-                rowDoubleClick:function(args){$("#jsGrid").jsGrid("editItem", args.item);},
+                 onItemEditing: function(args) {
+                                        // cancel editing of the row of item with field 'ID' = 0
+                                        if(args.item.ID === 0) {
+                                            args.cancel = true;
+                                        }else
+                                        {
+                                            showDetailsDialog(args.item);
+                                            args.cancel = true;
+                                        }
+                                    },
+               // rowClick: function(args) {  showDetailsDialog(args.item)},
+                //rowDoubleClick:function(args){$("#jsGrid").jsGrid("editItem", args.item);},
                 controller: {
                 loadData: function(e) {
                        var d = $.Deferred();
@@ -354,45 +346,7 @@
                             {
                                 alert(result.Message);
                             }});
-                    },
-                  updateItem: function(item) {
-                      
-                                    if(item.Title==""||item.Title==null)
-                                       {
-                                            alert("标题不能为空!");
-                                            return;
-                                       }
-                                    if(item.ParentName==""||item.ParentName==null)
-                                       {
-                                           alert("父菜单名不能为空!");
-                                           return;
-                                       }
-
-                                    if(item.Style==""||item.Style==null)
-                                       {
-                                           alert("子菜单样式不能为空!");
-                                           return;
-                                       }
-                                    if(item.HeadStyle==""||item.HeadStyle==null)
-                                       {
-                                           alert("父菜单样式不能为空!");
-                                           return;
-                                       } 
-
-                                return $.post("/Menu/Update",
-                                           {"Id":item.Id,"Name":item.Name,"Title":item.Title,"NavigateController":item.NavigateController,"NavigateActioin":item.NavigateActioin,"ParentName":item.ParentName,"Url":item.Url,"Tag":item.Tag,"HasChildren":item.HasChildren,"Style":item.Style,"HeadStyle":item.HeadStyle},
-                                           function(data){
-                                              var result=eval('('+data+')');
-                                            if(result.Status==200)
-                                            {
-                                                alert(result.Message);
-                                                 location.reload(true);
-                                            }
-                                            else
-                                            {
-                                                alert(result.Message);
-                                            }});
-                   }
+                    }
                 },
                 fields: [
                     // {
@@ -425,6 +379,41 @@
                  //data: data.Items
                });
      }
+
+    //编辑菜单
+    function showDetailsDialog(item)
+       {
+            $("#selectParentName").html("");
+
+           //父类菜单下拉列表绑定
+          $.post("/Menu/GetMenuListByParentId",{},function(data){
+               var result=eval('('+data+')');
+               if(result.Status==200)
+               {
+                   for(var i=0;i<result.Source.length;i++)
+                   {
+                      $("#selectParentName").append("<option value='"+result.Source[i].Id+"'>"+result.Source[i].Name+"</option>");
+                   }
+                   $("#selectRole").selectpicker("val",item.ParentId);
+                   $("#selectParentName").selectpicker("refresh");
+                   $('#selectParentName').selectpicker('render');
+               }
+           });
+            
+           $("#txtName").val(item.Name);
+           $("#txtTitle").val(item.Title);
+           $("#txtNavigateController").val(item.NavigateController);
+           $("#txtNavigateActioin").val(item.NavigateActioin);
+           $("#txtUrl").val(item.Url);
+           $("#txtTag").val(item.Tag);
+           $("#txtStyle").val(item.Style);
+           $("#txtHasChildren").prop("checked",item.HasChildren);
+           $("#txtHeadStyle").val(item.HeadStyle);
+           $("#editId").val(item.Id);
+           $("#operatetype").val("edit");
+           $("#mTitle").text("编辑菜单");
+           $("#MenuModal").modal('show');
+       }
 </script>
 
 </body>
