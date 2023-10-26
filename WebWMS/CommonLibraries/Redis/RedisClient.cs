@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Microsoft.AspNetCore.Hosting.Server;
+using Microsoft.Azure.Management.Redis.Fluent;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using StackExchange.Redis;
@@ -95,6 +97,47 @@ namespace CommonLibraries.Redis
         }
 
 
+        /// <summary>
+        /// 模糊匹配查询键值
+        /// </summary>
+        /// <param name="key"></param>
+        /// <returns></returns>
+        public List<string> Getkeys(string key)
+        {
+            List<string> keyList = new List<string>();
+            ConnectionMultiplexer conn = ConnectionMultiplexer.Connect(_ConnectStr);
+            var db = conn.GetEndPoints();
+
+            foreach (var ep in db)
+            {
+                var server = _ConnMultiplexer.GetServer(ep);
+                var keys = server.Keys(0, $"*{key}*");
+                foreach (var item in keys)
+                {
+                    keyList.Add((string)item);
+                }
+            }
+            return keyList;
+        }
+
+
+        /// 模糊匹配删除键值
+        /// </summary>
+        /// <param name="pattern">pattern</param>
+        public virtual void RemoveByPattern(string pattern)
+        {
+            ConnectionMultiplexer conn = ConnectionMultiplexer.Connect(_ConnectStr);
+            var db = conn.GetEndPoints();
+            foreach (var ep in db)
+            {
+                var server = conn.GetServer(ep);
+                var keys = server.Keys(pattern: "*" + pattern + "*");
+                foreach (var key in keys)
+                {
+                    _DB.KeyDelete(key);
+                }
+            }
+        }
         #region 数据操作
 
         #region   String 操作

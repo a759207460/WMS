@@ -54,6 +54,10 @@
               "target": "Package",
               "version": "[3.5.2, )"
             },
+            "Microsoft.Azure.Management.Redis.Fluent": {
+              "target": "Package",
+              "version": "[1.38.1, )"
+            },
             "Microsoft.Extensions.Configuration.Abstractions": {
               "target": "Package",
               "version": "[7.0.0, )"

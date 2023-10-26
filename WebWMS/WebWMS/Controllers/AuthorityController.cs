@@ -202,6 +202,7 @@ namespace WebWMS.Controllers
                     {
                         result.Status = 200;
                         result.Message = "权限分配成功!";
+                        redisClient.RemoveByPattern("WMS_MenuList");
                     }
                     else
                     {

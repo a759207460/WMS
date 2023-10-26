@@ -50,20 +50,17 @@
      <div id="jsGrid" style="margin-top:2px;height:90%;"></div>
    </div>
    @*新增菜单弹窗*@
-  <div class="modal " tabindex="-1"  id="MenuModal" style="height:530px;margin-top:5px;overflow-y:hidden;overflow-x:hidden;" >
+  <div class="modal " tabindex="-1"  id="MenuModal" style="height:570px;margin-top:-15px;overflow-y:hidden;overflow-x:hidden;" >
    <input type="hidden" id="operatetype" />
        <input type="hidden" id="editId" />
       <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
         <h7 class="modal-title" id="mTitle" style="color:#4d5b76;font-size:1em;font-family:Cambria;font-weight:500;">新增菜单</h7>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
       </div>
-      <div class="modal-body" style="padding:5px;">
+      <div class="modal-body" style="padding:3px;">
        <div class="panel panel-default">
-        <div class="panel-body" style="height:450px;">
+        <div class="panel-body" style="height:480px;">
             <form>
               <div class="container">
                 <div class="row">
@@ -92,6 +89,10 @@
                      </select>
                      </div>
                   <div class="col-md-3 col3"><span style="color:red;" id="sParentName">*</span></div>
+                </div>
+                <div class="row" id="mpassword">
+                    <div class="col-md-1 col1">排序</div>
+                    <div class="col-md-2 col2"><input type="number" class="form-controlnew" id="txtSort"   placeholder="排序" autocomplete="off" value="0"></div>
                 </div>
                 <div class="row">
                    <div class="col-md-1 col1">导航Url</div>
@@ -190,6 +191,7 @@
            var txtStyle=$("#txtStyle").val();
            var txtHasChildren=$("#txtHasChildren").prop("checked");
            var txtHeadStyle=$("#txtHeadStyle").val();
+           var txtSort=$("#txtSort").val();
            if(txtName==""||txtName==null)
            {
                $("#sName").append("名称不能为空!");
@@ -232,7 +234,7 @@
            if(operatetype=="add")
            {
               $.post("/Menu/Add",
-               {"Name":txtName,"Title":txtTitle,"NavigateController":txtNavigateController,"NavigateActioin":txtNavigateActioin,"ParentName":selectParentName,"ParentId":selectParentId,"Url":txtUrl,"Tag":txtTag,"Style":txtStyle,"HasChildren":txtHasChildren,"HeadStyle":txtHeadStyle},
+               {"Name":txtName,"Title":txtTitle,"NavigateController":txtNavigateController,"NavigateActioin":txtNavigateActioin,"ParentName":selectParentName,"ParentId":selectParentId,"Url":txtUrl,"Tag":txtTag,"Style":txtStyle,"HasChildren":txtHasChildren,"HeadStyle":txtHeadStyle,"Sort":txtSort},
               function(data){
                  var result=eval('('+data+')');
                  if(result.Status==200)
@@ -258,7 +260,7 @@
            {
                 var id=$("#editId").val();
                  $.post("/Menu/Update",
-                       {"Id":id,"Name":txtName,"Title":txtTitle,"NavigateController":txtNavigateController,"NavigateActioin":txtNavigateActioin,"ParentName":selectParentName,"ParentId":selectParentId,"Url":txtUrl,"Tag":txtTag,"Style":txtStyle,"HasChildren":txtHasChildren,"HeadStyle":txtHeadStyle},
+                       {"Id":id,"Name":txtName,"Title":txtTitle,"NavigateController":txtNavigateController,"NavigateActioin":txtNavigateActioin,"ParentName":selectParentName,"ParentId":selectParentId,"Url":txtUrl,"Tag":txtTag,"Style":txtStyle,"HasChildren":txtHasChildren,"HeadStyle":txtHeadStyle,"Sort":txtSort},
                        function(data){
                           var result=eval('('+data+')');
                         if(result.Status==200)
@@ -394,12 +396,11 @@
                    {
                       $("#selectParentName").append("<option value='"+result.Source[i].Id+"'>"+result.Source[i].Name+"</option>");
                    }
-                   $("#selectRole").selectpicker("val",item.ParentId);
+                   $("#selectParentName").selectpicker("val",item.ParentId);
                    $("#selectParentName").selectpicker("refresh");
                    $('#selectParentName').selectpicker('render');
                }
            });
-            
            $("#txtName").val(item.Name);
            $("#txtTitle").val(item.Title);
            $("#txtNavigateController").val(item.NavigateController);
@@ -411,6 +412,7 @@
            $("#txtHeadStyle").val(item.HeadStyle);
            $("#editId").val(item.Id);
            $("#operatetype").val("edit");
+           $("#txtSort").val(item.Sort);
            $("#mTitle").text("编辑菜单");
            $("#MenuModal").modal('show');
        }

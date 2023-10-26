@@ -69,6 +69,8 @@ namespace WebWMS.Core.DTO.MenusDto
         /// 显示序
         /// </summary>
         public int? Sort { get; set; }
+
+        public string? Creator { get; set; }
         #endregion
     }
 }

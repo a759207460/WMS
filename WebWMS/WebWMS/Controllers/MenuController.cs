@@ -2,7 +2,9 @@
 using CommonLibraries.Redis;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Azure.Management.ResourceManager.Fluent.Models;
 using Newtonsoft.Json;
+using System.Security.Claims;
 using WebWMS.Common;
 using WebWMS.Core.DTO.MenusDto;
 using WebWMS.Core.Repositorys.Collections;
@@ -85,16 +87,21 @@ namespace WebWMS.Controllers
             ResultMessage result = new ResultMessage();
             try
             {
+                var plist = await menuService.GetMenusByParentIdAsync(0);
+                var pname = plist.Where(m => m.Title == model.ParentName).FirstOrDefault();
                 var menuto = mapper.Map<MenuDto>(model);
+                string? user=User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Name)?.Value;
                 menuto.Name = model.Name;
                 menuto.Title = model.Title;
                 menuto.NavigateController = model.NavigateController;
                 menuto.NavigateActioin = model.NavigateActioin;
                 menuto.Tag = model.Tag;
-                menuto.ParentName = model.ParentName;
+                menuto.ParentName = pname?.Name;
                 menuto.HasChildren = model.HasChildren;
                 menuto.HeadStyle = model.HeadStyle;
                 menuto.Style = model.Style;
+                menuto.Sort=model.Sort;
+                menuto.Creator = user;
                 menuto.CreateTime = DateTime.Now.ToString();
                 if (await menuService.GetMenuByNameAsync(menuto.Name, model.Title))
                 {
@@ -106,7 +113,7 @@ namespace WebWMS.Controllers
                 {
                     result.Message = "新增成功!";
                     result.Status = 200;
-                    await redisClient.DeleteHashOfAsync("WMS_MenuList", "menuhash");
+                    redisClient.RemoveByPattern("WMS_MenuList");
                 }
                 else
                 {
@@ -145,6 +152,7 @@ namespace WebWMS.Controllers
                 menuto.Style = model.Style;
                 menuto.Url = model.Url;
                 menuto.ParentId = model.ParentId;
+                menuto.Sort=model.Sort;
                 menuto.UpdateTime = DateTime.Now.ToString();
                 var menu = mapper.Map<MenuDto>(menuto);
                 int num = await menuService.UpdateMenuAsync(menu);
@@ -152,7 +160,8 @@ namespace WebWMS.Controllers
                 {
                     result.Message = "修改成功!";
                     result.Status = 200;
-                    await redisClient.DeleteHashOfAsync("WMS_MenuListAll", "menuhash");
+                    //List<string> list = redisClient.Getkeys("WMS_MenuList");
+                    redisClient.RemoveByPattern("WMS_MenuList");
                 }
                 else
                 {
@@ -181,7 +190,7 @@ namespace WebWMS.Controllers
                 {
                     result.Message = "删除成功!";
                     result.Status = 200;
-
+                    redisClient.RemoveByPattern("WMS_MenuList");
                 }
                 else
                 {
