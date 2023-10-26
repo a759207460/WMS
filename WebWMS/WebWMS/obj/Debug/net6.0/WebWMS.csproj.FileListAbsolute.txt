@@ -205,3 +205,4 @@ C:\项目\C#学习例子\WMS\WebWMS\WebWMS\bin\Debug\net6.0\Microsoft.IdentityMo
 C:\项目\C#学习例子\WMS\WebWMS\WebWMS\bin\Debug\net6.0\Microsoft.Rest.ClientRuntime.dll
 C:\项目\C#学习例子\WMS\WebWMS\WebWMS\bin\Debug\net6.0\Microsoft.Rest.ClientRuntime.Azure.dll
 C:\项目\C#学习例子\WMS\WebWMS\WebWMS\bin\Debug\net6.0\Microsoft.Rest.ClientRuntime.Azure.Authentication.dll
+C:\项目\C#学习例子\WMS\WebWMS\WebWMS\obj\Debug\net6.0\WebWMS.MvcApplicationPartsAssemblyInfo.cs

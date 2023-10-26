@@ -8,6 +8,7 @@ using WebWMS.Core.DbContexts;
 using WebWMS.Core.Domain.Companys;
 using WebWMS.Core.Domain.Customers;
 using WebWMS.Core.Domain.Menus;
+using WebWMS.Core.Domain.Products;
 using WebWMS.Core.Domain.Roles;
 using WebWMS.Core.Domain.Users;
 using WebWMS.Core.Domain.Vendors;
@@ -15,6 +16,7 @@ using WebWMS.Core.Repositorys;
 using WebWMS.Core.Services.CompanysService;
 using WebWMS.Core.Services.CustomersService;
 using WebWMS.Core.Services.MenusService;
+using WebWMS.Core.Services.ProductsService;
 using WebWMS.Core.Services.RolesService;
 using WebWMS.Core.Services.UserInfosService;
 using WebWMS.Core.Services.VendorsService;
@@ -48,6 +50,8 @@ namespace WebWMS.Extensions
             services.AddScoped<IRepository<RoleInfo>, Repository<RoleInfo>>();
             services.AddScoped<IRoleService, RoleService>();
             services.AddScoped<IMenuRoleInfoService, MenuRoleInfoService>();
+            services.AddScoped<IRepository<Product>, Repository<Product>>();
+            services.AddScoped<IProductService, ProductService>();
             services.AddScoped<HelpGetMenuList>();
             services.AddScoped<RedisClientHelper>();
         }
